@@ -1,0 +1,4 @@
+
+Final: 875
+Fraction is 0
+Cordic Result 0
