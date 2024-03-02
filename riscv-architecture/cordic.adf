@@ -926,7 +926,7 @@
       <width>22</width>
     </port>
     <operation>
-      <name>cordic_test</name>
+      <name>cordic</name>
       <bind name="1">P1</bind>
       <bind name="2">P2</bind>
       <bind name="3">P3</bind>
@@ -1108,7 +1108,7 @@
     <ota-operation>mulhu</ota-operation>
     <ota-operation>remu</ota-operation>
     <ota-operation>rem</ota-operation>
-    <ota-operation>cordic_test</ota-operation>
+    <ota-operation>cordic</ota-operation>
   </ota-format>
 
   <ota-format name="riscv_i_type">

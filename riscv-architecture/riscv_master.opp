@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<osal version="0.1">
+
+  <operation>
+    <name>CORDIC</name>
+    <description/>
+    <inputs>2</inputs>
+    <outputs>1</outputs>
+    <in element-count="1" element-width="8" id="1" type="UIntWord"/>
+    <in element-count="1" element-width="22" id="2" type="UIntWord"/>
+    <out element-count="1" element-width="22" id="3" type="SIntWord"/>
+  </operation>
+
+  <operation>
+    <name>COMP_TERM</name>
+    <description/>
+    <inputs>2</inputs>
+    <outputs>1</outputs>
+    <in element-count="1" element-width="17" id="1" type="UIntWord"/>
+    <in element-count="1" element-width="8" id="2" type="SIntWord"/>
+    <out element-count="1" element-width="20" id="3" type="SIntWord"/>
+  </operation>
+
+</osal>

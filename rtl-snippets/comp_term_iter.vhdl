@@ -1,0 +1,1 @@
+op3 <= std_logic_vector(resize(signed(shift_right(signed(signed(op1) + signed(op2(16 downto 2) & '1' & '0')),1)), op3'length));

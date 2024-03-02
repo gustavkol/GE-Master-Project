@@ -355,11 +355,11 @@ architecture structural of tta0 is
       glock_req : out std_logic);
   end component;
 
-  component cordic_test is
+  component cordic is
     generic (
+      DW_FRACTION : integer;
       DW_ANGLE : integer;
-      DW_CALCULATION_TERMS : integer;
-      DW_FRACTION : integer);
+      DW_CALCULATION_TERMS : integer);
     port (
       t1data : in std_logic_vector(DW_ANGLE-1 downto 0);
       t1load : in std_logic;
@@ -691,11 +691,11 @@ begin
       glock => fu_MUL_DIV_glock_wire,
       glock_req => fu_MUL_DIV_glock_req_wire);
 
-  fu_CORDIC : cordic_test
+  fu_CORDIC : cordic
     generic map (
+      DW_FRACTION => 6,
       DW_ANGLE => 8,
-      DW_CALCULATION_TERMS => 16,
-      DW_FRACTION => 6)
+      DW_CALCULATION_TERMS => 16)
     port map (
       t1data => fu_CORDIC_t1data_wire,
       t1load => fu_CORDIC_t1load_wire,

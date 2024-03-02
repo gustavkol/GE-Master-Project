@@ -132,7 +132,7 @@ void init_delay(unsigned char r_0, unsigned char angle, int *delay_array, int *i
 // Fits fraction of cordic module (6) with rest of application (4)
 signed int cordic_cosine(int x_scale, unsigned char angle) {
     signed int out;
-    _OA_RV_CORDIC_TEST(angle, (x_scale << 2), out);
+    _OA_RV_CORDIC(angle, (x_scale << 2), out);
     return (out >> 2);
 }
 
