@@ -13,5 +13,5 @@ package tta0_globals is
   -- number of busses.
   constant BUSTRACE_WIDTH : positive := 128;
   -- instruction width
-  constant INSTRUCTIONWIDTH : positive := 37;
+  constant INSTRUCTIONWIDTH : positive := 38;
 end tta0_globals;

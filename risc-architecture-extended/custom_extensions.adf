@@ -294,6 +294,35 @@
     </writes-to>
   </socket>
 
+  <socket name="S2">
+    <reads-from>
+      <bus>B1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+  </socket>
+
+  <socket name="S3">
+    <reads-from>
+      <bus>B0</bus>
+      <segment>seg1</segment>
+    </reads-from>
+  </socket>
+
+  <socket name="S3_1">
+    <writes-to>
+      <bus>B0</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B2</bus>
+      <segment>seg1</segment>
+    </writes-to>
+  </socket>
+
   <function-unit name="ALU">
     <port name="P1">
       <connects-to>ALU_i1</connects-to>
@@ -531,6 +560,46 @@
     </operation>
     <operation>
       <name>comp_term_iter</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>shift_add</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>mask_add</name>
       <bind name="1">P1</bind>
       <bind name="2">P2</bind>
       <bind name="3">P3</bind>
@@ -963,7 +1032,7 @@
     </port>
     <port name="P3">
       <connects-to>S1_2</connects-to>
-      <width>22</width>
+      <width>32</width>
     </port>
     <operation>
       <name>cordic</name>
@@ -981,6 +1050,44 @@
         </reads>
         <writes name="3">
           <start-cycle>11</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <address-space/>
+  </function-unit>
+
+  <function-unit name="compare_and_iter">
+    <port name="P1">
+      <connects-to>S2</connects-to>
+      <width>32</width>
+      <triggers/>
+      <sets-opcode/>
+    </port>
+    <port name="P2">
+      <connects-to>S3</connects-to>
+      <width>32</width>
+    </port>
+    <port name="P3">
+      <connects-to>S3_1</connects-to>
+      <width>32</width>
+    </port>
+    <operation>
+      <name>compare_and_iter</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>1</start-cycle>
           <cycles>1</cycles>
         </writes>
       </pipeline>
@@ -1151,6 +1258,9 @@
     <ota-operation>cordic</ota-operation>
     <ota-operation>comp_term_init</ota-operation>
     <ota-operation>comp_term_iter</ota-operation>
+    <ota-operation>compare_and_iter</ota-operation>
+    <ota-operation>mask_add</ota-operation>
+    <ota-operation>shift_add</ota-operation>
   </ota-format>
 
   <ota-format name="riscv_i_type">

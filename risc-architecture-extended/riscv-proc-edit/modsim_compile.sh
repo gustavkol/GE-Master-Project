@@ -64,6 +64,7 @@ vcom vhdl/tta0_params_pkg.vhdl || exit 1
 vcom $coverage_opt -check_synthesis vhdl/stdout_riscv.vhdl || exit 1
 vcom $coverage_opt -check_synthesis vhdl/div_divu_mul_mulhi_mulhisu_mulhiu_rem_remu.vhdl || exit 1
 vcom $coverage_opt -check_synthesis vhdl/cordic.vhdl || exit 1
+vcom $coverage_opt -check_synthesis vhdl/compare_and_iter.vhdl || exit 1
 vcom vhdl/util_pkg.vhdl || exit 1
 vcom $coverage_opt -check_synthesis vhdl/rf_1wr_2rd_always_1_zero_reg.vhd || exit 1
 vcom $coverage_opt -check_synthesis vhdl/lsu_registers.vhdl || exit 1

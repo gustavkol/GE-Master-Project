@@ -29,6 +29,7 @@ entity tta0_decoder is
     socket_STDOUT_o1_bus_cntrl : out std_logic_vector(2 downto 0);
     socket_MUL_DIV_o1_bus_cntrl : out std_logic_vector(2 downto 0);
     socket_S1_2_bus_cntrl : out std_logic_vector(2 downto 0);
+    socket_S3_1_bus_cntrl : out std_logic_vector(2 downto 0);
     fu_ALU_P1_load : out std_logic;
     fu_ALU_P2_load : out std_logic;
     fu_ALU_opc : out std_logic_vector(3 downto 0);
@@ -43,6 +44,8 @@ entity tta0_decoder is
     fu_MUL_DIV_opc : out std_logic_vector(2 downto 0);
     fu_CORDIC_P1_load : out std_logic;
     fu_CORDIC_P2_load : out std_logic;
+    fu_compare_and_iter_P1_load : out std_logic;
+    fu_compare_and_iter_P2_load : out std_logic;
     fu_CU_in_load : out std_logic;
     fu_CU_in2_load : out std_logic;
     rf_RF_t1_load : out std_logic;
@@ -52,7 +55,7 @@ entity tta0_decoder is
     rf_RF_r2_load : out std_logic;
     rf_RF_r2_opc : out std_logic_vector(4 downto 0);
     lock_req : in std_logic_vector(2 downto 0);
-    glock : out std_logic_vector(6 downto 0);
+    glock : out std_logic_vector(7 downto 0);
     simm_in : in std_logic_vector(31 downto 0));
 
 end tta0_decoder;
@@ -66,8 +69,8 @@ architecture rtl_andor of tta0_decoder is
   signal move_B1 : std_logic_vector(11 downto 0);
   signal src_B1 : std_logic_vector(5 downto 0);
   signal dst_B1 : std_logic_vector(5 downto 0);
-  signal move_B2 : std_logic_vector(8 downto 0);
-  signal src_B2 : std_logic_vector(2 downto 0);
+  signal move_B2 : std_logic_vector(9 downto 0);
+  signal src_B2 : std_logic_vector(3 downto 0);
   signal dst_B2 : std_logic_vector(5 downto 0);
   signal move_B3 : std_logic_vector(6 downto 0);
   signal src_B3 : std_logic_vector(1 downto 0);
@@ -93,6 +96,7 @@ architecture rtl_andor of tta0_decoder is
   signal socket_STDOUT_o1_bus_cntrl_reg : std_logic_vector(2 downto 0);
   signal socket_MUL_DIV_o1_bus_cntrl_reg : std_logic_vector(2 downto 0);
   signal socket_S1_2_bus_cntrl_reg : std_logic_vector(2 downto 0);
+  signal socket_S3_1_bus_cntrl_reg : std_logic_vector(2 downto 0);
   signal simm_B3_reg : std_logic_vector(31 downto 0);
   signal simm_cntrl_B3_reg : std_logic_vector(0 downto 0);
 
@@ -111,6 +115,8 @@ architecture rtl_andor of tta0_decoder is
   signal fu_MUL_DIV_opc_reg : std_logic_vector(2 downto 0);
   signal fu_CORDIC_P1_load_reg : std_logic;
   signal fu_CORDIC_P2_load_reg : std_logic;
+  signal fu_compare_and_iter_P1_load_reg : std_logic;
+  signal fu_compare_and_iter_P2_load_reg : std_logic;
   signal fu_CU_pc_load_reg : std_logic;
   signal fu_CU_in_load_reg : std_logic;
   signal fu_CU_in2_load_reg : std_logic;
@@ -142,12 +148,12 @@ begin
     move_B1 <= instructionword(21-1 downto 9);
     src_B1 <= instructionword(20 downto 15);
     dst_B1 <= instructionword(14 downto 9);
-    move_B2 <= instructionword(30-1 downto 21);
-    src_B2 <= instructionword(29 downto 27);
+    move_B2 <= instructionword(31-1 downto 21);
+    src_B2 <= instructionword(30 downto 27);
     dst_B2 <= instructionword(26 downto 21);
-    move_B3 <= instructionword(37-1 downto 30);
-    src_B3 <= instructionword(36 downto 35);
-    dst_B3 <= instructionword(34 downto 30);
+    move_B3 <= instructionword(38-1 downto 31);
+    src_B3 <= instructionword(37 downto 36);
+    dst_B3 <= instructionword(35 downto 31);
 
   end process;
 
@@ -170,6 +176,9 @@ begin
 
   fu_CORDIC_P1_load <= fu_CORDIC_P1_load_reg;
   fu_CORDIC_P2_load <= fu_CORDIC_P2_load_reg;
+
+  fu_compare_and_iter_P1_load <= fu_compare_and_iter_P1_load_reg;
+  fu_compare_and_iter_P2_load <= fu_compare_and_iter_P2_load_reg;
 
   ra_load <= fu_CU_ra_load_reg;
   pc_load <= fu_CU_pc_load_reg;
@@ -194,6 +203,7 @@ begin
   socket_STDOUT_o1_bus_cntrl <= socket_STDOUT_o1_bus_cntrl_reg;
   socket_MUL_DIV_o1_bus_cntrl <= socket_MUL_DIV_o1_bus_cntrl_reg;
   socket_S1_2_bus_cntrl <= socket_S1_2_bus_cntrl_reg;
+  socket_S3_1_bus_cntrl <= socket_S3_1_bus_cntrl_reg;
   simm_cntrl_B3 <= simm_cntrl_B3_reg;
   simm_B3 <= simm_in;
 
@@ -222,6 +232,7 @@ begin
       socket_STDOUT_o1_bus_cntrl_reg <= (others => '0');
       socket_MUL_DIV_o1_bus_cntrl_reg <= (others => '0');
       socket_S1_2_bus_cntrl_reg <= (others => '0');
+      socket_S3_1_bus_cntrl_reg <= (others => '0');
       simm_B3_reg <= (others => '0');
       simm_cntrl_B3_reg <= (others => '0');
       fu_ALU_opc_reg <= (others => '0');
@@ -243,6 +254,8 @@ begin
       fu_MUL_DIV_in2_load_reg <= '0';
       fu_CORDIC_P1_load_reg <= '0';
       fu_CORDIC_P2_load_reg <= '0';
+      fu_compare_and_iter_P1_load_reg <= '0';
+      fu_compare_and_iter_P2_load_reg <= '0';
       fu_CU_pc_load_reg <= '0';
       fu_CU_in_load_reg <= '0';
       fu_CU_in2_load_reg <= '0';
@@ -281,17 +294,17 @@ begin
         else
           simm_cntrl_B3_reg(0) <= '0';
         end if;
-        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 2))) = 9) then
+        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 1))) = 17) then
           socket_GCU_ra_o1_bus_cntrl_reg(1) <= '1';
         else
           socket_GCU_ra_o1_bus_cntrl_reg(1) <= '0';
         end if;
-        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 2))) = 9) then
+        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 1))) = 17) then
           socket_GCU_ra_o1_bus_cntrl_reg(2) <= '1';
         else
           socket_GCU_ra_o1_bus_cntrl_reg(2) <= '0';
         end if;
-        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(2 downto 0))) = 1) then
+        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(3 downto 0))) = 1) then
           socket_GCU_ra_o1_bus_cntrl_reg(0) <= '1';
         else
           socket_GCU_ra_o1_bus_cntrl_reg(0) <= '0';
@@ -329,17 +342,17 @@ begin
         else
           simm_cntrl_B3_reg(0) <= '0';
         end if;
-        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 2))) = 10) then
+        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 1))) = 18) then
           socket_GCU_apc_o1_bus_cntrl_reg(1) <= '1';
         else
           socket_GCU_apc_o1_bus_cntrl_reg(1) <= '0';
         end if;
-        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 2))) = 10) then
+        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 1))) = 18) then
           socket_GCU_apc_o1_bus_cntrl_reg(2) <= '1';
         else
           socket_GCU_apc_o1_bus_cntrl_reg(2) <= '0';
         end if;
-        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(2 downto 0))) = 2) then
+        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(3 downto 0))) = 2) then
           socket_GCU_apc_o1_bus_cntrl_reg(0) <= '1';
         else
           socket_GCU_apc_o1_bus_cntrl_reg(0) <= '0';
@@ -372,17 +385,17 @@ begin
         else
           simm_cntrl_B3_reg(0) <= '0';
         end if;
-        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 2))) = 11) then
+        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 1))) = 19) then
           socket_ALU_o1_bus_cntrl_reg(0) <= '1';
         else
           socket_ALU_o1_bus_cntrl_reg(0) <= '0';
         end if;
-        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 2))) = 11) then
+        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 1))) = 19) then
           socket_ALU_o1_bus_cntrl_reg(1) <= '1';
         else
           socket_ALU_o1_bus_cntrl_reg(1) <= '0';
         end if;
-        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(2 downto 0))) = 3) then
+        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(3 downto 0))) = 3) then
           socket_ALU_o1_bus_cntrl_reg(2) <= '1';
         else
           socket_ALU_o1_bus_cntrl_reg(2) <= '0';
@@ -415,17 +428,17 @@ begin
         else
           simm_cntrl_B3_reg(0) <= '0';
         end if;
-        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 2))) = 12) then
+        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 1))) = 20) then
           socket_LSU_o1_bus_cntrl_reg(1) <= '1';
         else
           socket_LSU_o1_bus_cntrl_reg(1) <= '0';
         end if;
-        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 2))) = 12) then
+        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 1))) = 20) then
           socket_LSU_o1_bus_cntrl_reg(2) <= '1';
         else
           socket_LSU_o1_bus_cntrl_reg(2) <= '0';
         end if;
-        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(2 downto 0))) = 4) then
+        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(3 downto 0))) = 4) then
           socket_LSU_o1_bus_cntrl_reg(0) <= '1';
         else
           socket_LSU_o1_bus_cntrl_reg(0) <= '0';
@@ -451,17 +464,17 @@ begin
         else
           simm_cntrl_B3_reg(0) <= '0';
         end if;
-        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 2))) = 13) then
+        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 1))) = 21) then
           socket_STDOUT_o1_bus_cntrl_reg(1) <= '1';
         else
           socket_STDOUT_o1_bus_cntrl_reg(1) <= '0';
         end if;
-        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 2))) = 13) then
+        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 1))) = 21) then
           socket_STDOUT_o1_bus_cntrl_reg(0) <= '1';
         else
           socket_STDOUT_o1_bus_cntrl_reg(0) <= '0';
         end if;
-        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(2 downto 0))) = 5) then
+        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(3 downto 0))) = 5) then
           socket_STDOUT_o1_bus_cntrl_reg(2) <= '1';
         else
           socket_STDOUT_o1_bus_cntrl_reg(2) <= '0';
@@ -487,17 +500,17 @@ begin
         else
           simm_cntrl_B3_reg(0) <= '0';
         end if;
-        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 2))) = 14) then
+        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 1))) = 22) then
           socket_MUL_DIV_o1_bus_cntrl_reg(0) <= '1';
         else
           socket_MUL_DIV_o1_bus_cntrl_reg(0) <= '0';
         end if;
-        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 2))) = 14) then
+        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 1))) = 22) then
           socket_MUL_DIV_o1_bus_cntrl_reg(1) <= '1';
         else
           socket_MUL_DIV_o1_bus_cntrl_reg(1) <= '0';
         end if;
-        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(2 downto 0))) = 6) then
+        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(3 downto 0))) = 6) then
           socket_MUL_DIV_o1_bus_cntrl_reg(2) <= '1';
         else
           socket_MUL_DIV_o1_bus_cntrl_reg(2) <= '0';
@@ -523,20 +536,56 @@ begin
         else
           simm_cntrl_B3_reg(0) <= '0';
         end if;
-        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 2))) = 15) then
+        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 1))) = 23) then
           socket_S1_2_bus_cntrl_reg(0) <= '1';
         else
           socket_S1_2_bus_cntrl_reg(0) <= '0';
         end if;
-        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 2))) = 15) then
+        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 1))) = 23) then
           socket_S1_2_bus_cntrl_reg(1) <= '1';
         else
           socket_S1_2_bus_cntrl_reg(1) <= '0';
         end if;
-        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(2 downto 0))) = 7) then
+        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(3 downto 0))) = 7) then
           socket_S1_2_bus_cntrl_reg(2) <= '1';
         else
           socket_S1_2_bus_cntrl_reg(2) <= '0';
+        end if;
+        -- bus control signals for short immediate sockets
+        if (squash_B3 = '0' and conv_integer(unsigned(src_B3(1 downto 1))) = 0) then
+          simm_cntrl_B3_reg(0) <= '1';
+        simm_B3_reg <= tce_sxt(src_B3(0 downto 0), simm_B3_reg'length);
+        else
+          simm_cntrl_B3_reg(0) <= '0';
+        end if;
+        -- bus control signals for short immediate sockets
+        if (squash_B3 = '0' and conv_integer(unsigned(src_B3(1 downto 1))) = 0) then
+          simm_cntrl_B3_reg(0) <= '1';
+        simm_B3_reg <= tce_sxt(src_B3(0 downto 0), simm_B3_reg'length);
+        else
+          simm_cntrl_B3_reg(0) <= '0';
+        end if;
+        -- bus control signals for short immediate sockets
+        if (squash_B3 = '0' and conv_integer(unsigned(src_B3(1 downto 1))) = 0) then
+          simm_cntrl_B3_reg(0) <= '1';
+        simm_B3_reg <= tce_sxt(src_B3(0 downto 0), simm_B3_reg'length);
+        else
+          simm_cntrl_B3_reg(0) <= '0';
+        end if;
+        if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 1))) = 24) then
+          socket_S3_1_bus_cntrl_reg(0) <= '1';
+        else
+          socket_S3_1_bus_cntrl_reg(0) <= '0';
+        end if;
+        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 1))) = 24) then
+          socket_S3_1_bus_cntrl_reg(1) <= '1';
+        else
+          socket_S3_1_bus_cntrl_reg(1) <= '0';
+        end if;
+        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(3 downto 0))) = 8) then
+          socket_S3_1_bus_cntrl_reg(2) <= '1';
+        else
+          socket_S3_1_bus_cntrl_reg(2) <= '0';
         end if;
         -- bus control signals for short immediate sockets
         if (squash_B3 = '0' and conv_integer(unsigned(src_B3(1 downto 1))) = 0) then
@@ -626,6 +675,16 @@ begin
         else
           fu_CORDIC_P2_load_reg <= '0';
         end if;
+        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 2))) = 12) then
+          fu_compare_and_iter_P1_load_reg <= '1';
+        else
+          fu_compare_and_iter_P1_load_reg <= '0';
+        end if;
+        if (squash_B0 = '0' and conv_integer(unsigned(dst_B0(2 downto 0))) = 7) then
+          fu_compare_and_iter_P2_load_reg <= '1';
+        else
+          fu_compare_and_iter_P2_load_reg <= '0';
+        end if;
         if (squash_B3 = '0' and conv_integer(unsigned(dst_B3(4 downto 4))) = 0) then
           fu_CU_pc_load_reg <= '1';
           fu_CU_opc_reg <= dst_B3(3 downto 0);
@@ -678,8 +737,9 @@ begin
   glock(2) <= post_decode_merged_glock; -- to STDOUT
   glock(3) <= post_decode_merged_glock; -- to MUL_DIV
   glock(4) <= post_decode_merged_glock; -- to CORDIC
-  glock(5) <= post_decode_merged_glock; -- to RF
-  glock(6) <= post_decode_merged_glock;
+  glock(5) <= post_decode_merged_glock; -- to compare_and_iter
+  glock(6) <= post_decode_merged_glock; -- to RF
+  glock(7) <= post_decode_merged_glock;
 
   decode_pipeline_fill_lock: process (clk, rstx)
   begin

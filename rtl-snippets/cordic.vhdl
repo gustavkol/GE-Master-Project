@@ -7,7 +7,7 @@ entity cordic is
     generic (
         DW_ANGLE                : integer := 8;
         DW_FRACTION             : integer := 6;
-        --dataw                   : integer := 32;
+        dataw                   : integer := 32;
         DW_CALCULATION_TERMS    : integer := 16;
         NUM_ITERATIONS          : integer := 11
     );
@@ -16,7 +16,7 @@ entity cordic is
         t1load : in std_logic;
         t2data : in std_logic_vector(DW_CALCULATION_TERMS+DW_FRACTION-1 downto 0);
         t2load : in std_logic;
-        r1data : out std_logic_vector(DW_CALCULATION_TERMS+DW_FRACTION-1 downto 0);
+        r1data : out std_logic_vector(dataw-1 downto 0);
 
         glock   : in std_logic;
         clk     : in std_logic;
@@ -122,7 +122,11 @@ begin
                         end if;
                         counter <= counter + 1;
                     else
-                        r1data <= std_logic_vector(x_cur_reg); -- updating output
+                        if (sign_bit = '1') then
+                            r1data <= std_logic_vector(resize(signed(-x_cur_reg), r1data'length)); -- updating output
+                        else
+                            r1data <= std_logic_vector(resize(x_cur_reg, r1data'length)); -- updating output
+                        end if ;
                     end if;
             end case;
         end if;

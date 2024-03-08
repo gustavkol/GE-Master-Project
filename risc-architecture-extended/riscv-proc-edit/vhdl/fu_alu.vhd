@@ -16,7 +16,7 @@
 -- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 -- DEALINGS IN THE SOFTWARE.
 -- 
--- Generated on Sat Mar  2 06:40:56 2024
+-- Generated on Wed Mar  6 03:39:51 2024
 -- 
 -- Function Unit: ALU
 -- 
@@ -28,11 +28,13 @@
 --  ior            :  4
 --  lt             :  5
 --  ltu            :  6
---  shl            :  7
---  shr            :  8
---  shru           :  9
---  sub            : 10
---  xor            : 11
+--  mask_add       :  7
+--  shift_add      :  8
+--  shl            :  9
+--  shr            : 10
+--  shru           : 11
+--  sub            : 12
+--  xor            : 13
 -- 
 
 library ieee;
@@ -63,11 +65,15 @@ architecture rtl of fu_alu is
   constant op_ior_c : std_logic_vector(3 downto 0) := "0100";
   constant op_lt_c : std_logic_vector(3 downto 0) := "0101";
   constant op_ltu_c : std_logic_vector(3 downto 0) := "0110";
-  constant op_shl_c : std_logic_vector(3 downto 0) := "0111";
-  constant op_shr_c : std_logic_vector(3 downto 0) := "1000";
-  constant op_shru_c : std_logic_vector(3 downto 0) := "1001";
-  constant op_sub_c : std_logic_vector(3 downto 0) := "1010";
-  constant op_xor_c : std_logic_vector(3 downto 0) := "1011";
+  constant op_mask_add_c : std_logic_vector(3 downto 0) := "0111";
+  constant op_shift_add_c : std_logic_vector(3 downto 0) := "1000";
+  constant op_shl_c : std_logic_vector(3 downto 0) := "1001";
+  constant op_shr_c : std_logic_vector(3 downto 0) := "1010";
+  constant op_shru_c : std_logic_vector(3 downto 0) := "1011";
+  constant op_sub_c : std_logic_vector(3 downto 0) := "1100";
+  constant op_xor_c : std_logic_vector(3 downto 0) := "1101";
+  constant dag_shift_add_0_c : std_logic_vector(4 downto 0) := "01000";
+  constant dag_mask_add_0_c : std_logic_vector(5 downto 0) := "011000";
 
   signal add_op1 : std_logic_vector(31 downto 0);
   signal add_op2 : std_logic_vector(31 downto 0);
@@ -90,6 +96,27 @@ architecture rtl of fu_alu is
   signal ltu_op1 : std_logic_vector(31 downto 0);
   signal ltu_op2 : std_logic_vector(31 downto 0);
   signal ltu_op3 : std_logic;
+  signal mask_add_op1 : std_logic_vector(31 downto 0);
+  signal mask_add_op2 : std_logic_vector(31 downto 0);
+  signal mask_add_op3 : std_logic_vector(31 downto 0);
+  signal subop_shl_0_op1 : std_logic_vector(31 downto 0);
+  signal subop_shl_0_op2 : std_logic_vector(4 downto 0);
+  signal subop_shl_0_op3 : std_logic_vector(31 downto 0);
+  signal subop_shr_0_op1 : std_logic_vector(31 downto 0);
+  signal subop_shr_0_op2 : std_logic_vector(4 downto 0);
+  signal subop_shr_0_op3 : std_logic_vector(31 downto 0);
+  signal subop_add_0_op1 : std_logic_vector(31 downto 0);
+  signal subop_add_0_op2 : std_logic_vector(31 downto 0);
+  signal subop_add_0_op3 : std_logic_vector(31 downto 0);
+  signal shift_add_op1 : std_logic_vector(31 downto 0);
+  signal shift_add_op2 : std_logic_vector(31 downto 0);
+  signal shift_add_op3 : std_logic_vector(31 downto 0);
+  signal subop_shr_1_op1 : std_logic_vector(31 downto 0);
+  signal subop_shr_1_op2 : std_logic_vector(4 downto 0);
+  signal subop_shr_1_op3 : std_logic_vector(31 downto 0);
+  signal subop_add_1_op1 : std_logic_vector(31 downto 0);
+  signal subop_add_1_op2 : std_logic_vector(31 downto 0);
+  signal subop_add_1_op3 : std_logic_vector(31 downto 0);
   signal shl_op1 : std_logic_vector(31 downto 0);
   signal shl_op2 : std_logic_vector(4 downto 0);
   signal shl_op3 : std_logic_vector(31 downto 0);
@@ -155,7 +182,7 @@ begin
     end if;
   end process input_pipeline_sp;
 
-  operations_actual_cp : process(data_P2, add_op2, add_op1, and_op2, comp_term_init_op2, comp_term_init_op1, shl_op2, and_op1, shru_op2, shru_op1, ltu_op1, xor_op2, operation_in, data_P1, ior_op2, sub_op1, sub_op2, shl_op1, xor_op1, lt_op2, shr_op2, comp_term_iter_op2, lt_op1, ior_op1, load_P1_in, shr_op1, ltu_op2, comp_term_iter_op1)
+  operations_actual_cp : process(subop_shl_0_op3, subop_shr_1_op3, data_P2, data_P1, subop_shr_1_op2, subop_shr_0_op2, subop_shr_0_op1, subop_shl_0_op2, operation_in, subop_shr_1_op1, subop_shl_0_op1, ltu_op2, ltu_op1, shift_add_op1, subop_add_0_op2, shru_op1, mask_add_op2, shr_op2, shr_op1, comp_term_iter_op1, sub_op2, shl_op2, xor_op2, shl_op1, load_P1_in, shru_op2, shift_add_op2, xor_op1, lt_op2, and_op2, subop_add_1_op3, add_op1, subop_shr_0_op3, mask_add_op1, comp_term_init_op1, ior_op1, subop_add_1_op1, add_op2, ior_op2, subop_add_0_op1, subop_add_0_op3, comp_term_iter_op2, sub_op1, lt_op1, and_op1, comp_term_init_op2, subop_add_1_op2)
   begin
     xor_op3 <= (others => '-');
     xor_op1 <= data_P1;
@@ -163,36 +190,59 @@ begin
     sub_op3 <= (others => '-');
     sub_op1 <= data_P1;
     sub_op2 <= data_P2;
-    shr_op3 <= (others => '-');
-    shr_op1 <= data_P1;
-    shr_op2 <= data_P2(4 downto 0);
-    ltu_op3 <= '-';
-    ltu_op1 <= data_P1;
-    ltu_op2 <= data_P2;
-    lt_op3 <= '-';
-    lt_op1 <= data_P1;
-    lt_op2 <= data_P2;
-    ior_op3 <= (others => '-');
-    ior_op1 <= data_P1;
-    ior_op2 <= data_P2;
-    comp_term_iter_op3 <= (others => '-');
-    comp_term_iter_op1 <= data_P1(7 downto 0);
-    comp_term_iter_op2 <= data_P2(16 downto 0);
     shru_op3 <= (others => '-');
     shru_op1 <= data_P1;
     shru_op2 <= data_P2(4 downto 0);
+    shr_op3 <= (others => '-');
+    shr_op1 <= data_P1;
+    shr_op2 <= data_P2(4 downto 0);
     shl_op3 <= (others => '-');
     shl_op1 <= data_P1;
     shl_op2 <= data_P2(4 downto 0);
-    comp_term_init_op3 <= (others => '-');
-    comp_term_init_op1 <= data_P1(7 downto 0);
-    comp_term_init_op2 <= data_P2(16 downto 0);
+    shift_add_op3 <= (others => '-');
+    shift_add_op1 <= data_P1;
+    shift_add_op2 <= data_P2;
+    shift_add_op3 <= subop_add_1_op3;
     and_op3 <= (others => '-');
     and_op1 <= data_P1;
     and_op2 <= data_P2;
+    mask_add_op3 <= (others => '-');
+    mask_add_op1 <= data_P1;
+    mask_add_op2 <= data_P2;
+    mask_add_op3 <= subop_add_0_op3;
+    comp_term_init_op3 <= (others => '-');
+    comp_term_init_op1 <= data_P1(7 downto 0);
+    comp_term_init_op2 <= data_P2(16 downto 0);
+    ior_op3 <= (others => '-');
+    ior_op1 <= data_P1;
+    ior_op2 <= data_P2;
+    subop_add_0_op3 <= (others => '-');
+    subop_add_0_op1 <= subop_shr_0_op3;
+    subop_add_0_op2 <= mask_add_op2;
+    comp_term_iter_op3 <= (others => '-');
+    comp_term_iter_op1 <= data_P1(7 downto 0);
+    comp_term_iter_op2 <= data_P2(16 downto 0);
+    subop_add_1_op3 <= (others => '-');
+    subop_add_1_op1 <= subop_shr_1_op3;
+    subop_add_1_op2 <= shift_add_op2;
+    lt_op3 <= '-';
+    lt_op1 <= data_P1;
+    lt_op2 <= data_P2;
     add_op3 <= (others => '-');
     add_op1 <= data_P1;
     add_op2 <= data_P2;
+    ltu_op3 <= '-';
+    ltu_op1 <= data_P1;
+    ltu_op2 <= data_P2;
+    subop_shl_0_op3 <= (others => '-');
+    subop_shl_0_op1 <= mask_add_op1;
+    subop_shl_0_op2 <= dag_mask_add_0_c(4 downto 0);
+    subop_shr_0_op3 <= (others => '-');
+    subop_shr_0_op1 <= subop_shl_0_op3;
+    subop_shr_0_op2 <= dag_mask_add_0_c(4 downto 0);
+    subop_shr_1_op3 <= (others => '-');
+    subop_shr_1_op1 <= shift_add_op1;
+    subop_shr_1_op2 <= dag_shift_add_0_c;
     if (load_P1_in = '1') then
       case operation_in is
         when op_add_c =>
@@ -200,7 +250,7 @@ begin
         when op_and_c =>
           and_op3 <= and_op1 and and_op2;
         when op_comp_term_init_c =>
-          comp_term_init_op3 <= std_logic_vector(resize(signed(signed(comp_term_init_op1(7 downto 2)) * signed(comp_term_init_op2(16 downto 2))), comp_term_init_op3'length - 1)) & (0 downto 0 => '0');
+          comp_term_init_op3 <= std_logic_vector(resize(signed(shift_right(signed(signed(comp_term_init_op1) + signed(comp_term_init_op2(16 downto 2) & '1' & '0')),1)), comp_term_init_op3'length));
         when op_comp_term_iter_c =>
           comp_term_iter_op3 <= std_logic_vector(resize(signed(shift_right(signed(signed(comp_term_iter_op1) + signed(comp_term_iter_op2(16 downto 2) & '1' & '0')),1)), comp_term_iter_op3'length));
         when op_ior_c =>
@@ -217,6 +267,13 @@ begin
           else
             ltu_op3 <= '0';
           end if;
+        when op_mask_add_c =>
+          subop_shl_0_op3 <= std_logic_vector(shift_left(unsigned(subop_shl_0_op1), to_integer(unsigned(subop_shl_0_op2(4 downto 0)))));
+          subop_shr_0_op3 <= std_logic_vector(shift_right(signed(subop_shr_0_op1), to_integer(unsigned(subop_shr_0_op2(4 downto 0)))));
+          subop_add_0_op3 <= std_logic_vector(signed(subop_add_0_op1) + signed(subop_add_0_op2));
+        when op_shift_add_c =>
+          subop_shr_1_op3 <= std_logic_vector(shift_right(signed(subop_shr_1_op1), to_integer(unsigned(subop_shr_1_op2(4 downto 0)))));
+          subop_add_1_op3 <= std_logic_vector(signed(subop_add_1_op1) + signed(subop_add_1_op2));
         when op_shl_c =>
           shl_op3 <= std_logic_vector(shift_left(unsigned(shl_op1), to_integer(unsigned(shl_op2(4 downto 0)))));
         when op_shr_c =>
@@ -251,6 +308,10 @@ begin
           data_P3_1_r <= shr_op3;
         elsif ((operation_in = op_shl_c) and (load_P1_in = '1')) then
           data_P3_1_r <= shl_op3;
+        elsif ((operation_in = op_shift_add_c) and (load_P1_in = '1')) then
+          data_P3_1_r <= shift_add_op3;
+        elsif ((operation_in = op_mask_add_c) and (load_P1_in = '1')) then
+          data_P3_1_r <= mask_add_op3;
         elsif ((operation_in = op_ltu_c) and (load_P1_in = '1')) then
           data_P3_1_r <= ((32-1 downto 1 => '0') & ltu_op3);
         elsif ((operation_in = op_lt_c) and (load_P1_in = '1')) then

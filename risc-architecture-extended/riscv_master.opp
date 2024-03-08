@@ -8,7 +8,7 @@
     <outputs>1</outputs>
     <in element-count="1" element-width="8" id="1" type="UIntWord"/>
     <in element-count="1" element-width="22" id="2" type="UIntWord"/>
-    <out element-count="1" element-width="22" id="3" type="SIntWord"/>
+    <out element-count="1" element-width="32" id="3" type="SIntWord"/>
   </operation>
 
   <operation>
@@ -29,6 +29,49 @@
     <in element-count="1" element-width="8" id="1" type="SIntWord"/>
     <in element-count="1" element-width="17" id="2" type="UIntWord"/>
     <out element-count="1" element-width="32" id="3" type="SIntWord"/>
+  </operation>
+
+  <operation>
+    <name>COMPARE_AND_ITER</name>
+    <description/>
+    <inputs>2</inputs>
+    <outputs>1</outputs>
+    <in element-count="1" element-width="32" id="1" type="UIntWord"/>
+    <in element-count="1" element-width="32" id="2" type="SIntWord"/>
+    <out element-count="1" element-width="32" id="3" type="UIntWord"/>
+  </operation>
+
+  <operation>
+    <name>SHIFT_ADD</name>
+    <description/>
+    <inputs>2</inputs>
+    <outputs>1</outputs>
+    <in element-count="1" element-width="32" id="1" type="SIntWord"/>
+    <in element-count="1" element-width="32" id="2" type="SIntWord"/>
+    <out element-count="1" element-width="32" id="3" type="SIntWord"/>
+    <trigger-semantics>Var shifted;
+OP(shr, IO(1), 8, shifted);
+OP(add, shifted, IO(2), IO(3));
+
+
+
+</trigger-semantics>
+  </operation>
+
+  <operation>
+    <name>MASK_ADD</name>
+    <description/>
+    <inputs>2</inputs>
+    <outputs>1</outputs>
+    <in element-count="1" element-width="32" id="1" type="SIntWord"/>
+    <in element-count="1" element-width="32" id="2" type="SIntWord"/>
+    <out element-count="1" element-width="32" id="3" type="SIntWord"/>
+    <trigger-semantics>Var shifted1, shifted2;
+OP(shl, IO(1), 24, shifted1);
+OP(shr, shifted1, 24, shifted2);
+OP(add, shifted2, IO(2), IO(3));
+
+</trigger-semantics>
   </operation>
 
 </osal>

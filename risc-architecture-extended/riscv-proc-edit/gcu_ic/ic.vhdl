@@ -44,8 +44,12 @@ entity tta0_interconn is
     socket_MUL_DIV_o1_bus_cntrl : in std_logic_vector(2 downto 0);
     socket_S1_data : out std_logic_vector(7 downto 0);
     socket_S1_1_data : out std_logic_vector(21 downto 0);
-    socket_S1_2_data0 : in std_logic_vector(21 downto 0);
+    socket_S1_2_data0 : in std_logic_vector(31 downto 0);
     socket_S1_2_bus_cntrl : in std_logic_vector(2 downto 0);
+    socket_S2_data : out std_logic_vector(31 downto 0);
+    socket_S3_data : out std_logic_vector(31 downto 0);
+    socket_S3_1_data0 : in std_logic_vector(31 downto 0);
+    socket_S3_1_bus_cntrl : in std_logic_vector(2 downto 0);
     simm_B3 : in std_logic_vector(31 downto 0);
     simm_cntrl_B3 : in std_logic_vector(0 downto 0));
 
@@ -60,8 +64,9 @@ architecture comb_andor of tta0_interconn is
   signal databus_B0_alt3 : std_logic_vector(31 downto 0);
   signal databus_B0_alt4 : std_logic_vector(31 downto 0);
   signal databus_B0_alt5 : std_logic_vector(31 downto 0);
-  signal databus_B0_alt6 : std_logic_vector(21 downto 0);
-  signal databus_B0_alt7 : std_logic_vector(0 downto 0);
+  signal databus_B0_alt6 : std_logic_vector(31 downto 0);
+  signal databus_B0_alt7 : std_logic_vector(31 downto 0);
+  signal databus_B0_alt8 : std_logic_vector(0 downto 0);
   signal databus_B1 : std_logic_vector(31 downto 0);
   signal databus_B1_alt0 : std_logic_vector(31 downto 0);
   signal databus_B1_alt1 : std_logic_vector(31 downto 0);
@@ -69,16 +74,18 @@ architecture comb_andor of tta0_interconn is
   signal databus_B1_alt3 : std_logic_vector(31 downto 0);
   signal databus_B1_alt4 : std_logic_vector(31 downto 0);
   signal databus_B1_alt5 : std_logic_vector(31 downto 0);
-  signal databus_B1_alt6 : std_logic_vector(21 downto 0);
-  signal databus_B1_alt7 : std_logic_vector(0 downto 0);
+  signal databus_B1_alt6 : std_logic_vector(31 downto 0);
+  signal databus_B1_alt7 : std_logic_vector(31 downto 0);
+  signal databus_B1_alt8 : std_logic_vector(0 downto 0);
   signal databus_B2 : std_logic_vector(31 downto 0);
   signal databus_B2_alt0 : std_logic_vector(31 downto 0);
   signal databus_B2_alt1 : std_logic_vector(31 downto 0);
   signal databus_B2_alt2 : std_logic_vector(31 downto 0);
   signal databus_B2_alt3 : std_logic_vector(31 downto 0);
   signal databus_B2_alt4 : std_logic_vector(31 downto 0);
-  signal databus_B2_alt5 : std_logic_vector(21 downto 0);
-  signal databus_B2_alt6 : std_logic_vector(0 downto 0);
+  signal databus_B2_alt5 : std_logic_vector(31 downto 0);
+  signal databus_B2_alt6 : std_logic_vector(31 downto 0);
+  signal databus_B2_alt7 : std_logic_vector(0 downto 0);
   signal databus_B3 : std_logic_vector(31 downto 0);
   signal databus_B3_simm : std_logic_vector(31 downto 0);
 
@@ -330,16 +337,45 @@ begin -- comb_andor
 
   S1_2 : tta0_output_socket_cons_3_1
     generic map (
-      BUSW_0 => 22,
-      BUSW_1 => 22,
-      BUSW_2 => 22,
-      DATAW_0 => 22)
+      BUSW_0 => 32,
+      BUSW_1 => 32,
+      BUSW_2 => 32,
+      DATAW_0 => 32)
     port map (
       databus0_alt => databus_B0_alt6,
       databus1_alt => databus_B1_alt6,
       databus2_alt => databus_B2_alt5,
       data0 => socket_S1_2_data0,
       databus_cntrl => socket_S1_2_bus_cntrl);
+
+  S2 : tta0_input_mux_1
+    generic map (
+      BUSW_0 => 32,
+      DATAW => 32)
+    port map (
+      databus0 => databus_B1,
+      data => socket_S2_data);
+
+  S3 : tta0_input_mux_1
+    generic map (
+      BUSW_0 => 32,
+      DATAW => 32)
+    port map (
+      databus0 => databus_B0,
+      data => socket_S3_data);
+
+  S3_1 : tta0_output_socket_cons_3_1
+    generic map (
+      BUSW_0 => 32,
+      BUSW_1 => 32,
+      BUSW_2 => 32,
+      DATAW_0 => 32)
+    port map (
+      databus0_alt => databus_B0_alt7,
+      databus1_alt => databus_B1_alt7,
+      databus2_alt => databus_B2_alt6,
+      data0 => socket_S3_1_data0,
+      databus_cntrl => socket_S3_1_bus_cntrl);
 
   STDOUT_i1 : tta0_input_mux_1
     generic map (
@@ -364,9 +400,9 @@ begin -- comb_andor
       BUSW_2 => 1,
       DATAW_0 => 1)
     port map (
-      databus0_alt => databus_B1_alt7,
-      databus1_alt => databus_B0_alt7,
-      databus2_alt => databus_B2_alt6,
+      databus0_alt => databus_B1_alt8,
+      databus1_alt => databus_B0_alt8,
+      databus2_alt => databus_B2_alt7,
       data0 => socket_STDOUT_o1_data0,
       databus_cntrl => socket_STDOUT_o1_bus_cntrl);
 
@@ -379,9 +415,9 @@ begin -- comb_andor
       data0 => simm_B3,
       databus_cntrl => simm_cntrl_B3);
 
-  databus_B0 <= tce_ext(databus_B0_alt0, databus_B0'length) or tce_ext(databus_B0_alt1, databus_B0'length) or tce_ext(databus_B0_alt2, databus_B0'length) or tce_ext(databus_B0_alt3, databus_B0'length) or tce_ext(databus_B0_alt4, databus_B0'length) or tce_ext(databus_B0_alt5, databus_B0'length) or tce_ext(databus_B0_alt6, databus_B0'length) or tce_ext(databus_B0_alt7, databus_B0'length);
-  databus_B1 <= tce_ext(databus_B1_alt0, databus_B1'length) or tce_ext(databus_B1_alt1, databus_B1'length) or tce_ext(databus_B1_alt2, databus_B1'length) or tce_ext(databus_B1_alt3, databus_B1'length) or tce_ext(databus_B1_alt4, databus_B1'length) or tce_ext(databus_B1_alt5, databus_B1'length) or tce_ext(databus_B1_alt6, databus_B1'length) or tce_ext(databus_B1_alt7, databus_B1'length);
-  databus_B2 <= tce_ext(databus_B2_alt0, databus_B2'length) or tce_ext(databus_B2_alt1, databus_B2'length) or tce_ext(databus_B2_alt2, databus_B2'length) or tce_ext(databus_B2_alt3, databus_B2'length) or tce_ext(databus_B2_alt4, databus_B2'length) or tce_ext(databus_B2_alt5, databus_B2'length) or tce_ext(databus_B2_alt6, databus_B2'length);
+  databus_B0 <= tce_ext(databus_B0_alt0, databus_B0'length) or tce_ext(databus_B0_alt1, databus_B0'length) or tce_ext(databus_B0_alt2, databus_B0'length) or tce_ext(databus_B0_alt3, databus_B0'length) or tce_ext(databus_B0_alt4, databus_B0'length) or tce_ext(databus_B0_alt5, databus_B0'length) or tce_ext(databus_B0_alt6, databus_B0'length) or tce_ext(databus_B0_alt7, databus_B0'length) or tce_ext(databus_B0_alt8, databus_B0'length);
+  databus_B1 <= tce_ext(databus_B1_alt0, databus_B1'length) or tce_ext(databus_B1_alt1, databus_B1'length) or tce_ext(databus_B1_alt2, databus_B1'length) or tce_ext(databus_B1_alt3, databus_B1'length) or tce_ext(databus_B1_alt4, databus_B1'length) or tce_ext(databus_B1_alt5, databus_B1'length) or tce_ext(databus_B1_alt6, databus_B1'length) or tce_ext(databus_B1_alt7, databus_B1'length) or tce_ext(databus_B1_alt8, databus_B1'length);
+  databus_B2 <= tce_ext(databus_B2_alt0, databus_B2'length) or tce_ext(databus_B2_alt1, databus_B2'length) or tce_ext(databus_B2_alt2, databus_B2'length) or tce_ext(databus_B2_alt3, databus_B2'length) or tce_ext(databus_B2_alt4, databus_B2'length) or tce_ext(databus_B2_alt5, databus_B2'length) or tce_ext(databus_B2_alt6, databus_B2'length) or tce_ext(databus_B2_alt7, databus_B2'length);
   databus_B3 <= tce_sxt(databus_B3_simm, databus_B3'length);
 
 end comb_andor;

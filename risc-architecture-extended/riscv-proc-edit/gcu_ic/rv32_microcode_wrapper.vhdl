@@ -67,20 +67,20 @@ architecture rtl of rv32_microcode_wrapper is
   constant op_lat_width_c : integer := 5;
   constant rs1_bus_width_c : integer := 12;
   constant rs2_bus_width_c : integer := 9;
-  constant rd_bus_width_c : integer := 9;
+  constant rd_bus_width_c : integer := 10;
   constant simm_bus_width_c : integer := 7;
 
   constant rs1_bus_start_c : integer := 9;
   constant rs2_bus_start_c : integer := 0;
   constant rd_bus_start_c : integer := 21;
-  constant simm_bus_start_c : integer := 30;
+  constant simm_bus_start_c : integer := 31;
 
   constant rs1_RF_start_c : integer := 6;
   constant rs2_RF_start_c : integer := 3;
   constant rd_RF_start_c : integer := 0;
   constant RF_width_c : integer := 5;
 
-  constant rd_nop_c : std_logic_vector(rd_bus_width_c-1 downto 0) := "000100000";
+  constant rd_nop_c : std_logic_vector(rd_bus_width_c-1 downto 0) := "0000100000";
 
   signal opcode : std_logic_vector(6 downto 0);
 
@@ -492,7 +492,7 @@ architecture rtl of rv32_microcode_wrapper is
   process(rs1_move, rs2_move, rd_move_r, simm_move, bubble)
   begin
     --Assign to NOP by default so unused busses are idle
-    translated_instruction <= "1010000000100000100000100000100000000";
+    translated_instruction <= "10100000000100000100000100000100000000";
     translated_instruction(rd_bus_start_c+rd_bus_width_c-1 downto rd_bus_start_c) <= rd_move_r;
     if(bubble = '0') then
       translated_instruction(rs1_bus_start_c+rs1_bus_width_c-1 downto rs1_bus_start_c) <= rs1_move;
@@ -512,6 +512,8 @@ architecture rtl of rv32_microcode_wrapper is
     elsif fu_opcode(10-1 downto 0) =  "1010000011" then
        op_latency <= to_unsigned(1,op_lat_width_c);
     elsif fu_opcode(10-1 downto 0) =  "1000000011" then
+       op_latency <= to_unsigned(1,op_lat_width_c);
+    elsif fu_opcode(17-1 downto 0) =  "00000011010001011" then
        op_latency <= to_unsigned(1,op_lat_width_c);
     elsif fu_opcode(17-1 downto 0) =  "00000010100001011" then
        op_latency <= to_unsigned(11,op_lat_width_c);
