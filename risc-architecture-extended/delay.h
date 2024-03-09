@@ -21,12 +21,17 @@ void init_delay(unsigned char r_0, unsigned char angle, int *delay_array, int *i
 // Finds next delay based on previous delay for initial scanpoint k=0
 void increment_and_compare_init(int n_prev, int a_prev, signed int inc_term_prev, signed int error_prev, signed int inc_term, 
                                 int *n_next, int *a_next, signed int *inc_term_next, signed int *error_next);
+void compare_and_iter_frac(int n_prev, int *n_next, signed int a_prev, signed int *a_next, 
+                    signed int inc_term_prev, signed int *inc_term_next, signed int error_prev, signed int *error_next, signed int inc_term);
 
 // Finds delays for all elements in next scanpoint k+1
 void next_delay(int *delay_array, int *a_array, int *inc_term_prev_array, int *error_array, int *inc_term_array);
+void next_delay_frac(int *delay_array, int *a_array, int *inc_term_prev_array, int *error_array, int *inc_term_array);
 
 // Finds next delay for element n in scanpoint k>0
 void increment_and_compare_next(int *n_prev, signed int *a_prev, signed int *inc_term_prev, signed int *error_prev, signed int inc_term);
+void compare_and_iter_next(int *n_prev, signed int *a_prev, signed int *inc_term_prev, signed int *error_prev, signed int inc_term);
+void compare_and_iter_next_frac(int *n_prev, signed int *a_prev, signed int *inc_term_prev, signed int *error_prev, signed int inc_term);
 
 // Fits fraction of cordic module (6) with rest of application (4)
 signed int cordic_cosine(int x_scale, unsigned char angle);

@@ -38,6 +38,13 @@ architecture structural of tta0 is
   signal decomp_instructionword_wire : std_logic_vector(INSTRUCTIONWIDTH-1 downto 0);
   signal decomp_glock_wire : std_logic;
   signal decomp_lock_r_wire : std_logic;
+  signal fu_COMPARE_AND_ITER_t1data_wire : std_logic_vector(31 downto 0);
+  signal fu_COMPARE_AND_ITER_t1load_wire : std_logic;
+  signal fu_COMPARE_AND_ITER_t2data_wire : std_logic_vector(31 downto 0);
+  signal fu_COMPARE_AND_ITER_t2load_wire : std_logic;
+  signal fu_COMPARE_AND_ITER_r1data_wire : std_logic_vector(31 downto 0);
+  signal fu_COMPARE_AND_ITER_t1opcode_wire : std_logic_vector(0 downto 0);
+  signal fu_COMPARE_AND_ITER_glock_wire : std_logic;
   signal fu_CORDIC_t1data_wire : std_logic_vector(7 downto 0);
   signal fu_CORDIC_t1load_wire : std_logic;
   signal fu_CORDIC_t2data_wire : std_logic_vector(21 downto 0);
@@ -59,19 +66,13 @@ architecture structural of tta0 is
   signal fu_STDOUT_o1data_wire : std_logic_vector(0 downto 0);
   signal fu_STDOUT_glock_wire : std_logic;
   signal fu_alu_generated_glock_in_wire : std_logic;
-  signal fu_alu_generated_operation_in_wire : std_logic_vector(4-1 downto 0);
+  signal fu_alu_generated_operation_in_wire : std_logic_vector(5-1 downto 0);
   signal fu_alu_generated_glockreq_out_wire : std_logic;
   signal fu_alu_generated_data_P1_in_wire : std_logic_vector(32-1 downto 0);
   signal fu_alu_generated_load_P1_in_wire : std_logic;
   signal fu_alu_generated_data_P2_in_wire : std_logic_vector(32-1 downto 0);
   signal fu_alu_generated_load_P2_in_wire : std_logic;
   signal fu_alu_generated_data_P3_out_wire : std_logic_vector(32-1 downto 0);
-  signal fu_compare_and_iter_t1data_wire : std_logic_vector(31 downto 0);
-  signal fu_compare_and_iter_t1load_wire : std_logic;
-  signal fu_compare_and_iter_t2data_wire : std_logic_vector(31 downto 0);
-  signal fu_compare_and_iter_t2load_wire : std_logic;
-  signal fu_compare_and_iter_r1data_wire : std_logic_vector(31 downto 0);
-  signal fu_compare_and_iter_glock_wire : std_logic;
   signal fu_lsu_generated_glock_in_wire : std_logic;
   signal fu_lsu_generated_operation_in_wire : std_logic_vector(3-1 downto 0);
   signal fu_lsu_generated_glockreq_out_wire : std_logic;
@@ -145,7 +146,7 @@ architecture structural of tta0 is
   signal inst_decoder_socket_S3_1_bus_cntrl_wire : std_logic_vector(2 downto 0);
   signal inst_decoder_fu_ALU_P1_load_wire : std_logic;
   signal inst_decoder_fu_ALU_P2_load_wire : std_logic;
-  signal inst_decoder_fu_ALU_opc_wire : std_logic_vector(3 downto 0);
+  signal inst_decoder_fu_ALU_opc_wire : std_logic_vector(4 downto 0);
   signal inst_decoder_fu_LSU_in1t_load_wire : std_logic;
   signal inst_decoder_fu_LSU_in2_load_wire : std_logic;
   signal inst_decoder_fu_LSU_in3_load_wire : std_logic;
@@ -157,8 +158,9 @@ architecture structural of tta0 is
   signal inst_decoder_fu_MUL_DIV_opc_wire : std_logic_vector(2 downto 0);
   signal inst_decoder_fu_CORDIC_P1_load_wire : std_logic;
   signal inst_decoder_fu_CORDIC_P2_load_wire : std_logic;
-  signal inst_decoder_fu_compare_and_iter_P1_load_wire : std_logic;
-  signal inst_decoder_fu_compare_and_iter_P2_load_wire : std_logic;
+  signal inst_decoder_fu_COMPARE_AND_ITER_P1_load_wire : std_logic;
+  signal inst_decoder_fu_COMPARE_AND_ITER_P2_load_wire : std_logic;
+  signal inst_decoder_fu_COMPARE_AND_ITER_opc_wire : std_logic_vector(0 downto 0);
   signal inst_decoder_fu_CU_in_load_wire : std_logic;
   signal inst_decoder_fu_CU_in2_load_wire : std_logic;
   signal inst_decoder_rf_RF_t1_load_wire : std_logic;
@@ -275,7 +277,7 @@ architecture structural of tta0 is
       socket_S3_1_bus_cntrl : out std_logic_vector(3-1 downto 0);
       fu_ALU_P1_load : out std_logic;
       fu_ALU_P2_load : out std_logic;
-      fu_ALU_opc : out std_logic_vector(4-1 downto 0);
+      fu_ALU_opc : out std_logic_vector(5-1 downto 0);
       fu_LSU_in1t_load : out std_logic;
       fu_LSU_in2_load : out std_logic;
       fu_LSU_in3_load : out std_logic;
@@ -287,8 +289,9 @@ architecture structural of tta0 is
       fu_MUL_DIV_opc : out std_logic_vector(3-1 downto 0);
       fu_CORDIC_P1_load : out std_logic;
       fu_CORDIC_P2_load : out std_logic;
-      fu_compare_and_iter_P1_load : out std_logic;
-      fu_compare_and_iter_P2_load : out std_logic;
+      fu_COMPARE_AND_ITER_P1_load : out std_logic;
+      fu_COMPARE_AND_ITER_P2_load : out std_logic;
+      fu_COMPARE_AND_ITER_opc : out std_logic_vector(1-1 downto 0);
       fu_CU_in_load : out std_logic;
       fu_CU_in2_load : out std_logic;
       rf_RF_t1_load : out std_logic;
@@ -307,7 +310,7 @@ architecture structural of tta0 is
       clk : in std_logic;
       rstx : in std_logic;
       glock_in : in std_logic;
-      operation_in : in std_logic_vector(4-1 downto 0);
+      operation_in : in std_logic_vector(5-1 downto 0);
       glockreq_out : out std_logic;
       data_P1_in : in std_logic_vector(32-1 downto 0);
       load_P1_in : in std_logic;
@@ -390,6 +393,8 @@ architecture structural of tta0 is
 
   component compare_and_iter is
     generic (
+      DW_FRACTION : integer;
+      DW_A : integer;
       dataw : integer);
     port (
       t1data : in std_logic_vector(dataw-1 downto 0);
@@ -397,6 +402,7 @@ architecture structural of tta0 is
       t2data : in std_logic_vector(dataw-1 downto 0);
       t2load : in std_logic;
       r1data : out std_logic_vector(dataw-1 downto 0);
+      t1opcode : in std_logic_vector(1-1 downto 0);
       clk : in std_logic;
       rstx : in std_logic;
       glock : in std_logic);
@@ -536,8 +542,9 @@ begin
   fu_MUL_DIV_t1opcode_wire <= inst_decoder_fu_MUL_DIV_opc_wire;
   fu_CORDIC_t1load_wire <= inst_decoder_fu_CORDIC_P1_load_wire;
   fu_CORDIC_t2load_wire <= inst_decoder_fu_CORDIC_P2_load_wire;
-  fu_compare_and_iter_t1load_wire <= inst_decoder_fu_compare_and_iter_P1_load_wire;
-  fu_compare_and_iter_t2load_wire <= inst_decoder_fu_compare_and_iter_P2_load_wire;
+  fu_COMPARE_AND_ITER_t1load_wire <= inst_decoder_fu_COMPARE_AND_ITER_P1_load_wire;
+  fu_COMPARE_AND_ITER_t2load_wire <= inst_decoder_fu_COMPARE_AND_ITER_P2_load_wire;
+  fu_COMPARE_AND_ITER_t1opcode_wire <= inst_decoder_fu_COMPARE_AND_ITER_opc_wire;
   rf_RF_t1load_wire <= inst_decoder_rf_RF_t1_load_wire;
   rf_RF_t1opcode_wire <= inst_decoder_rf_RF_t1_opc_wire;
   rf_RF_r1load_wire <= inst_decoder_rf_RF_r1_load_wire;
@@ -552,7 +559,7 @@ begin
   fu_STDOUT_glock_wire <= inst_decoder_glock_wire(2);
   fu_MUL_DIV_glock_wire <= inst_decoder_glock_wire(3);
   fu_CORDIC_glock_wire <= inst_decoder_glock_wire(4);
-  fu_compare_and_iter_glock_wire <= inst_decoder_glock_wire(5);
+  fu_COMPARE_AND_ITER_glock_wire <= inst_decoder_glock_wire(5);
   rf_RF_glock_wire <= inst_decoder_glock_wire(6);
   ic_glock_wire <= inst_decoder_glock_wire(7);
   inst_decoder_simm_in_wire <= rv32_microcode_wrapper_i_simm_out_wire;
@@ -572,9 +579,9 @@ begin
   fu_CORDIC_t1data_wire <= ic_socket_S1_data_wire;
   fu_CORDIC_t2data_wire <= ic_socket_S1_1_data_wire;
   ic_socket_S1_2_data0_wire <= fu_CORDIC_r1data_wire;
-  fu_compare_and_iter_t1data_wire <= ic_socket_S2_data_wire;
-  fu_compare_and_iter_t2data_wire <= ic_socket_S3_data_wire;
-  ic_socket_S3_1_data0_wire <= fu_compare_and_iter_r1data_wire;
+  fu_COMPARE_AND_ITER_t1data_wire <= ic_socket_S2_data_wire;
+  fu_COMPARE_AND_ITER_t2data_wire <= ic_socket_S3_data_wire;
+  ic_socket_S3_1_data0_wire <= fu_COMPARE_AND_ITER_r1data_wire;
   ic_socket_RF_o1_data0_wire <= rf_RF_r1data_wire;
   ic_socket_RF_o2_data0_wire <= rf_RF_r2data_wire;
   rf_RF_t1data_wire <= ic_socket_RF_i1_data_wire;
@@ -657,8 +664,9 @@ begin
       fu_MUL_DIV_opc => inst_decoder_fu_MUL_DIV_opc_wire,
       fu_CORDIC_P1_load => inst_decoder_fu_CORDIC_P1_load_wire,
       fu_CORDIC_P2_load => inst_decoder_fu_CORDIC_P2_load_wire,
-      fu_compare_and_iter_P1_load => inst_decoder_fu_compare_and_iter_P1_load_wire,
-      fu_compare_and_iter_P2_load => inst_decoder_fu_compare_and_iter_P2_load_wire,
+      fu_COMPARE_AND_ITER_P1_load => inst_decoder_fu_COMPARE_AND_ITER_P1_load_wire,
+      fu_COMPARE_AND_ITER_P2_load => inst_decoder_fu_COMPARE_AND_ITER_P2_load_wire,
+      fu_COMPARE_AND_ITER_opc => inst_decoder_fu_COMPARE_AND_ITER_opc_wire,
       fu_CU_in_load => inst_decoder_fu_CU_in_load_wire,
       fu_CU_in2_load => inst_decoder_fu_CU_in2_load_wire,
       rf_RF_t1_load => inst_decoder_rf_RF_t1_load_wire,
@@ -752,18 +760,21 @@ begin
       rstx => rstx,
       glock => fu_CORDIC_glock_wire);
 
-  fu_compare_and_iter : compare_and_iter
+  fu_COMPARE_AND_ITER : compare_and_iter
     generic map (
+      DW_FRACTION => 4,
+      DW_A => 8,
       dataw => 32)
     port map (
-      t1data => fu_compare_and_iter_t1data_wire,
-      t1load => fu_compare_and_iter_t1load_wire,
-      t2data => fu_compare_and_iter_t2data_wire,
-      t2load => fu_compare_and_iter_t2load_wire,
-      r1data => fu_compare_and_iter_r1data_wire,
+      t1data => fu_COMPARE_AND_ITER_t1data_wire,
+      t1load => fu_COMPARE_AND_ITER_t1load_wire,
+      t2data => fu_COMPARE_AND_ITER_t2data_wire,
+      t2load => fu_COMPARE_AND_ITER_t2load_wire,
+      r1data => fu_COMPARE_AND_ITER_r1data_wire,
+      t1opcode => fu_COMPARE_AND_ITER_t1opcode_wire,
       clk => clk,
       rstx => rstx,
-      glock => fu_compare_and_iter_glock_wire);
+      glock => fu_COMPARE_AND_ITER_glock_wire);
 
   rf_RF : rf_1wr_2rd_always_1_zero_reg
     generic map (

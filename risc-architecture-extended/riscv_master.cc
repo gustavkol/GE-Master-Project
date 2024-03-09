@@ -72,3 +72,13 @@ TRIGGER
     IO(3) = 2*a_prev*n_prev + a_prev*a_prev;
 END_TRIGGER;
 END_OPERATION(COMP_TERM_INIT)
+
+
+OPERATION(COMPARE_AND_ITER_FRACTION)
+TRIGGER
+	int     a     	= INT(1);
+	int     b   	= INT(2);
+	
+    IO(3) = 0;
+END_TRIGGER;
+END_OPERATION(COMPARE_AND_ITER_FRACTION)

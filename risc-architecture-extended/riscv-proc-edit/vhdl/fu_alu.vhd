@@ -16,25 +16,28 @@
 -- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 -- DEALINGS IN THE SOFTWARE.
 -- 
--- Generated on Wed Mar  6 03:39:51 2024
+-- Generated on Sat Mar  9 18:10:49 2024
 -- 
 -- Function Unit: ALU
 -- 
 -- Operations:
---  add            :  0
---  and            :  1
---  comp_term_init :  2
---  comp_term_iter :  3
---  ior            :  4
---  lt             :  5
---  ltu            :  6
---  mask_add       :  7
---  shift_add      :  8
---  shl            :  9
---  shr            : 10
---  shru           : 11
---  sub            : 12
---  xor            : 13
+--  add                   :  0
+--  and                   :  1
+--  comp_term_iter        :  2
+--  compare_and_iter_frac :  3
+--  const_mult_bn         :  4
+--  const_mult_c0         :  5
+--  const_mult_n0         :  6
+--  ior                   :  7
+--  lt                    :  8
+--  ltu                   :  9
+--  mask_add              : 10
+--  shift_add             : 11
+--  shl                   : 12
+--  shr                   : 13
+--  shru                  : 14
+--  sub                   : 15
+--  xor                   : 16
 -- 
 
 library ieee;
@@ -48,7 +51,7 @@ entity fu_alu is
     rstx : in std_logic;
     glock_in : in std_logic;
     glockreq_out : out std_logic;
-    operation_in : in std_logic_vector(4-1 downto 0);
+    operation_in : in std_logic_vector(5-1 downto 0);
     data_P1_in : in std_logic_vector(32-1 downto 0);
     load_P1_in : in std_logic;
     data_P2_in : in std_logic_vector(32-1 downto 0);
@@ -58,20 +61,23 @@ end entity fu_alu;
 
 architecture rtl of fu_alu is
 
-  constant op_add_c : std_logic_vector(3 downto 0) := "0000";
-  constant op_and_c : std_logic_vector(3 downto 0) := "0001";
-  constant op_comp_term_init_c : std_logic_vector(3 downto 0) := "0010";
-  constant op_comp_term_iter_c : std_logic_vector(3 downto 0) := "0011";
-  constant op_ior_c : std_logic_vector(3 downto 0) := "0100";
-  constant op_lt_c : std_logic_vector(3 downto 0) := "0101";
-  constant op_ltu_c : std_logic_vector(3 downto 0) := "0110";
-  constant op_mask_add_c : std_logic_vector(3 downto 0) := "0111";
-  constant op_shift_add_c : std_logic_vector(3 downto 0) := "1000";
-  constant op_shl_c : std_logic_vector(3 downto 0) := "1001";
-  constant op_shr_c : std_logic_vector(3 downto 0) := "1010";
-  constant op_shru_c : std_logic_vector(3 downto 0) := "1011";
-  constant op_sub_c : std_logic_vector(3 downto 0) := "1100";
-  constant op_xor_c : std_logic_vector(3 downto 0) := "1101";
+  constant op_add_c : std_logic_vector(4 downto 0) := "00000";
+  constant op_and_c : std_logic_vector(4 downto 0) := "00001";
+  constant op_comp_term_iter_c : std_logic_vector(4 downto 0) := "00010";
+  constant op_compare_and_iter_frac_c : std_logic_vector(4 downto 0) := "00011";
+  constant op_const_mult_bn_c : std_logic_vector(4 downto 0) := "00100";
+  constant op_const_mult_c0_c : std_logic_vector(4 downto 0) := "00101";
+  constant op_const_mult_n0_c : std_logic_vector(4 downto 0) := "00110";
+  constant op_ior_c : std_logic_vector(4 downto 0) := "00111";
+  constant op_lt_c : std_logic_vector(4 downto 0) := "01000";
+  constant op_ltu_c : std_logic_vector(4 downto 0) := "01001";
+  constant op_mask_add_c : std_logic_vector(4 downto 0) := "01010";
+  constant op_shift_add_c : std_logic_vector(4 downto 0) := "01011";
+  constant op_shl_c : std_logic_vector(4 downto 0) := "01100";
+  constant op_shr_c : std_logic_vector(4 downto 0) := "01101";
+  constant op_shru_c : std_logic_vector(4 downto 0) := "01110";
+  constant op_sub_c : std_logic_vector(4 downto 0) := "01111";
+  constant op_xor_c : std_logic_vector(4 downto 0) := "10000";
   constant dag_shift_add_0_c : std_logic_vector(4 downto 0) := "01000";
   constant dag_mask_add_0_c : std_logic_vector(5 downto 0) := "011000";
 
@@ -81,12 +87,21 @@ architecture rtl of fu_alu is
   signal and_op1 : std_logic_vector(31 downto 0);
   signal and_op2 : std_logic_vector(31 downto 0);
   signal and_op3 : std_logic_vector(31 downto 0);
-  signal comp_term_init_op1 : std_logic_vector(7 downto 0);
-  signal comp_term_init_op2 : std_logic_vector(16 downto 0);
-  signal comp_term_init_op3 : std_logic_vector(31 downto 0);
   signal comp_term_iter_op1 : std_logic_vector(7 downto 0);
   signal comp_term_iter_op2 : std_logic_vector(16 downto 0);
   signal comp_term_iter_op3 : std_logic_vector(31 downto 0);
+  signal compare_and_iter_frac_op1 : std_logic_vector(31 downto 0);
+  signal compare_and_iter_frac_op2 : std_logic_vector(31 downto 0);
+  signal compare_and_iter_frac_op3 : std_logic_vector(31 downto 0);
+  signal const_mult_bn_op1 : std_logic_vector(31 downto 0);
+  signal const_mult_bn_op2 : std_logic_vector(31 downto 0);
+  signal const_mult_bn_op3 : std_logic_vector(31 downto 0);
+  signal const_mult_c0_op1 : std_logic_vector(31 downto 0);
+  signal const_mult_c0_op2 : std_logic_vector(31 downto 0);
+  signal const_mult_c0_op3 : std_logic_vector(31 downto 0);
+  signal const_mult_n0_op1 : std_logic_vector(31 downto 0);
+  signal const_mult_n0_op2 : std_logic_vector(31 downto 0);
+  signal const_mult_n0_op3 : std_logic_vector(31 downto 0);
   signal ior_op1 : std_logic_vector(31 downto 0);
   signal ior_op2 : std_logic_vector(31 downto 0);
   signal ior_op3 : std_logic_vector(31 downto 0);
@@ -137,7 +152,7 @@ architecture rtl of fu_alu is
   signal data_P3 : std_logic_vector(31 downto 0);
 
   signal shadow_P2_r : std_logic_vector(31 downto 0);
-  signal operation_1_r : std_logic_vector(3 downto 0);
+  signal operation_1_r : std_logic_vector(4 downto 0);
   signal optrig_1_r : std_logic;
   signal data_P3_1_r : std_logic_vector(31 downto 0);
   signal data_P3_1_valid_r : std_logic;
@@ -182,7 +197,7 @@ begin
     end if;
   end process input_pipeline_sp;
 
-  operations_actual_cp : process(subop_shl_0_op3, subop_shr_1_op3, data_P2, data_P1, subop_shr_1_op2, subop_shr_0_op2, subop_shr_0_op1, subop_shl_0_op2, operation_in, subop_shr_1_op1, subop_shl_0_op1, ltu_op2, ltu_op1, shift_add_op1, subop_add_0_op2, shru_op1, mask_add_op2, shr_op2, shr_op1, comp_term_iter_op1, sub_op2, shl_op2, xor_op2, shl_op1, load_P1_in, shru_op2, shift_add_op2, xor_op1, lt_op2, and_op2, subop_add_1_op3, add_op1, subop_shr_0_op3, mask_add_op1, comp_term_init_op1, ior_op1, subop_add_1_op1, add_op2, ior_op2, subop_add_0_op1, subop_add_0_op3, comp_term_iter_op2, sub_op1, lt_op1, and_op1, comp_term_init_op2, subop_add_1_op2)
+  operations_actual_cp : process(subop_shr_1_op3, data_P2, data_P1, subop_shr_0_op2, subop_shr_0_op1, ltu_op1, subop_shl_0_op2, subop_add_1_op3, add_op1, lt_op2, subop_add_0_op1, const_mult_c0_op2, const_mult_c0_op1, add_op2, ior_op2, subop_shr_0_op3, mask_add_op1, shru_op1, mask_add_op2, shr_op2, subop_add_0_op2, shift_add_op1, compare_and_iter_frac_op1, shr_op1, comp_term_iter_op1, sub_op2, lt_op1, sub_op1, xor_op2, shl_op1, load_P1_in, shift_add_op2, shru_op2, xor_op1, and_op2, const_mult_bn_op2, shl_op2, compare_and_iter_frac_op2, subop_add_1_op1, ior_op1, and_op1, subop_add_1_op2, subop_add_0_op3, comp_term_iter_op2, operation_in, ltu_op2, subop_shl_0_op1, subop_shr_1_op1, subop_shr_1_op2, const_mult_bn_op1, subop_shl_0_op3, const_mult_n0_op2, const_mult_n0_op1)
   begin
     xor_op3 <= (others => '-');
     xor_op1 <= data_P1;
@@ -203,56 +218,79 @@ begin
     shift_add_op1 <= data_P1;
     shift_add_op2 <= data_P2;
     shift_add_op3 <= subop_add_1_op3;
-    and_op3 <= (others => '-');
-    and_op1 <= data_P1;
-    and_op2 <= data_P2;
     mask_add_op3 <= (others => '-');
     mask_add_op1 <= data_P1;
     mask_add_op2 <= data_P2;
     mask_add_op3 <= subop_add_0_op3;
-    comp_term_init_op3 <= (others => '-');
-    comp_term_init_op1 <= data_P1(7 downto 0);
-    comp_term_init_op2 <= data_P2(16 downto 0);
-    ior_op3 <= (others => '-');
-    ior_op1 <= data_P1;
-    ior_op2 <= data_P2;
-    subop_add_0_op3 <= (others => '-');
-    subop_add_0_op1 <= subop_shr_0_op3;
-    subop_add_0_op2 <= mask_add_op2;
-    comp_term_iter_op3 <= (others => '-');
-    comp_term_iter_op1 <= data_P1(7 downto 0);
-    comp_term_iter_op2 <= data_P2(16 downto 0);
+    and_op3 <= (others => '-');
+    and_op1 <= data_P1;
+    and_op2 <= data_P2;
+    compare_and_iter_frac_op3 <= (others => '-');
+    compare_and_iter_frac_op1 <= data_P1;
+    compare_and_iter_frac_op2 <= data_P2;
     subop_add_1_op3 <= (others => '-');
     subop_add_1_op1 <= subop_shr_1_op3;
     subop_add_1_op2 <= shift_add_op2;
+    comp_term_iter_op3 <= (others => '-');
+    comp_term_iter_op1 <= data_P1(7 downto 0);
+    comp_term_iter_op2 <= data_P2(16 downto 0);
+    subop_shr_1_op3 <= (others => '-');
+    subop_shr_1_op1 <= shift_add_op1;
+    subop_shr_1_op2 <= dag_shift_add_0_c;
+    const_mult_bn_op3 <= (others => '-');
+    const_mult_bn_op1 <= data_P1;
+    const_mult_bn_op2 <= data_P2;
+    const_mult_n0_op3 <= (others => '-');
+    const_mult_n0_op1 <= data_P1;
+    const_mult_n0_op2 <= data_P2;
+    ior_op3 <= (others => '-');
+    ior_op1 <= data_P1;
+    ior_op2 <= data_P2;
+    const_mult_c0_op3 <= (others => '-');
+    const_mult_c0_op1 <= data_P1;
+    const_mult_c0_op2 <= data_P2;
+    subop_add_0_op3 <= (others => '-');
+    subop_add_0_op1 <= subop_shr_0_op3;
+    subop_add_0_op2 <= mask_add_op2;
     lt_op3 <= '-';
     lt_op1 <= data_P1;
     lt_op2 <= data_P2;
     add_op3 <= (others => '-');
     add_op1 <= data_P1;
     add_op2 <= data_P2;
-    ltu_op3 <= '-';
-    ltu_op1 <= data_P1;
-    ltu_op2 <= data_P2;
     subop_shl_0_op3 <= (others => '-');
     subop_shl_0_op1 <= mask_add_op1;
     subop_shl_0_op2 <= dag_mask_add_0_c(4 downto 0);
+    ltu_op3 <= '-';
+    ltu_op1 <= data_P1;
+    ltu_op2 <= data_P2;
     subop_shr_0_op3 <= (others => '-');
     subop_shr_0_op1 <= subop_shl_0_op3;
     subop_shr_0_op2 <= dag_mask_add_0_c(4 downto 0);
-    subop_shr_1_op3 <= (others => '-');
-    subop_shr_1_op1 <= shift_add_op1;
-    subop_shr_1_op2 <= dag_shift_add_0_c;
     if (load_P1_in = '1') then
       case operation_in is
         when op_add_c =>
           add_op3 <= std_logic_vector(signed(add_op1) + signed(add_op2));
         when op_and_c =>
           and_op3 <= and_op1 and and_op2;
-        when op_comp_term_init_c =>
-          comp_term_init_op3 <= std_logic_vector(resize(signed(shift_right(signed(signed(comp_term_init_op1) + signed(comp_term_init_op2(16 downto 2) & '1' & '0')),1)), comp_term_init_op3'length));
         when op_comp_term_iter_c =>
-          comp_term_iter_op3 <= std_logic_vector(resize(signed(shift_right(signed(signed(comp_term_iter_op1) + signed(comp_term_iter_op2(16 downto 2) & '1' & '0')),1)), comp_term_iter_op3'length));
+          -- (f_s/v_s) * 10^-3 = 16.234
+          comp_term_iter_op3      <= std_logic_vector(unsigned(shift_left(unsigned(comp_term_iter_op1),4+4)) + unsigned(shift_left(unsigned(comp_term_iter_op1),4-2)) - unsigned(shift_right(unsigned(comp_term_iter_op1),6-4)));
+        when op_compare_and_iter_frac_c =>
+          -- (2*p*(f_s/v_s)^2) * 10^-3 = 131.767 = 0b0100000111100
+          compare_and_iter_frac_op3      <= std_logic_vector(unsigned(shift_left(unsigned(compare_and_iter_frac_op1),7+4)) + unsigned(shift_left(unsigned(compare_and_iter_frac_op1),1+4)) + unsigned(shift_left(unsigned(compare_and_iter_frac_op1),0+4))
+                                      + unsigned(shift_left(unsigned(compare_and_iter_frac_op1),4-1)) + unsigned(shift_left(unsigned(compare_and_iter_frac_op1),4-2)));
+        when op_const_mult_bn_c =>
+          -- 2 * f_s / v_s = 32.468
+          const_mult_bn_op3      <= std_logic_vector(unsigned(shift_left(unsigned(const_mult_bn_op1),5+4)) + unsigned(shift_left(unsigned(const_mult_bn_op1),4-1)) 
+                                      - unsigned(shift_right(unsigned(const_mult_bn_op1),5-4)) - unsigned(shift_right(unsigned(const_mult_bn_op1),10-4))); 
+        when op_const_mult_c0_c =>
+          -- (2*p*(f_s/v_s)^2) * 10^-3 = 131.767 = 0b0100000111100
+          const_mult_c0_op3      <= std_logic_vector(unsigned(shift_left(unsigned(const_mult_c0_op1),7+4)) + unsigned(shift_left(unsigned(const_mult_c0_op1),1+4)) + unsigned(shift_left(unsigned(const_mult_c0_op1),0+4))
+                                      + unsigned(shift_left(unsigned(const_mult_c0_op1),4-1)) + unsigned(shift_left(unsigned(const_mult_c0_op1),4-2)));
+        when op_const_mult_n0_c =>
+          -- (f_s/v_s) * 10^-3 = 16.234
+          const_mult_n0_op3      <= std_logic_vector(unsigned(shift_left(unsigned(const_mult_n0_op1),4+4)) + unsigned(shift_left(unsigned(const_mult_n0_op1),4-2)) - unsigned(shift_right(unsigned(const_mult_n0_op1),6-4)));
         when op_ior_c =>
           ior_op3 <= ior_op1 or ior_op2;
         when op_lt_c =>
@@ -318,10 +356,16 @@ begin
           data_P3_1_r <= ((32-1 downto 1 => '0') & lt_op3);
         elsif ((operation_in = op_ior_c) and (load_P1_in = '1')) then
           data_P3_1_r <= ior_op3;
+        elsif ((operation_in = op_const_mult_n0_c) and (load_P1_in = '1')) then
+          data_P3_1_r <= const_mult_n0_op3;
+        elsif ((operation_in = op_const_mult_c0_c) and (load_P1_in = '1')) then
+          data_P3_1_r <= const_mult_c0_op3;
+        elsif ((operation_in = op_const_mult_bn_c) and (load_P1_in = '1')) then
+          data_P3_1_r <= const_mult_bn_op3;
+        elsif ((operation_in = op_compare_and_iter_frac_c) and (load_P1_in = '1')) then
+          data_P3_1_r <= compare_and_iter_frac_op3;
         elsif ((operation_in = op_comp_term_iter_c) and (load_P1_in = '1')) then
           data_P3_1_r <= comp_term_iter_op3;
-        elsif ((operation_in = op_comp_term_init_c) and (load_P1_in = '1')) then
-          data_P3_1_r <= comp_term_init_op3;
         elsif ((operation_in = op_and_c) and (load_P1_in = '1')) then
           data_P3_1_r <= and_op3;
         elsif ((operation_in = op_add_c) and (load_P1_in = '1')) then

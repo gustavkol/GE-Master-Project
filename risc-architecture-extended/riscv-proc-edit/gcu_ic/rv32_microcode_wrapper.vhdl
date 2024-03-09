@@ -492,7 +492,7 @@ architecture rtl of rv32_microcode_wrapper is
   process(rs1_move, rs2_move, rd_move_r, simm_move, bubble)
   begin
     --Assign to NOP by default so unused busses are idle
-    translated_instruction <= "10100000000100000100000100000100000000";
+    translated_instruction <= "10100000000100000100000110010100000000";
     translated_instruction(rd_bus_start_c+rd_bus_width_c-1 downto rd_bus_start_c) <= rd_move_r;
     if(bubble = '0') then
       translated_instruction(rs1_bus_start_c+rs1_bus_width_c-1 downto rs1_bus_start_c) <= rs1_move;
@@ -513,7 +513,7 @@ architecture rtl of rv32_microcode_wrapper is
        op_latency <= to_unsigned(1,op_lat_width_c);
     elsif fu_opcode(10-1 downto 0) =  "1000000011" then
        op_latency <= to_unsigned(1,op_lat_width_c);
-    elsif fu_opcode(17-1 downto 0) =  "00000011010001011" then
+    elsif fu_opcode(17-1 downto 0) =  "00000011000001011" then
        op_latency <= to_unsigned(1,op_lat_width_c);
     elsif fu_opcode(17-1 downto 0) =  "00000010100001011" then
        op_latency <= to_unsigned(11,op_lat_width_c);

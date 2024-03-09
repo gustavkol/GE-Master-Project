@@ -539,7 +539,47 @@
       </pipeline>
     </operation>
     <operation>
-      <name>comp_term_init</name>
+      <name>shift_add</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>mask_add</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>compare_and_iter_frac</name>
       <bind name="1">P1</bind>
       <bind name="2">P2</bind>
       <bind name="3">P3</bind>
@@ -579,7 +619,7 @@
       </pipeline>
     </operation>
     <operation>
-      <name>shift_add</name>
+      <name>const_mult_n0</name>
       <bind name="1">P1</bind>
       <bind name="2">P2</bind>
       <bind name="3">P3</bind>
@@ -599,7 +639,27 @@
       </pipeline>
     </operation>
     <operation>
-      <name>mask_add</name>
+      <name>const_mult_c0</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>const_mult_bn</name>
       <bind name="1">P1</bind>
       <bind name="2">P2</bind>
       <bind name="3">P3</bind>
@@ -1057,7 +1117,7 @@
     <address-space/>
   </function-unit>
 
-  <function-unit name="compare_and_iter">
+  <function-unit name="COMPARE_AND_ITER">
     <port name="P1">
       <connects-to>S2</connects-to>
       <width>32</width>
@@ -1088,6 +1148,26 @@
         </reads>
         <writes name="3">
           <start-cycle>1</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>compare_and_iter_f</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
           <cycles>1</cycles>
         </writes>
       </pipeline>
@@ -1256,11 +1336,15 @@
     <ota-operation>remu</ota-operation>
     <ota-operation>rem</ota-operation>
     <ota-operation>cordic</ota-operation>
-    <ota-operation>comp_term_init</ota-operation>
     <ota-operation>comp_term_iter</ota-operation>
     <ota-operation>compare_and_iter</ota-operation>
     <ota-operation>mask_add</ota-operation>
     <ota-operation>shift_add</ota-operation>
+    <ota-operation>compare_and_iter_f</ota-operation>
+    <ota-operation>compare_and_iter_frac</ota-operation>
+    <ota-operation>const_mult_bn</ota-operation>
+    <ota-operation>const_mult_c0</ota-operation>
+    <ota-operation>const_mult_n0</ota-operation>
   </ota-format>
 
   <ota-format name="riscv_i_type">

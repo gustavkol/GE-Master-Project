@@ -32,7 +32,7 @@ entity tta0_decoder is
     socket_S3_1_bus_cntrl : out std_logic_vector(2 downto 0);
     fu_ALU_P1_load : out std_logic;
     fu_ALU_P2_load : out std_logic;
-    fu_ALU_opc : out std_logic_vector(3 downto 0);
+    fu_ALU_opc : out std_logic_vector(4 downto 0);
     fu_LSU_in1t_load : out std_logic;
     fu_LSU_in2_load : out std_logic;
     fu_LSU_in3_load : out std_logic;
@@ -44,8 +44,9 @@ entity tta0_decoder is
     fu_MUL_DIV_opc : out std_logic_vector(2 downto 0);
     fu_CORDIC_P1_load : out std_logic;
     fu_CORDIC_P2_load : out std_logic;
-    fu_compare_and_iter_P1_load : out std_logic;
-    fu_compare_and_iter_P2_load : out std_logic;
+    fu_COMPARE_AND_ITER_P1_load : out std_logic;
+    fu_COMPARE_AND_ITER_P2_load : out std_logic;
+    fu_COMPARE_AND_ITER_opc : out std_logic_vector(0 downto 0);
     fu_CU_in_load : out std_logic;
     fu_CU_in2_load : out std_logic;
     rf_RF_t1_load : out std_logic;
@@ -103,7 +104,7 @@ architecture rtl_andor of tta0_decoder is
   -- FU control signals
   signal fu_ALU_P1_load_reg : std_logic;
   signal fu_ALU_P2_load_reg : std_logic;
-  signal fu_ALU_opc_reg : std_logic_vector(3 downto 0);
+  signal fu_ALU_opc_reg : std_logic_vector(4 downto 0);
   signal fu_LSU_in1t_load_reg : std_logic;
   signal fu_LSU_in2_load_reg : std_logic;
   signal fu_LSU_in3_load_reg : std_logic;
@@ -115,8 +116,9 @@ architecture rtl_andor of tta0_decoder is
   signal fu_MUL_DIV_opc_reg : std_logic_vector(2 downto 0);
   signal fu_CORDIC_P1_load_reg : std_logic;
   signal fu_CORDIC_P2_load_reg : std_logic;
-  signal fu_compare_and_iter_P1_load_reg : std_logic;
-  signal fu_compare_and_iter_P2_load_reg : std_logic;
+  signal fu_COMPARE_AND_ITER_P1_load_reg : std_logic;
+  signal fu_COMPARE_AND_ITER_P2_load_reg : std_logic;
+  signal fu_COMPARE_AND_ITER_opc_reg : std_logic_vector(0 downto 0);
   signal fu_CU_pc_load_reg : std_logic;
   signal fu_CU_in_load_reg : std_logic;
   signal fu_CU_in2_load_reg : std_logic;
@@ -177,8 +179,9 @@ begin
   fu_CORDIC_P1_load <= fu_CORDIC_P1_load_reg;
   fu_CORDIC_P2_load <= fu_CORDIC_P2_load_reg;
 
-  fu_compare_and_iter_P1_load <= fu_compare_and_iter_P1_load_reg;
-  fu_compare_and_iter_P2_load <= fu_compare_and_iter_P2_load_reg;
+  fu_COMPARE_AND_ITER_P1_load <= fu_COMPARE_AND_ITER_P1_load_reg;
+  fu_COMPARE_AND_ITER_P2_load <= fu_COMPARE_AND_ITER_P2_load_reg;
+  fu_COMPARE_AND_ITER_opc <= fu_COMPARE_AND_ITER_opc_reg;
 
   ra_load <= fu_CU_ra_load_reg;
   pc_load <= fu_CU_pc_load_reg;
@@ -238,6 +241,7 @@ begin
       fu_ALU_opc_reg <= (others => '0');
       fu_LSU_opc_reg <= (others => '0');
       fu_MUL_DIV_opc_reg <= (others => '0');
+      fu_COMPARE_AND_ITER_opc_reg <= (others => '0');
       fu_CU_opc_reg <= (others => '0');
       rf_RF_t1_opc_reg <= (others => '0');
       rf_RF_r1_opc_reg <= (others => '0');
@@ -254,8 +258,8 @@ begin
       fu_MUL_DIV_in2_load_reg <= '0';
       fu_CORDIC_P1_load_reg <= '0';
       fu_CORDIC_P2_load_reg <= '0';
-      fu_compare_and_iter_P1_load_reg <= '0';
-      fu_compare_and_iter_P2_load_reg <= '0';
+      fu_COMPARE_AND_ITER_P1_load_reg <= '0';
+      fu_COMPARE_AND_ITER_P2_load_reg <= '0';
       fu_CU_pc_load_reg <= '0';
       fu_CU_in_load_reg <= '0';
       fu_CU_in2_load_reg <= '0';
@@ -613,9 +617,9 @@ begin
         -- control signals for IU read ports
 
         -- control signals for FU inputs
-        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 4))) = 0) then
+        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 5))) = 0) then
           fu_ALU_P1_load_reg <= '1';
-          fu_ALU_opc_reg <= dst_B1(3 downto 0);
+          fu_ALU_opc_reg <= dst_B1(4 downto 0);
         else
           fu_ALU_P1_load_reg <= '0';
         end if;
@@ -628,7 +632,7 @@ begin
         else
           fu_ALU_P2_load_reg <= '0';
         end if;
-        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 3))) = 2) then
+        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 3))) = 4) then
           fu_LSU_in1t_load_reg <= '1';
           fu_LSU_opc_reg <= dst_B1(2 downto 0);
         else
@@ -644,7 +648,7 @@ begin
         else
           fu_LSU_in3_load_reg <= '0';
         end if;
-        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 2))) = 10) then
+        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 1))) = 27) then
           fu_STDOUT_P1_load_reg <= '1';
         else
           fu_STDOUT_P1_load_reg <= '0';
@@ -654,7 +658,7 @@ begin
         else
           fu_STDOUT_P2_load_reg <= '0';
         end if;
-        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 3))) = 3) then
+        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 3))) = 5) then
           fu_MUL_DIV_in1t_load_reg <= '1';
           fu_MUL_DIV_opc_reg <= dst_B1(2 downto 0);
         else
@@ -665,7 +669,7 @@ begin
         else
           fu_MUL_DIV_in2_load_reg <= '0';
         end if;
-        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 2))) = 11) then
+        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 1))) = 28) then
           fu_CORDIC_P1_load_reg <= '1';
         else
           fu_CORDIC_P1_load_reg <= '0';
@@ -675,15 +679,16 @@ begin
         else
           fu_CORDIC_P2_load_reg <= '0';
         end if;
-        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 2))) = 12) then
-          fu_compare_and_iter_P1_load_reg <= '1';
+        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 1))) = 24) then
+          fu_COMPARE_AND_ITER_P1_load_reg <= '1';
+          fu_COMPARE_AND_ITER_opc_reg <= dst_B1(0 downto 0);
         else
-          fu_compare_and_iter_P1_load_reg <= '0';
+          fu_COMPARE_AND_ITER_P1_load_reg <= '0';
         end if;
         if (squash_B0 = '0' and conv_integer(unsigned(dst_B0(2 downto 0))) = 7) then
-          fu_compare_and_iter_P2_load_reg <= '1';
+          fu_COMPARE_AND_ITER_P2_load_reg <= '1';
         else
-          fu_compare_and_iter_P2_load_reg <= '0';
+          fu_COMPARE_AND_ITER_P2_load_reg <= '0';
         end if;
         if (squash_B3 = '0' and conv_integer(unsigned(dst_B3(4 downto 4))) = 0) then
           fu_CU_pc_load_reg <= '1';
@@ -691,7 +696,7 @@ begin
         else
           fu_CU_pc_load_reg <= '0';
         end if;
-        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 2))) = 9) then
+        if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 1))) = 26) then
           fu_CU_in_load_reg <= '1';
         else
           fu_CU_in_load_reg <= '0';
@@ -737,7 +742,7 @@ begin
   glock(2) <= post_decode_merged_glock; -- to STDOUT
   glock(3) <= post_decode_merged_glock; -- to MUL_DIV
   glock(4) <= post_decode_merged_glock; -- to CORDIC
-  glock(5) <= post_decode_merged_glock; -- to compare_and_iter
+  glock(5) <= post_decode_merged_glock; -- to COMPARE_AND_ITER
   glock(6) <= post_decode_merged_glock; -- to RF
   glock(7) <= post_decode_merged_glock;
 

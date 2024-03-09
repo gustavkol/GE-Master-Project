@@ -12,16 +12,6 @@
   </operation>
 
   <operation>
-    <name>COMP_TERM_INIT</name>
-    <description/>
-    <inputs>2</inputs>
-    <outputs>1</outputs>
-    <in element-count="1" element-width="8" id="1" type="SIntWord"/>
-    <in element-count="1" element-width="17" id="2" type="UIntWord"/>
-    <out element-count="1" element-width="32" id="3" type="SIntWord"/>
-  </operation>
-
-  <operation>
     <name>COMP_TERM_ITER</name>
     <description/>
     <inputs>2</inputs>
@@ -71,7 +61,58 @@ OP(shl, IO(1), 24, shifted1);
 OP(shr, shifted1, 24, shifted2);
 OP(add, shifted2, IO(2), IO(3));
 
+
 </trigger-semantics>
+  </operation>
+
+  <operation>
+    <name>COMPARE_AND_ITER_FRAC</name>
+    <description/>
+    <inputs>2</inputs>
+    <outputs>1</outputs>
+    <in element-count="1" element-width="32" id="1" type="SIntWord"/>
+    <in element-count="1" element-width="32" id="2" type="SIntWord"/>
+    <out element-count="1" element-width="32" id="3" type="SIntWord"/>
+  </operation>
+
+  <operation>
+    <name>COMPARE_AND_ITER_F</name>
+    <description/>
+    <inputs>2</inputs>
+    <outputs>1</outputs>
+    <in element-count="1" element-width="32" id="1" type="SIntWord"/>
+    <in element-count="1" element-width="32" id="2" type="SIntWord"/>
+    <out element-count="1" element-width="32" id="3" type="SIntWord"/>
+  </operation>
+
+  <operation>
+    <name>CONST_MULT_C0</name>
+    <description/>
+    <inputs>2</inputs>
+    <outputs>1</outputs>
+    <in element-count="1" element-width="32" id="1" type="SIntWord"/>
+    <in element-count="1" element-width="32" id="2" type="SIntWord"/>
+    <out element-count="1" element-width="32" id="3" type="SIntWord"/>
+  </operation>
+
+  <operation>
+    <name>CONST_MULT_N0</name>
+    <description/>
+    <inputs>2</inputs>
+    <outputs>1</outputs>
+    <in element-count="1" element-width="32" id="1" type="SIntWord"/>
+    <in element-count="1" element-width="32" id="2" type="SIntWord"/>
+    <out element-count="1" element-width="32" id="3" type="SIntWord"/>
+  </operation>
+
+  <operation>
+    <name>CONST_MULT_BN</name>
+    <description/>
+    <inputs>2</inputs>
+    <outputs>1</outputs>
+    <in element-count="1" element-width="32" id="1" type="SIntWord"/>
+    <in element-count="1" element-width="32" id="2" type="SIntWord"/>
+    <out element-count="1" element-width="32" id="3" type="SIntWord"/>
   </operation>
 
 </osal>
