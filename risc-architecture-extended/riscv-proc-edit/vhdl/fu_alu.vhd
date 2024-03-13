@@ -16,7 +16,7 @@
 -- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 -- DEALINGS IN THE SOFTWARE.
 -- 
--- Generated on Sat Mar  9 18:10:49 2024
+-- Generated on Tue Mar 12 12:44:43 2024
 -- 
 -- Function Unit: ALU
 -- 
@@ -275,7 +275,7 @@ begin
           and_op3 <= and_op1 and and_op2;
         when op_comp_term_iter_c =>
           -- (f_s/v_s) * 10^-3 = 16.234
-          comp_term_iter_op3      <= std_logic_vector(unsigned(shift_left(unsigned(comp_term_iter_op1),4+4)) + unsigned(shift_left(unsigned(comp_term_iter_op1),4-2)) - unsigned(shift_right(unsigned(comp_term_iter_op1),6-4)));
+          comp_term_iter_op3      <= std_logic_vector(resize(signed(shift_right(signed(signed(comp_term_iter_op1) + signed(comp_term_iter_op2(16 downto 2) & '1' & '0')),1)), comp_term_iter_op3'length));
         when op_compare_and_iter_frac_c =>
           -- (2*p*(f_s/v_s)^2) * 10^-3 = 131.767 = 0b0100000111100
           compare_and_iter_frac_op3      <= std_logic_vector(unsigned(shift_left(unsigned(compare_and_iter_frac_op1),7+4)) + unsigned(shift_left(unsigned(compare_and_iter_frac_op1),1+4)) + unsigned(shift_left(unsigned(compare_and_iter_frac_op1),0+4))

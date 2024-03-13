@@ -287,9 +287,9 @@ begin -- comb_andor
       BUSW_2 => 32,
       DATAW_0 => 32)
     port map (
-      databus0_alt => databus_B0_alt4,
+      databus0_alt => databus_B2_alt4,
       databus1_alt => databus_B1_alt4,
-      databus2_alt => databus_B2_alt4,
+      databus2_alt => databus_B0_alt4,
       data0 => socket_MUL_DIV_o1_data0,
       databus_cntrl => socket_MUL_DIV_o1_bus_cntrl);
 
@@ -371,9 +371,9 @@ begin -- comb_andor
       BUSW_2 => 32,
       DATAW_0 => 32)
     port map (
-      databus0_alt => databus_B0_alt7,
+      databus0_alt => databus_B2_alt6,
       databus1_alt => databus_B1_alt7,
-      databus2_alt => databus_B2_alt6,
+      databus2_alt => databus_B0_alt7,
       data0 => socket_S3_1_data0,
       databus_cntrl => socket_S3_1_bus_cntrl);
 

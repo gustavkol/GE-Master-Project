@@ -1,97 +1,97 @@
 v 4
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "tb/synch_sram.vhdl" "d292b84feafe5aee037d5dbc236ca11444512d15" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "tb/synch_sram.vhdl" "d292b84feafe5aee037d5dbc236ca11444512d15" "20240312124247.963":
   entity synch_sram at 50( 2366) + 0 on 27;
   architecture rtl of synch_sram at 80( 3366) + 0 on 28;
   architecture simulation of synch_sram at 117( 4365) + 0 on 29;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "tb/proc.vhdl" "5c74d2c93bca7377e477d4507fb2eccf68133d0c" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "tb/proc.vhdl" "5c74d2c93bca7377e477d4507fb2eccf68133d0c" "20240312124247.963":
   entity proc at 1( 0) + 0 on 23;
   architecture structural of proc at 18( 312) + 0 on 24;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "tb/proc_params_pkg.vhdl" "6e9179bbdea8b25adc522ea6350d3b6cd356ad7f" "20240309171141.398":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "tb/proc_params_pkg.vhdl" "6e9179bbdea8b25adc522ea6350d3b6cd356ad7f" "20240312124247.835":
   package proc_params at 1( 0) + 0 on 4;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/rv32_microcode.vhdl" "23127fb47288e7f87024916141c04fc03d6d8c7f" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/rv32_microcode.vhdl" "23127fb47288e7f87024916141c04fc03d6d8c7f" "20240312124247.963":
   entity rv32_microcode at 23( 1154) + 0 on 73;
   architecture rtl of rv32_microcode at 43( 1657) + 0 on 74;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/output_socket_1_1.vhdl" "fe3a89a0731c3570190ee64198addaff00deabf3" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/output_socket_1_1.vhdl" "fe3a89a0731c3570190ee64198addaff00deabf3" "20240312124247.963":
   entity tta0_output_socket_cons_1_1 at 1( 0) + 0 on 71;
   architecture output_socket_andor of tta0_output_socket_cons_1_1 at 17( 416) + 0 on 72;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/input_mux_1.vhdl" "23dd149bed6e607943bb777b9ba6f2d29cf29627" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/input_mux_1.vhdl" "23dd149bed6e607943bb777b9ba6f2d29cf29627" "20240312124247.963":
   entity tta0_input_mux_1 at 1( 0) + 0 on 65;
   architecture rtl of tta0_input_mux_1 at 17( 333) + 0 on 66;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/idecompressor.vhdl" "20f28275802e588796faef2e1f7b6e01a0725f55" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/idecompressor.vhdl" "20f28275802e588796faef2e1f7b6e01a0725f55" "20240312124247.963":
   entity tta0_decompressor at 22( 1190) + 0 on 36;
   architecture structural of tta0_decompressor at 42( 1753) + 0 on 37;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/decoder.vhdl" "44c44117ba0aaac368dd3d018cec728bb0c07986" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/decoder.vhdl" "34977113ee93790875cd8f39f0d2f7a9dc30c62b" "20240312124247.963":
   entity tta0_decoder at 1( 0) + 0 on 38;
   architecture rtl_andor of tta0_decoder at 64( 2553) + 0 on 39;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/tta0.vhdl" "9d0712da046ddf54b2fb0b0a9198fa6a2ccb98da" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/tta0.vhdl" "9d0712da046ddf54b2fb0b0a9198fa6a2ccb98da" "20240312124247.963":
   entity tta0 at 1( 0) + 0 on 25;
   architecture structural of tta0 at 33( 1025) + 0 on 26;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/fu_lsu.vhd" "aab86832f07690b63173ec0d2ea465bbc23ec1a5" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/fu_lsu.vhd" "fb8890ee8193d6774be94186642dd20d7f2be4ca" "20240312124247.963":
   entity fu_lsu at 34( 1356) + 0 on 42;
   architecture rtl of fu_lsu at 64( 2456) + 0 on 43;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/rf_1wr_2rd_always_1_zero_reg.vhd" "8b08bc8936bc0b1fbe4e871951f6fe4a361bee59" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/rf_1wr_2rd_always_1_zero_reg.vhd" "8b08bc8936bc0b1fbe4e871951f6fe4a361bee59" "20240312124247.963":
   entity rf_1wr_2rd_always_1_zero_reg at 25( 1297) + 0 on 57;
   architecture rtl of rf_1wr_2rd_always_1_zero_reg at 57( 2288) + 0 on 58;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/compare_and_iter_ext.vhdl" "6a1d8d1ceffd5587d9838346c4389b753d19daea" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/compare_and_iter_ext.vhdl" "6a1d8d1ceffd5587d9838346c4389b753d19daea" "20240312124247.963":
   package compare_and_iter_opcodes at 1( 0) + 0 on 50;
   entity compare_and_iter at 11( 283) + 0 on 51;
   architecture rtl of compare_and_iter at 37( 1152) + 0 on 52;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/div_divu_mul_mulhi_mulhisu_mulhiu_rem_remu.vhdl" "d17563acd85a67573c2ea54fc1d93a9c55fea5b5" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/div_divu_mul_mulhi_mulhisu_mulhiu_rem_remu.vhdl" "d17563acd85a67573c2ea54fc1d93a9c55fea5b5" "20240312124247.963":
   entity div_divu_mul_mulhi_mulhisu_mulhiu_rem_remu at 39( 3738) + 0 on 46;
   architecture div_divu_mul_mulhi_mulhisu_mulhiu_rem_remu_rtl of div_divu_mul_mulhi_mulhisu_mulhiu_rem_remu at 66( 4736) + 0 on 47;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/tta0_params_pkg.vhdl" "823848284d494e4f0621b3a7cf2ef72f31c4f7f7" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/tta0_params_pkg.vhdl" "823848284d494e4f0621b3a7cf2ef72f31c4f7f7" "20240312124247.963":
   package tta0_params at 1( 0) + 0 on 22;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/tta0_imem_mau_pkg.vhdl" "f05e81df3b2603c854705508838fec18f9a861a4" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/tta0_imem_mau_pkg.vhdl" "f05e81df3b2603c854705508838fec18f9a861a4" "20240312124247.963":
   package tta0_imem_mau at 1( 0) + 0 on 11;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/tce_util_pkg.vhdl" "260b3291801a09d7cf42adfbfda9504474c5ca1c" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/tce_util_pkg.vhdl" "260b3291801a09d7cf42adfbfda9504474c5ca1c" "20240312124247.963":
   package tce_util at 23( 1188) + 0 on 18 body;
   package body tce_util at 69( 2253) + 0 on 19;
   entity tce_util_inverter at 265( 7892) + 0 on 20;
   architecture rtl of tce_util_inverter at 274( 8058) + 0 on 21;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/tta0_globals_pkg.vhdl" "82fdf10200f54961094468fc0509e8a42053f3c2" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/tta0_globals_pkg.vhdl" "82fdf10200f54961094468fc0509e8a42053f3c2" "20240312124247.963":
   package tta0_globals at 1( 0) + 0 on 12;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/stdout_riscv.vhdl" "0dcd7756f5aaecdd54365e4779bdc6b701949413" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/stdout_riscv.vhdl" "0dcd7756f5aaecdd54365e4779bdc6b701949413" "20240312124247.963":
   entity printchar_always_1 at 1( 0) + 0 on 44;
   architecture sim of printchar_always_1 at 20( 455) + 0 on 45;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/cordic.vhdl" "1c2f921232ca486aa978fa08cad92e09afb736af" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/cordic.vhdl" "1c2f921232ca486aa978fa08cad92e09afb736af" "20240312124247.963":
   entity cordic at 1( 0) + 0 on 48;
   architecture rtl of cordic at 27( 768) + 0 on 49;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/util_pkg.vhdl" "941bb9bfdb7427218465c6b7c6e3f3937009b188" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/util_pkg.vhdl" "941bb9bfdb7427218465c6b7c6e3f3937009b188" "20240312124247.963":
   package util at 25( 1193) + 0 on 53 body;
   package body util at 46( 1615) + 0 on 54;
   entity util_inverter at 157( 4775) + 0 on 55;
   architecture rtl of util_inverter at 166( 4935) + 0 on 56;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/lsu_registers.vhdl" "57da58ca2cbf11b6c0a2e3a6d03541e298c27057" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/lsu_registers.vhdl" "57da58ca2cbf11b6c0a2e3a6d03541e298c27057" "20240312124247.963":
   entity lsu_registers at 39( 1856) + 0 on 63;
   architecture rtl of lsu_registers at 79( 3088) + 0 on 64;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/fu_alu.vhd" "e79b3c8cc77f4d80c91491ea1b2bed137300df99" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "vhdl/fu_alu.vhd" "a8c86f90b3be42bc3a884888901c926dc9638905" "20240312124247.963":
   entity fu_alu at 43( 1763) + 0 on 40;
   architecture rtl of fu_alu at 62( 2298) + 0 on 41;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/gcu_opcodes_pkg.vhdl" "c252f26aa771e91071067a1d5aea34b81d5b63fd" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/gcu_opcodes_pkg.vhdl" "c252f26aa771e91071067a1d5aea34b81d5b63fd" "20240312124247.963":
   package tta0_gcu_opcodes at 1( 0) + 0 on 33;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/rv32_microcode_wrapper.vhdl" "bce4cca9b618a0cd4a6f431e1d3a8226bf90e0ad" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/rv32_microcode_wrapper.vhdl" "bce4cca9b618a0cd4a6f431e1d3a8226bf90e0ad" "20240312124247.963":
   entity rv32_microcode_wrapper at 26( 1250) + 0 on 61;
   architecture rtl of rv32_microcode_wrapper at 51( 1954) + 0 on 62;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/ifetch.vhdl" "c4694ae8720635bd3a4c95ceab461e26079b46d9" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/ifetch.vhdl" "c4694ae8720635bd3a4c95ceab461e26079b46d9" "20240312124247.963":
   entity tta0_ifetch at 23( 1191) + 0 on 34;
   architecture rtl_andor of tta0_ifetch at 77( 2946) + 0 on 35;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/input_mux_2.vhdl" "7bcb684c71ed1d1247c2dee59423ebfa05ce947c" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/input_mux_2.vhdl" "7bcb684c71ed1d1247c2dee59423ebfa05ce947c" "20240312124247.963":
   entity tta0_input_mux_2 at 1( 0) + 0 on 67;
   architecture rtl of tta0_input_mux_2 at 20( 469) + 0 on 68;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/output_socket_3_1.vhdl" "8505ae98a947fd0c8d6aef505860618e2e47d6a5" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/output_socket_3_1.vhdl" "8505ae98a947fd0c8d6aef505860618e2e47d6a5" "20240312124247.963":
   entity tta0_output_socket_cons_3_1 at 1( 0) + 0 on 69;
   architecture output_socket_andor of tta0_output_socket_cons_3_1 at 21( 592) + 0 on 70;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/ic.vhdl" "ee06ba934b14f3a6621a6883a1a2ab94af79663f" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "gcu_ic/ic.vhdl" "f3f88b376a935249625f7ea941717663856c95b9" "20240312124247.963":
   entity tta0_interconn at 1( 0) + 0 on 59;
   architecture comb_andor of tta0_interconn at 58( 2801) + 0 on 60;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "tb/clkgen.vhdl" "b9665cda662047e2164755523a9d66304ded0df0" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "tb/clkgen.vhdl" "b9665cda662047e2164755523a9d66304ded0df0" "20240312124247.963":
   entity clkgen at 42( 2033) + 0 on 15;
   architecture simulation of clkgen at 52( 2291) + 0 on 16;
   configuration clkgen_cfg at 67( 2564) + 0 on 17;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "tb/synch_byte_mask_sram.vhdl" "8f240803c707471cac061e81466250f451bf83ae" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "tb/synch_byte_mask_sram.vhdl" "8f240803c707471cac061e81466250f451bf83ae" "20240312124247.963":
   entity synch_byte_mask_sram at 44( 2136) + 0 on 30;
   architecture rtl of synch_byte_mask_sram at 75( 3265) + 0 on 31;
   architecture simulation of synch_byte_mask_sram at 130( 4673) + 0 on 32;
-file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "tb/testbench.vhdl" "1717df74e445070e7d9a3084e99a65289bb3247f" "20240309171141.526":
+file "/home/gustavko/openasip-devel/openasip/master-project/risc-architecture-extended/riscv-proc-edit/" "tb/testbench.vhdl" "1717df74e445070e7d9a3084e99a65289bb3247f" "20240312124247.963":
   entity testbench at 43( 2083) + 0 on 13;
   architecture behavior of testbench at 53( 2268) + 0 on 14;

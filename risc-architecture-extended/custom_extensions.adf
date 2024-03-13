@@ -252,7 +252,7 @@
 
   <socket name="MUL_DIV_o1">
     <writes-to>
-      <bus>B0</bus>
+      <bus>B2</bus>
       <segment>seg1</segment>
     </writes-to>
     <writes-to>
@@ -260,7 +260,7 @@
       <segment>seg1</segment>
     </writes-to>
     <writes-to>
-      <bus>B2</bus>
+      <bus>B0</bus>
       <segment>seg1</segment>
     </writes-to>
   </socket>
@@ -310,7 +310,7 @@
 
   <socket name="S3_1">
     <writes-to>
-      <bus>B0</bus>
+      <bus>B2</bus>
       <segment>seg1</segment>
     </writes-to>
     <writes-to>
@@ -318,7 +318,7 @@
       <segment>seg1</segment>
     </writes-to>
     <writes-to>
-      <bus>B2</bus>
+      <bus>B0</bus>
       <segment>seg1</segment>
     </writes-to>
   </socket>

@@ -14,6 +14,7 @@ int main(void)
     int inc_term_array[NUM_HALF_TRANSDUCERS+1];
 
     init_delay(r_0, angle, delay_array, inc_term_array);
+    //init_delay_base(r_0, angle, delay_array, inc_term_array);
 
     int a_array[NUM_HALF_TRANSDUCERS+1]             = {0};
     int inc_term_prev_array[NUM_HALF_TRANSDUCERS+1] = {0};
@@ -22,11 +23,12 @@ int main(void)
 
     //next_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
     //next_delay_frac(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+
+    //next_delay_base(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
     
     //next_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
     // next_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
     // next_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
-    
 
     #ifdef _DEBUG
         for (int i = 0; i < NUM_HALF_TRANSDUCERS; ++i) {

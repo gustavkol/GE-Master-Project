@@ -505,9 +505,9 @@ begin
           simm_cntrl_B3_reg(0) <= '0';
         end if;
         if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 1))) = 22) then
-          socket_MUL_DIV_o1_bus_cntrl_reg(0) <= '1';
+          socket_MUL_DIV_o1_bus_cntrl_reg(2) <= '1';
         else
-          socket_MUL_DIV_o1_bus_cntrl_reg(0) <= '0';
+          socket_MUL_DIV_o1_bus_cntrl_reg(2) <= '0';
         end if;
         if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 1))) = 22) then
           socket_MUL_DIV_o1_bus_cntrl_reg(1) <= '1';
@@ -515,9 +515,9 @@ begin
           socket_MUL_DIV_o1_bus_cntrl_reg(1) <= '0';
         end if;
         if (squash_B2 = '0' and conv_integer(unsigned(src_B2(3 downto 0))) = 6) then
-          socket_MUL_DIV_o1_bus_cntrl_reg(2) <= '1';
+          socket_MUL_DIV_o1_bus_cntrl_reg(0) <= '1';
         else
-          socket_MUL_DIV_o1_bus_cntrl_reg(2) <= '0';
+          socket_MUL_DIV_o1_bus_cntrl_reg(0) <= '0';
         end if;
         -- bus control signals for short immediate sockets
         if (squash_B3 = '0' and conv_integer(unsigned(src_B3(1 downto 1))) = 0) then
@@ -577,9 +577,9 @@ begin
           simm_cntrl_B3_reg(0) <= '0';
         end if;
         if (squash_B0 = '0' and conv_integer(unsigned(src_B0(5 downto 1))) = 24) then
-          socket_S3_1_bus_cntrl_reg(0) <= '1';
+          socket_S3_1_bus_cntrl_reg(2) <= '1';
         else
-          socket_S3_1_bus_cntrl_reg(0) <= '0';
+          socket_S3_1_bus_cntrl_reg(2) <= '0';
         end if;
         if (squash_B1 = '0' and conv_integer(unsigned(src_B1(5 downto 1))) = 24) then
           socket_S3_1_bus_cntrl_reg(1) <= '1';
@@ -587,9 +587,9 @@ begin
           socket_S3_1_bus_cntrl_reg(1) <= '0';
         end if;
         if (squash_B2 = '0' and conv_integer(unsigned(src_B2(3 downto 0))) = 8) then
-          socket_S3_1_bus_cntrl_reg(2) <= '1';
+          socket_S3_1_bus_cntrl_reg(0) <= '1';
         else
-          socket_S3_1_bus_cntrl_reg(2) <= '0';
+          socket_S3_1_bus_cntrl_reg(0) <= '0';
         end if;
         -- bus control signals for short immediate sockets
         if (squash_B3 = '0' and conv_integer(unsigned(src_B3(1 downto 1))) = 0) then
