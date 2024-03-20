@@ -12,7 +12,7 @@
   </operation>
 
   <operation>
-    <name>COMPARE_AND_ITER</name>
+    <name>COMPARE_AND_ITER_INT</name>
     <description/>
     <inputs>2</inputs>
     <outputs>1</outputs>
@@ -73,6 +73,16 @@
 
   <operation>
     <name>CONST_MULT_BN</name>
+    <description/>
+    <inputs>2</inputs>
+    <outputs>1</outputs>
+    <in element-count="1" element-width="32" id="1" type="SIntWord"/>
+    <in element-count="1" element-width="32" id="2" type="SIntWord"/>
+    <out element-count="1" element-width="32" id="3" type="SIntWord"/>
+  </operation>
+
+  <operation>
+    <name>SHIFT_SUB</name>
     <description/>
     <inputs>2</inputs>
     <outputs>1</outputs>

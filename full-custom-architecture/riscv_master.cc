@@ -55,7 +55,10 @@ for (int iter = 0; iter < iterations; ++iter) {
         sign_increment    = 1;
 }
 
-//IO(3) = static_cast<signed> (x_scale);
+if (sign_bit = -1) {
+    x_scale = -x_scale;
+}
+
 IO(3) = static_cast<signed> (x_scale);
 return true;
 
@@ -64,72 +67,132 @@ END_OPERATION(CORDIC)
 
 
 
-OPERATION(COMPARE_AND_ITER)
+OPERATION(COMPARE_AND_ITER_INT)
 TRIGGER
-	int     a_n_prev    = INT(1);   // a_prev + n_prev
-	int     inc_term   	= INT(2);   // inc_term_w_error - inc_term_prev
+	signed int a_n_prev = INT(1);   // a_prev + n_prev
+	signed int inc_term = INT(2);   // inc_term_w_error - inc_term_prev
 
-    int inc_step = 0b0100;
-    int sign_bit = (inc_term >= 0) ? 1 : -1;
+    signed int delta_a = 0;
+    signed int compensated_term = 0;
+    signed int fractional_inc_term = 0;
 
-    int delta_a;
-    int compensated_term;
+    if (inc_term < 0) {
+        if (((1 << 4) - (a_n_prev << 1)) < inc_term) {  // < 1
+            delta_a = 0;
+            compensated_term = 0;
+        } else if (((4 << 4) - (a_n_prev << 2)) < inc_term) { // < 2
+            delta_a = -(1 << 4);
+            compensated_term = (1 << 4) - (a_n_prev << 1);
+        } else if (((9 << 4) - (a_n_prev << 1) - (a_n_prev << 2)) < inc_term) { // < 3
+            delta_a = -(2 << 4);
+            compensated_term = (4 << 4) - (a_n_prev << 2);
+        } else if (((16 << 4) - (a_n_prev << 3)) < inc_term) { // < 4
+            delta_a = -(3 << 4);
+            compensated_term = (9 << 4) - (a_n_prev << 1) - (a_n_prev << 2);
+        } else {
+            delta_a = -(4 << 4);
+            compensated_term = (16 << 4) - (a_n_prev << 3);
+        }
 
-    if (sign_bit == -1) {
-        do {
-            delta_a -= inc_step;                                  
-            compensated_term -= (a_n_prev >> 1) + (inc_step >> 1);
-        } while (compensated_term > inc_term);
+        fractional_inc_term = inc_term - compensated_term;
 
-        compensated_term += (a_n_prev >> 1) + (inc_step >> 1);
-        delta_a += inc_step;  
+        if (((1 << 2) - (a_n_prev >> 1)) < fractional_inc_term) { // 0.25
+            delta_a = delta_a - 0;
+            compensated_term = compensated_term + 0;
+        } else if (((1 << 3) - a_n_prev) < fractional_inc_term) { // 0.5
+            delta_a = delta_a - (1 << 2);
+            compensated_term = compensated_term + ((1 << 2) - (a_n_prev >> 1));
+        } else if (((1 << 3) + (1 << 2) - (a_n_prev >> 1) - (a_n_prev >> 2)) < fractional_inc_term) { // 0.75
+            delta_a = delta_a - (1 << 3);
+            compensated_term = compensated_term + ((1 << 3) - a_n_prev);
+        } else {
+            delta_a = delta_a - (1 << 2) - (1 << 3);
+            compensated_term = compensated_term + ((1 << 3) + (1 << 2) - (a_n_prev >> 1) - (a_n_prev >> 2));
+        }
     } else {
-        do {
-            delta_a += inc_step;
-            compensated_term += (a_n_prev >> 1) + (inc_step >> 1);
-        } while (compensated_term < inc_term);
+        if (((1 << 4) + (a_n_prev << 1)) > inc_term) {
+            delta_a = 0;
+            compensated_term = 0;
+        } else if (((4 << 4) + (a_n_prev << 2)) > inc_term) {
+            delta_a = (1 << 4);
+            compensated_term = (1 << 4) + (a_n_prev << 1);
+        } else if (((9 << 4) + (a_n_prev << 1) + (a_n_prev << 2)) > inc_term) {
+            delta_a = (2 << 4);
+            compensated_term = (4 << 4) + (a_n_prev << 2);
+        } else if (((16 << 4) + (a_n_prev << 3)) > inc_term) {
+            delta_a = (3 << 4);
+            compensated_term = (9 << 4) + (a_n_prev << 1) + (a_n_prev << 2);
+        } else {
+            delta_a = (4 << 4);
+            compensated_term = (16 << 4) + (a_n_prev << 3);
+        }
 
-        compensated_term -= (a_n_prev >> 1) + (inc_step >> 1);
-        delta_a -= inc_step;       
+        fractional_inc_term = inc_term - compensated_term;
+
+        if (((1 << 2) + (a_n_prev >> 1)) > fractional_inc_term) { // 0.25
+            delta_a = delta_a + 0;
+            compensated_term = compensated_term + 0;
+        } else if (((1 << 3) + a_n_prev) > fractional_inc_term) { // 0.5
+            delta_a = delta_a + (1 << 2);
+            compensated_term = compensated_term + ((1 << 2) + (a_n_prev >> 1));
+        } else if (((1 << 3) + (1 << 2) + (a_n_prev >> 1) + (a_n_prev >> 2)) > fractional_inc_term) { // 0.75
+            delta_a = delta_a + (1 << 3);
+            compensated_term = compensated_term + ((1 << 3) + a_n_prev);
+        } else {
+            delta_a = delta_a + (1 << 2) + (1 << 3);
+            compensated_term = compensated_term + ((1 << 3) + (1 << 2) + (a_n_prev >> 1) + (a_n_prev >> 2));
+        }      
     }
 
 	
-	int result = (delta_a << 24) | (compensated_term  & 0x00FFFFFF); // a_next & inc_term_next
+	signed int result = (compensated_term  << 8) | (delta_a & 0x000000FF); // a_next & inc_term_next
     IO(3) = static_cast<signed> (result);
 END_TRIGGER;
-END_OPERATION(COMPARE_AND_ITER)
+END_OPERATION(COMPARE_AND_ITER_INT)
 
 
 OPERATION(COMPARE_AND_ITER_F)
 TRIGGER
-	int     a_n_prev    = INT(1);   // a_prev + n_prev
-	int     inc_term   	= INT(2);   // inc_term_w_error - inc_term_prev
+	signed int a_n_prev = INT(1);   // a_prev + n_prev
+	signed int inc_term = INT(2);   // inc_term_w_error - inc_term_prev
 
-    int inc_step = 0b0100;
-    int sign_bit = (inc_term >= 0) ? 1 : -1;
+    signed int inc_step = 4;
 
-    int delta_a;
-    int compensated_term;
+    signed int delta_a = 0;
+    signed int compensated_term = 0;
 
-    if (sign_bit == -1) {
-        do {
-            delta_a -= inc_step;                                  
-            compensated_term -= (a_n_prev >> 1) + (inc_step >> 1);
-        } while (compensated_term > inc_term);
-
-        compensated_term += (a_n_prev >> 1) + (inc_step >> 1);
-        delta_a += inc_step;  
+    if (inc_term < 0) {
+        if (((1 << 2) - (a_n_prev >> 1)) < inc_term) { // 0.25
+            delta_a = 0;
+            compensated_term = 0;
+        } else if (((1 << 3) - a_n_prev) < inc_term) { // 0.5
+            delta_a = -(1 << 2);
+            compensated_term = (1 << 2) - (a_n_prev >> 1);
+        } else if (((1 << 3) + (1 << 2) - (a_n_prev >> 1) - (a_n_prev >> 2)) < inc_term) { // 0.75
+            delta_a = -(1 << 3);
+            compensated_term = (1 << 3) - a_n_prev;
+        } else {
+            delta_a = -(1 << 2) - (1 << 3);
+            compensated_term = (1 << 3) + (1 << 2) - (a_n_prev >> 1) - (a_n_prev >> 2);
+        }
+            
     } else {
-        do {
-            delta_a += inc_step;
-            compensated_term += (a_n_prev >> 1) + (inc_step >> 1);
-        } while (compensated_term < inc_term);
-
-        compensated_term -= (a_n_prev >> 1) + (inc_step >> 1);
-        delta_a -= inc_step;       
+        if (((1 << 2) + (a_n_prev >> 1)) > inc_term) { // 0.25
+            delta_a = 0;
+            compensated_term = 0;
+        } else if (((1 << 3) + a_n_prev) > inc_term) { // 0.5
+            delta_a = (1 << 2);
+            compensated_term = ((1 << 2) + (a_n_prev >> 1));
+        } else if (((1 << 3) + (1 << 2) + (a_n_prev >> 1) + (a_n_prev >> 2)) > inc_term) { // 0.75
+            delta_a = (1 << 3);
+            compensated_term = ((1 << 3) + a_n_prev);
+        } else {
+            delta_a = (1 << 2) + (1 << 3);
+            compensated_term = ((1 << 3) + (1 << 2) + (a_n_prev >> 1) + (a_n_prev >> 2));
+        }      
     }
 
-	int result = (delta_a << 24) | (compensated_term  & 0x00FFFFFF); // a_next & inc_term_next
+	signed int result = (compensated_term  << 8) | (delta_a & 0x000000FF); // a_next & inc_term_next
     IO(3) = static_cast<signed> (result);
     return true;
 END_TRIGGER;
@@ -179,8 +242,8 @@ END_OPERATION(CONST_MULT_N0)
 
 OPERATION(MASK_ADD)
 TRIGGER
-	int     a     	= INT(1);
-	int     b   	= INT(2);
+	int  a = INT(1);
+	int  b = INT(2);
 
     a = (a << 24);
     a = (a >> 24);
@@ -193,8 +256,8 @@ END_OPERATION(MASK_ADD)
 
 OPERATION(SHIFT_ADD)
 TRIGGER
-	int     a     	= INT(1);
-	int     b   	= INT(2);
+	int a = INT(1);
+	int b = INT(2);
 
     a = (a >> 8);
 
@@ -203,3 +266,17 @@ TRIGGER
     return true;
 END_TRIGGER;
 END_OPERATION(SHIFT_ADD)
+
+
+OPERATION(SHIFT_SUB)
+TRIGGER
+	int a = INT(1);
+	int b = INT(2);
+
+    a = (a >> 8);
+
+    int result = b - a;
+    IO(3) = static_cast<signed> (result);
+    return true;
+END_TRIGGER;
+END_OPERATION(SHIFT_SUB)

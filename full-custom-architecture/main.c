@@ -4,12 +4,13 @@
 #include <stdio.h>
 #endif
 
+volatile int delay_array_v[NUM_HALF_TRANSDUCERS+1];
   
 int main(void) 
 {   
 
     unsigned char r_0 = 100;
-    unsigned char angle = 70;//110;
+    unsigned char angle = 110;//110;
     int delay_array[NUM_HALF_TRANSDUCERS+1];
     int inc_term_array[NUM_HALF_TRANSDUCERS+1];
 
@@ -20,15 +21,14 @@ int main(void)
     int inc_term_prev_array[NUM_HALF_TRANSDUCERS+1] = {0};
     int error_array[NUM_HALF_TRANSDUCERS+1]         = {0};
 
-
-    //next_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+    next_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+    next_delay_frac(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
     //next_delay_frac(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
 
-    //next_delay_base(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+    for (int i = 0; i < NUM_HALF_TRANSDUCERS+1; ++i) {
+        delay_array_v[i] = delay_array[i];
+    }
     
-    //next_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
-    // next_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
-    // next_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
 
     #ifdef _DEBUG
         for (int i = 0; i < NUM_HALF_TRANSDUCERS; ++i) {

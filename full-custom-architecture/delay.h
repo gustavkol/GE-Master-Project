@@ -2,7 +2,6 @@
 #define _delay_h
 
 #define INC_STEP                0b0100          // 0.25
-#define MAX_ITER                20
 #define NUM_HALF_TRANSDUCERS    32              // Total *2
 
 // Algorithm constants
