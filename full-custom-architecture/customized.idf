@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<adf-implementation>
+
+  <ic-decoder-plugin>
+    <name>DefaultICDecoder</name>
+    <file>/home/gustavko/openasip-devel/openasip/icdecoder_plugins/DefaultICDecoderPlugin.so</file>
+    <hdb-file>/home/gustavko/openasip-devel/openasip/hdb/asic_130nm_1.5V.hdb</hdb-file>
+  </ic-decoder-plugin>
+
+  <fu name="lsu">
+    <hdb-file>/home/gustavko/openasip-devel/openasip/hdb/riscv-master.hdb</hdb-file>
+    <fu-id>6</fu-id>
+  </fu>
+
+  <fu name="alu">
+    <hdb-file>/home/gustavko/openasip-devel/openasip/hdb/riscv-master.hdb</hdb-file>
+    <fu-id>5</fu-id>
+  </fu>
+
+  <fu name="FU_ALGORITHM">
+    <hdb-file>/home/gustavko/openasip-devel/openasip/hdb/riscv-master.hdb</hdb-file>
+    <fu-id>3</fu-id>
+  </fu>
+
+  <fu name="FU_SUPPORT">
+    <hdb-file>/home/gustavko/openasip-devel/openasip/hdb/riscv-master.hdb</hdb-file>
+    <fu-id>4</fu-id>
+  </fu>
+
+  <rf name="bool">
+    <hdb-file>/home/gustavko/openasip-devel/openasip/hdb/riscv-master.hdb</hdb-file>
+    <rf-id>5</rf-id>
+  </rf>
+
+  <rf name="RF_8x32">
+    <hdb-file>/home/gustavko/openasip-devel/openasip/hdb/riscv-master.hdb</hdb-file>
+    <rf-id>4</rf-id>
+  </rf>
+
+</adf-implementation>

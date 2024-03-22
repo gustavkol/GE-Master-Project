@@ -205,44 +205,6 @@
     </writes-to>
   </socket>
 
-  <socket name="RF_i1">
-    <reads-from>
-      <bus>B1</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B3</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B2</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </reads-from>
-  </socket>
-
-  <socket name="RF_o1">
-    <writes-to>
-      <bus>B2</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B1</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B3</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </writes-to>
-  </socket>
-
   <socket name="bool_i1">
     <reads-from>
       <bus>B1</bus>
@@ -395,26 +357,7 @@
     </writes-to>
   </socket>
 
-  <socket name="RF_1_o3">
-    <writes-to>
-      <bus>B1</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B2</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B3</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </writes-to>
-  </socket>
-
-  <socket name="RF_1_i1">
+  <socket name="FU_SUPPORT_i1">
     <reads-from>
       <bus>B1</bus>
       <segment>seg1</segment>
@@ -433,26 +376,7 @@
     </reads-from>
   </socket>
 
-  <socket name="RF_2_o1">
-    <writes-to>
-      <bus>B1</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B2</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B3</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </writes-to>
-  </socket>
-
-  <socket name="RF_2_i1">
+  <socket name="FU_SUPPORT_i2">
     <reads-from>
       <bus>B1</bus>
       <segment>seg1</segment>
@@ -471,61 +395,61 @@
     </reads-from>
   </socket>
 
-  <socket name="FU_ALGORITHM_1_i1">
-    <reads-from>
-      <bus>B3</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
+  <socket name="FU_SUPPORT_o1">
+    <writes-to>
       <bus>B1</bus>
       <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
+    </writes-to>
+    <writes-to>
       <bus>B2</bus>
       <segment>seg1</segment>
-    </reads-from>
+    </writes-to>
+    <writes-to>
+      <bus>B3</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B4</bus>
+      <segment>seg1</segment>
+    </writes-to>
   </socket>
 
-  <socket name="FU_ALGORITHM_1_i2">
-    <reads-from>
-      <bus>B3</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
+  <socket name="RF_8x32_o1">
+    <writes-to>
       <bus>B1</bus>
       <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
+    </writes-to>
+    <writes-to>
       <bus>B2</bus>
       <segment>seg1</segment>
-    </reads-from>
+    </writes-to>
+    <writes-to>
+      <bus>B3</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B4</bus>
+      <segment>seg1</segment>
+    </writes-to>
   </socket>
 
-  <socket name="FU_ALGORITHM_1_o1">
-    <writes-to>
-      <bus>B3</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
+  <socket name="RF_8x32_i1">
+    <reads-from>
       <bus>B1</bus>
       <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
+    </reads-from>
+    <reads-from>
       <bus>B2</bus>
       <segment>seg1</segment>
-    </writes-to>
+    </reads-from>
+    <reads-from>
+      <bus>B3</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B4</bus>
+      <segment>seg1</segment>
+    </reads-from>
   </socket>
 
   <function-unit name="lsu">
@@ -871,86 +795,6 @@
         </writes>
       </pipeline>
     </operation>
-    <operation>
-      <name>cordic</name>
-      <bind name="1">in1t</bind>
-      <bind name="2">in2</bind>
-      <bind name="3">out1</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>11</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>const_mult_bn</name>
-      <bind name="1">in1t</bind>
-      <bind name="2">in2</bind>
-      <bind name="3">out1</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>const_mult_c0</name>
-      <bind name="1">in1t</bind>
-      <bind name="2">in2</bind>
-      <bind name="3">out1</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>const_mult_n0</name>
-      <bind name="1">in1t</bind>
-      <bind name="2">in2</bind>
-      <bind name="3">out1</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
     <address-space/>
   </function-unit>
 
@@ -1112,23 +956,43 @@
     <address-space/>
   </function-unit>
 
-  <function-unit name="FU_ALGORITHM_1">
+  <function-unit name="FU_SUPPORT">
     <port name="P1">
-      <connects-to>FU_ALGORITHM_1_i1</connects-to>
+      <connects-to>FU_SUPPORT_i1</connects-to>
       <width>32</width>
       <triggers/>
       <sets-opcode/>
     </port>
     <port name="P2">
-      <connects-to>FU_ALGORITHM_1_i2</connects-to>
+      <connects-to>FU_SUPPORT_i2</connects-to>
       <width>32</width>
     </port>
     <port name="P3">
-      <connects-to>FU_ALGORITHM_1_o1</connects-to>
+      <connects-to>FU_SUPPORT_o1</connects-to>
       <width>32</width>
     </port>
     <operation>
-      <name>compare_and_iter_f</name>
+      <name>cordic</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>11</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>const_mult_bn</name>
       <bind name="1">P1</bind>
       <bind name="2">P2</bind>
       <bind name="3">P3</bind>
@@ -1148,27 +1012,7 @@
       </pipeline>
     </operation>
     <operation>
-      <name>compare_and_iter_int</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>1</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>mask_add</name>
+      <name>const_mult_c0</name>
       <bind name="1">P1</bind>
       <bind name="2">P2</bind>
       <bind name="3">P3</bind>
@@ -1188,67 +1032,7 @@
       </pipeline>
     </operation>
     <operation>
-      <name>shift_add</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>add</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>shift_sub</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>sub</name>
+      <name>const_mult_n0</name>
       <bind name="1">P1</bind>
       <bind name="2">P2</bind>
       <bind name="3">P3</bind>
@@ -1270,20 +1054,6 @@
     <address-space/>
   </function-unit>
 
-  <register-file name="RF">
-    <type>normal</type>
-    <size>10</size>
-    <width>32</width>
-    <max-reads>1</max-reads>
-    <max-writes>1</max-writes>
-    <port name="wr">
-      <connects-to>RF_i1</connects-to>
-    </port>
-    <port name="rd">
-      <connects-to>RF_o1</connects-to>
-    </port>
-  </register-file>
-
   <register-file name="bool">
     <type>normal</type>
     <size>2</size>
@@ -1298,31 +1068,17 @@
     </port>
   </register-file>
 
-  <register-file name="RF_1">
+  <register-file name="RF_8x32">
     <type>normal</type>
-    <size>10</size>
+    <size>8</size>
     <width>32</width>
     <max-reads>1</max-reads>
     <max-writes>1</max-writes>
-    <port name="wr">
-      <connects-to>RF_1_o3</connects-to>
+    <port name="r0">
+      <connects-to>RF_8x32_o1</connects-to>
     </port>
-    <port name="rd">
-      <connects-to>RF_1_i1</connects-to>
-    </port>
-  </register-file>
-
-  <register-file name="RF_2">
-    <type>normal</type>
-    <size>10</size>
-    <width>32</width>
-    <max-reads>1</max-reads>
-    <max-writes>1</max-writes>
-    <port name="wr">
-      <connects-to>RF_2_o1</connects-to>
-    </port>
-    <port name="rd">
-      <connects-to>RF_2_i1</connects-to>
+    <port name="w0">
+      <connects-to>RF_8x32_i1</connects-to>
     </port>
   </register-file>
 
