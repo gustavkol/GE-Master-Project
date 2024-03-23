@@ -3,6 +3,7 @@
 
 #define INC_STEP                0b0100          // 0.25
 #define NUM_HALF_TRANSDUCERS    32              // Total *2
+#define NUM_POINTS              3
 
 // Algorithm constants
 #define A0_CONST                0b0100001000        // 16.5
@@ -20,9 +21,9 @@ void compare_and_iter_frac(int n_prev, int *n_next, signed int a_prev, signed in
 
 // Finds delays for all elements in next scanpoint k+1
 void next_delay(int *delay_array, int *a_array, int *inc_term_prev_array, int *error_array, int *inc_term_array);
-void compare_and_iter_next(int *n_prev, signed int *a_prev, signed int *inc_term_prev, signed int *error_prev, signed int inc_term);
+void compare_and_iter_next(int *n_prev, signed int *a_prev, signed int *inc_term_prev, signed int *error_prev, signed int *inc_term);
 void next_delay_frac(int *delay_array, int *a_array, int *inc_term_prev_array, int *error_array, int *inc_term_array);
-void compare_and_iter_next_frac(int *n_prev, signed int *a_prev, signed int *inc_term_prev, signed int *error_prev, signed int inc_term);
+void compare_and_iter_next_frac(int *n_prev, signed int *a_prev, signed int *inc_term_prev, signed int *error_prev, signed int *inc_term);
 
 // Fits fraction of cordic module (6) with rest of application (4)
 signed int cordic_cosine(int x_scale, unsigned char angle);

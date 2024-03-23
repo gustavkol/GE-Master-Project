@@ -102,12 +102,12 @@ TRIGGER
         } else if (((1 << 3) - a_n_prev) < fractional_inc_term) { // 0.5
             delta_a = delta_a - (1 << 2);
             compensated_term = compensated_term + ((1 << 2) - (a_n_prev >> 1));
-        } else if (((1 << 3) + (1 << 2) - (a_n_prev >> 1) - (a_n_prev >> 2)) < fractional_inc_term) { // 0.75
+        } else if (((1 << 3) + 1 - a_n_prev - (a_n_prev >> 1)) < fractional_inc_term) { // 0.75
             delta_a = delta_a - (1 << 3);
             compensated_term = compensated_term + ((1 << 3) - a_n_prev);
         } else {
             delta_a = delta_a - (1 << 2) - (1 << 3);
-            compensated_term = compensated_term + ((1 << 3) + (1 << 2) - (a_n_prev >> 1) - (a_n_prev >> 2));
+            compensated_term = compensated_term + ((1 << 3) + 1 - a_n_prev - (a_n_prev >> 1));
         }
     } else {
         if (((1 << 4) + (a_n_prev << 1)) > inc_term) {
@@ -135,12 +135,12 @@ TRIGGER
         } else if (((1 << 3) + a_n_prev) > fractional_inc_term) { // 0.5
             delta_a = delta_a + (1 << 2);
             compensated_term = compensated_term + ((1 << 2) + (a_n_prev >> 1));
-        } else if (((1 << 3) + (1 << 2) + (a_n_prev >> 1) + (a_n_prev >> 2)) > fractional_inc_term) { // 0.75
+        } else if (((1 << 3) + 1 + a_n_prev + (a_n_prev >> 1)) > fractional_inc_term) { // 0.75
             delta_a = delta_a + (1 << 3);
             compensated_term = compensated_term + ((1 << 3) + a_n_prev);
         } else {
             delta_a = delta_a + (1 << 2) + (1 << 3);
-            compensated_term = compensated_term + ((1 << 3) + (1 << 2) + (a_n_prev >> 1) + (a_n_prev >> 2));
+            compensated_term = compensated_term + ((1 << 3) + 1 + a_n_prev + (a_n_prev >> 1));
         }      
     }
 
@@ -168,12 +168,12 @@ TRIGGER
         } else if (((1 << 3) - a_n_prev) < inc_term) { // 0.5
             delta_a = -(1 << 2);
             compensated_term = (1 << 2) - (a_n_prev >> 1);
-        } else if (((1 << 3) + (1 << 2) - (a_n_prev >> 1) - (a_n_prev >> 2)) < inc_term) { // 0.75
+        } else if (((1 << 3) + 1 - a_n_prev - (a_n_prev >> 1)) < inc_term) { // 0.75
             delta_a = -(1 << 3);
             compensated_term = (1 << 3) - a_n_prev;
         } else {
             delta_a = -(1 << 2) - (1 << 3);
-            compensated_term = (1 << 3) + (1 << 2) - (a_n_prev >> 1) - (a_n_prev >> 2);
+            compensated_term = (1 << 3) + 1 - a_n_prev - (a_n_prev >> 1);
         }
             
     } else {
@@ -183,12 +183,12 @@ TRIGGER
         } else if (((1 << 3) + a_n_prev) > inc_term) { // 0.5
             delta_a = (1 << 2);
             compensated_term = ((1 << 2) + (a_n_prev >> 1));
-        } else if (((1 << 3) + (1 << 2) + (a_n_prev >> 1) + (a_n_prev >> 2)) > inc_term) { // 0.75
+        } else if (((1 << 3) + 1 + a_n_prev + (a_n_prev >> 1)) > inc_term) { // 0.75
             delta_a = (1 << 3);
             compensated_term = ((1 << 3) + a_n_prev);
         } else {
             delta_a = (1 << 2) + (1 << 3);
-            compensated_term = ((1 << 3) + (1 << 2) + (a_n_prev >> 1) + (a_n_prev >> 2));
+            compensated_term = ((1 << 3) + 1 + a_n_prev + (a_n_prev >> 1));
         }      
     }
 
@@ -270,12 +270,12 @@ END_OPERATION(SHIFT_ADD)
 
 OPERATION(SHIFT_SUB)
 TRIGGER
-	int a = INT(1);
-	int b = INT(2);
+	signed int a = INT(1);
+	signed int b = INT(2);
 
     a = (a >> 8);
 
-    int result = b - a;
+    signed int result = b - a;
     IO(3) = static_cast<signed> (result);
     return true;
 END_TRIGGER;
