@@ -69,8 +69,8 @@ END_OPERATION(CORDIC)
 
 OPERATION(COMPARE_AND_ITER_INT)
 TRIGGER
-	signed int a_n_prev = INT(1);   // a_prev + n_prev
-	signed int inc_term = INT(2);   // inc_term_w_error - inc_term_prev
+	signed int a_n_prev = INT(2);   // a_prev + n_prev
+	signed int inc_term = INT(1);   // inc_term_w_error - inc_term_prev
 
     signed int delta_a = 0;
     signed int compensated_term = 0;
@@ -153,8 +153,8 @@ END_OPERATION(COMPARE_AND_ITER_INT)
 
 OPERATION(COMPARE_AND_ITER_F)
 TRIGGER
-	signed int a_n_prev = INT(1);   // a_prev + n_prev
-	signed int inc_term = INT(2);   // inc_term_w_error - inc_term_prev
+	signed int a_n_prev = INT(2);   // a_prev + n_prev
+	signed int inc_term = INT(1);   // inc_term_w_error - inc_term_prev
 
     signed int inc_step = 4;
 
