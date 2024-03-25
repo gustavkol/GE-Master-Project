@@ -27,8 +27,8 @@ kernel:
 #################################################################################################
 
 
-## Delay registers: RF1.4, RF1.8, RF1.12, RF1.16, RF1.20, RF1.24, RF1.28, RF1.32
-## Inc_term registers: RF2.2, RF2.3, RF2.4, RF2.5, RF2.6, RF2.7, RF2.8, RF2.9
+## Delay registers: RF2.4, RF2.8, RF2.12, RF2.16, RF2.20, RF2.24, RF2.28, RF2.32
+## Inc_term registers: RF1.2, RF1.3, RF1.4, RF1.5, RF1.6, RF1.7, RF1.8, RF1.9
 
 ## INIT ALGO 
 110      -> FU_CORDIC.P1.cordic           , 129        -> FU_CORDIC.P2      , ...                          ;
@@ -59,7 +59,7 @@ alu.out1 -> alu.in1t.sub                  , FU_CORDIC.P3 -> alu.in2t        , ..
  ...                                      , ...                             , alu.out1      -> RF1.10      ; # inc_term_pos
 
 
-## INITIAL DELAY VALUES     (( FIXED ))
+########################################### INITIAL DELAY VALUES ###########################################
 
 RF1.10      -> FU_ALGO.P1.add          , 0      -> FU_ALGO.P2     , ...                          ;
 RF1.10      -> FU_ALGO.P1.comp_iter_int, RF2.4  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
@@ -110,7 +110,7 @@ RF1.10     -> FU_ALGO.P1.add          , RF2.2  -> FU_ALGO.P2     , FU_ALGO.P3 ->
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.3  -> FU_ALGO.P2     , ...                          ;
 FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.24 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.5  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
-FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.24  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.5          ; # a_prev
+FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.24  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.5          ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.28         ; # n_prev
 RF1.1      -> FU_ALGO.P1.shift_add    , RF2.3  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.2          ; # error_prev
 RF1.10     -> FU_ALGO.P1.add          , RF2.6  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.3          ; # inc_prev
@@ -126,89 +126,79 @@ RF1.10     -> FU_ALGO.P1.add          , RF2.6  -> FU_ALGO.P2     , FU_ALGO.P3 ->
 
 
 
-## NEXT DELAY INT  ((!!!!!!! HAS TO BE FIXED !!!!!!!))
-RF1.4  -> FU_ALGO.P1.comp_iter_int, RF2.2      -> FU_ALGO.P2     , ...                          ; # in2
- ...                              , ...                          , ...                          ;
-0      -> FU_ALGO.P1.mask_add     , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # out
-RF1.4  -> FU_ALGO.P1.add          , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.5          ; # a_prev
-RF1.1  -> FU_ALGO.P1.shift_sub    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.4          ; # n_prev
-0      -> FU_ALGO.P1.shift_add    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.2          ; # error_prev
-32     -> FU_ALGO.P1.add          , RF2.2      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.3          ; # inc_prev
+########################################### NEXT DELAY INT ###########################################
+RF1.2      -> FU_ALGO.P1.add           , 0      -> FU_ALGO.P2    , ...                        ;
+RF1.2      -> FU_ALGO.P1.comp_iter_int , RF2.4  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+...                                    ,  ...                    , ...                        ;
+FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , 0      -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
+FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.4  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.5        ; # a_prev
+RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.4        ; # n_prev
+RF1.1      -> FU_ALGO.P1.shift_add     , 0      -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.2        ; # error_prev
+RF1.10     -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.3        ; # inc_prev[0]
 
-RF1.6  -> FU_ALGO.P1.add          , RF2.3      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.2          ; # inc_term
-RF1.7  -> FU_ALGO.P1.sub          , FU_ALGO.P3 -> FU_ALGO.P2     , ...                          ; ########### !!SIGN
-RF1.8  -> FU_ALGO.P1.comp_iter_f  , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # in2
-RF1.9  -> FU_ALGO.P1.mask_add     , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # out
-RF1.8  -> FU_ALGO.P1.add          , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.9          ; # a_prev
-RF1.1  -> FU_ALGO.P1.shift_sub    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.8          ; # n_prev
-RF1.7  -> FU_ALGO.P1.shift_add    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.6          ; # error_prev
-32     -> FU_ALGO.P1.add          , RF2.3      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.7          ; # inc_prev
+RF1.3      -> FU_ALGO.P1.sub           , RF2.3  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.2        ; # inc_term[0]
+FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.8  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.5  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
+FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.8  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.9        ; # a_prev
+RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.8        ; # n_prev
+RF1.1      -> FU_ALGO.P1.shift_add     , RF2.3  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.6        ; # error_prev
+RF1.3      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.7        ; # inc_prev[1]
 
-RF1.10 -> FU_ALGO.P1.add          , RF2.4      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.3          ; # inc_term
-RF1.11 -> FU_ALGO.P1.sub          , FU_ALGO.P3 -> FU_ALGO.P2     , ...                          ;
-RF1.12 -> FU_ALGO.P1.comp_iter_f  , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # in2
-RF1.13 -> FU_ALGO.P1.mask_add     , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # out
-RF1.12 -> FU_ALGO.P1.add          , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.13         ; # a_prev
-RF1.1  -> FU_ALGO.P1.shift_sub    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.12         ; # n_prev
-RF1.11 -> FU_ALGO.P1.shift_add    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.10         ; # error_prev
-32     -> FU_ALGO.P1.add          , RF2.4      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.11         ; # inc_prev
+RF1.4      -> FU_ALGO.P1.sub           , RF2.7  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.3        ; # inc_term[1]
+FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.12 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.9  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
+FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.12  -> FU_ALGO.P2   , FU_ALGO.P3 -> RF2.13       ; # a_prev
+RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.12       ; # n_prev
+RF1.1      -> FU_ALGO.P1.shift_add     , RF2.7  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.10       ; # error_prev
+RF1.4      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.11       ; # inc_prev[2]
 
-RF1.14 -> FU_ALGO.P1.add          , RF2.5      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.4          ; # inc_term
-RF1.15 -> FU_ALGO.P1.sub          , FU_ALGO.P3 -> FU_ALGO.P2     , ...                          ;
-RF1.16 -> FU_ALGO.P1.comp_iter_f  , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # in2
-RF1.17 -> FU_ALGO.P1.mask_add     , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # out
-RF1.16 -> FU_ALGO.P1.add          , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.17         ; # a_prev
-RF1.1  -> FU_ALGO.P1.shift_sub    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.16         ; # n_prev
-RF1.15 -> FU_ALGO.P1.shift_add    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.14         ; # error_prev
-32     -> FU_ALGO.P1.add          , RF2.5      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.15         ; # inc_prev
+RF1.5      -> FU_ALGO.P1.sub           , RF2.11 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.4        ; # inc_term
+FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.16 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.13 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
+FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.16 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.17       ; # a_prev
+RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.16       ; # n_prev
+RF1.1      -> FU_ALGO.P1.shift_add     , RF2.11 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.14       ; # error_prev
+RF1.5      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.15       ; # inc_prev
 
-RF1.18 -> FU_ALGO.P1.add          , RF2.6      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.5          ; # inc_term
-RF1.19 -> FU_ALGO.P1.sub          , FU_ALGO.P3 -> FU_ALGO.P2     , ...                          ;
-RF1.20 -> FU_ALGO.P1.comp_iter_f  , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # in2
-RF1.21 -> FU_ALGO.P1.mask_add     , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # out
-RF1.20 -> FU_ALGO.P1.add          , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.21         ; # a_prev
-RF1.1  -> FU_ALGO.P1.shift_sub    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.20         ; # n_prev
-RF1.19 -> FU_ALGO.P1.shift_add    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.18         ; # error_prev
-32     -> FU_ALGO.P1.add          , RF2.6      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.19         ; # inc_prev
+RF1.6      -> FU_ALGO.P1.sub           , RF2.15 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.5        ; # inc_term
+FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.20 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.17 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
+FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.20 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.21       ; # a_prev
+RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.20       ; # n_prev
+RF1.1      -> FU_ALGO.P1.shift_add     , RF2.15 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.18       ; # error_prev
+RF1.6      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.19       ; # inc_prev
 
-RF1.22 -> FU_ALGO.P1.add          , RF2.7      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.6          ; # inc_term
-RF1.23 -> FU_ALGO.P1.sub          , FU_ALGO.P3 -> FU_ALGO.P2     , ...                          ;
-RF1.24 -> FU_ALGO.P1.comp_iter_f  , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # in2
-RF1.25 -> FU_ALGO.P1.mask_add     , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # out
-RF1.24 -> FU_ALGO.P1.add          , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.25         ; # a_prev
-RF1.1  -> FU_ALGO.P1.shift_sub    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.24         ; # n_prev
-RF1.23 -> FU_ALGO.P1.shift_add    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.22         ; # error_prev
-32     -> FU_ALGO.P1.add          , RF2.7      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.23         ; # inc_prev
+RF1.7      -> FU_ALGO.P1.sub           , RF2.19 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.6        ; # inc_term
+FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.24 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.21 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
+FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.24 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.25       ; # a_prev
+RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.24       ; # n_prev
+RF1.1      -> FU_ALGO.P1.shift_add     , RF2.19 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.22       ; # error_prev
+RF1.7      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.23       ; # inc_prev
 
-RF1.26 -> FU_ALGO.P1.add          , RF2.8      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.7          ; # inc_term
-RF1.27 -> FU_ALGO.P1.sub          , FU_ALGO.P3 -> FU_ALGO.P2     , ...                          ;
-RF1.28 -> FU_ALGO.P1.comp_iter_f  , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # in2
-RF1.29 -> FU_ALGO.P1.mask_add     , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # out
-RF1.28 -> FU_ALGO.P1.add          , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.29         ; # a_prev
-RF1.1  -> FU_ALGO.P1.shift_sub    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.28         ; # n_prev
-RF1.27 -> FU_ALGO.P1.shift_add    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.26         ; # error_prev
-32     -> FU_ALGO.P1.add          , RF2.8      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.27         ; # inc_prev
+RF1.8      -> FU_ALGO.P1.sub           , RF2.23 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.7        ; # inc_term
+FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.28 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.25 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
+FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.28 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.29       ; # a_prev
+RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.28       ; # n_prev
+RF1.1      -> FU_ALGO.P1.shift_add     , RF2.23 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.26       ; # error_prev
+RF1.8      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.27       ; # inc_prev
 
-RF1.30 -> FU_ALGO.P1.add          , RF2.9      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.8          ; # inc_term
-RF1.31 -> FU_ALGO.P1.sub          , FU_ALGO.P3 -> FU_ALGO.P2     , ...                          ;
-RF1.32 -> FU_ALGO.P1.comp_iter_f  , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # in2
-RF1.33 -> FU_ALGO.P1.mask_add     , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # out
-RF1.32 -> FU_ALGO.P1.add          , FU_ALGO.P3 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.33         ; # a_prev
-RF1.1  -> FU_ALGO.P1.shift_sub    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.32         ; # n_prev
-RF1.31 -> FU_ALGO.P1.shift_add    , RF2.1      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.30         ; # error_prev
-32     -> FU_ALGO.P1.add          , RF2.9      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.31         ; # inc_prev
+RF1.9      -> FU_ALGO.P1.sub           , RF2.27 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.8        ; # inc_term
+FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.32 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.29 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
+FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.32 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.33       ; # a_prev
+RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.32       ; # n_prev
+RF1.1      -> FU_ALGO.P1.shift_add     , RF2.27 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.30       ; # error_prev
+RF1.9      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.31       ; # inc_prev
 
-            ...                   ,             ...              , FU_ALGO.P3 -> RF2.9          ; # inc_term
+            ...                       ,             ...          , FU_ALGO.P3 -> RF1.9        ; # inc_term
 
 
 
 
 
-
-
-
-
-## NEXT DELAY FRAC (( FIXED ))
+########################################### NEXT DELAY FRAC ###########################################
 
 RF1.2      -> FU_ALGO.P1.add          ,  RF2.2 -> FU_ALGO.P2     , ...                          ;
 FU_ALGO.P3 -> FU_ALGO.P1.sub          ,  RF2.3 -> FU_ALGO.P2     , ...                          ;
