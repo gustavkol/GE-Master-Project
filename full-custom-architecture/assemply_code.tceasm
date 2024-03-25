@@ -1,27 +1,29 @@
 CODE;
 
-:global delay;
-:global init;
-:global kernel;
+#:global delay;
+#:global init;
+:global init_delay;
+:global next_int_delay;
+:global next_frac_delay;
 
 
 :procedure delay;
 
 
-init:       # CHANGE
+#init:       # CHANGE ( LOAD INPUTS FROM MAIN MEMORY?? )
 #################################################################################################
 #            bus1                             bus2                           bus3  
 #################################################################################################
-0 -> fu_add.t.add              , 0 -> fu_add.o                ,               ...               ;
-fu_add.r.add -> fu_ld_st.t.ldq , fu_add.r.add -> fu_add.t.add ,      1 -> fu_add.o              ;
-fu_add.r.add -> fu_ld_st.t.ldq ,              ...             ,               ...               ;
-             ...               ,              ...             ,               ...               ;
-             ...               ,              ...             , fu_ld_st.r.ldq -> RF_integer1.0 ;
-0 -> fu_add.t.add              , 6 -> fu_comp.o               , fu_ld_st.r.ldq -> RF_integer2.0 ;
+#0 -> fu_add.t.add              , 0 -> fu_add.o                ,               ...               ;
+#fu_add.r.add -> fu_ld_st.t.ldq , fu_add.r.add -> fu_add.t.add ,      1 -> fu_add.o              ;
+#fu_add.r.add -> fu_ld_st.t.ldq ,              ...             ,               ...               ;
+#             ...               ,              ...             ,               ...               ;
+#             ...               ,              ...             , fu_ld_st.r.ldq -> RF_integer1.0 ;
+#0 -> fu_add.t.add              , 6 -> fu_comp.o               , fu_ld_st.r.ldq -> RF_integer2.0 ;
 
 
 
-kernel:
+init_delay:
 #################################################################################################
 #            bus1                 ,            bus2              ,             bus3             #
 #################################################################################################
@@ -33,10 +35,10 @@ kernel:
 ## INIT ALGO 
 110      -> FU_CORDIC.P1.cordic           , 129        -> FU_CORDIC.P2      , ...                          ;
 100      -> FU_SUPPORT.P1.const_mult_bn   , 0          -> FU_SUPPORT.P2     , ...                          ;
-100      -> FU_SUPPORT.P1.const_mult_n0   , 1          -> alu.in1t.add      , FU_SUPPORT.P3 -> alu.in2t    ;
+100      -> FU_SUPPORT.P1.const_mult_n0   , 1          -> alu.in1t.add      , FU_SUPPORT.P3 -> alu.in2     ;
 100      -> FU_SUPPORT.P1.const_mult_c0   , alu.out1   -> RF1.2             , FU_SUPPORT.P3 -> RF2.4       ; # inc_term[0] , delay[0]
-264      -> alu.in1t.shl                  , 1          -> alu.in2t          , FU_SUPPORT.P3 -> RF2.1       ; # x_scale
-alu.out1 -> alu.in1t.add                  , 264        -> alu.in2t          , alu.out1      -> RF2.6       ; # A0_CONST << 1
+264      -> alu.in1t.add                  , 264        -> alu.in2           , FU_SUPPORT.P3 -> RF2.1       ; # x_scale
+alu.out1 -> alu.in1t.add                  , 264        -> alu.in2           , alu.out1      -> RF2.6       ; # A0_CONST << 1
  ...                                      , ...                             , alu.out1      -> RF2.3       ; # A0_CONST + (A0_CONST << 1)
  ...                                      , ...                             , ...                          ;
  ...                                      , ...                             , ...                          ;
@@ -44,25 +46,25 @@ alu.out1 -> alu.in1t.add                  , 264        -> alu.in2t          , al
  ...                                      , ...                             , ...                          ;
  ...                                      , ...                             , ...                          ;
 110      -> FU_CORDIC.P1.cordic           , RF2.1      -> FU_CORDIC.P2      , FU_CORDIC.P3 -> RF1.5        ; # cos_b_n
-RF1.2    -> alu.in1t.sub                  , RF2.5      -> alu.in2t          , ...                          ;
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2t          , alu.out1      -> RF1.2       ; # inc_term[0]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2t          , alu.out1      -> RF1.3       ; # inc_term[1]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2t          , alu.out1      -> RF1.4       ; # inc_term[2]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2t          , alu.out1      -> RF1.5       ; # inc_term[3]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2t          , alu.out1      -> RF1.6       ; # inc_term[4]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2t          , alu.out1      -> RF1.7       ; # inc_term[5]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2t          , alu.out1      -> RF1.8       ; # inc_term[6]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2t          , alu.out1      -> RF1.9       ; # inc_term[7]
+RF1.2    -> alu.in1t.sub                  , RF2.5      -> alu.in2           , ...                          ;
+alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.2       ; # inc_term[0]
+alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.3       ; # inc_term[1]
+alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.4       ; # inc_term[2]
+alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.5       ; # inc_term[3]
+alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.6       ; # inc_term[4]
+alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.7       ; # inc_term[5]
+alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.8       ; # inc_term[6]
+alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.9       ; # inc_term[7]
  ...                                      , ...                             , ...                          ;
  ...                                      , ...                             , ...                          ;
-alu.out1 -> alu.in1t.sub                  , FU_CORDIC.P3 -> alu.in2t        , ...                          ; # c0
+alu.out1 -> alu.in1t.sub                  , FU_CORDIC.P3 -> alu.in2         , ...                          ; # c0
  ...                                      , ...                             , alu.out1      -> RF1.10      ; # inc_term_pos
 
 
 ########################################### INITIAL DELAY VALUES ###########################################
 
 RF1.10      -> FU_ALGO.P1.add          , 0      -> FU_ALGO.P2     , ...                          ;
-RF1.10      -> FU_ALGO.P1.comp_iter_int, RF2.4  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+RF1.10      -> FU_ALGO.P1.compare_and_iter_int, RF2.4  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 ...                                    ,  ...                     , ...                          ;
 FU_ALGO.P3  -> FU_ALGO.P1.mask_add     , 0      -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3  -> FU_ALGO.P1.add          , RF2.4  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.5          ; # a_prev
@@ -72,7 +74,7 @@ RF1.10      -> FU_ALGO.P1.add          , RF2.6  -> FU_ALGO.P2     , FU_ALGO.P3 -
 
 RF1.10     -> FU_ALGO.P1.add          , RF2.2  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.10         ; # inc_term
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.3  -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.8  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  , RF2.8  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.5  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.8  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.5          ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.12         ; # n_prev
@@ -81,7 +83,7 @@ RF1.10     -> FU_ALGO.P1.add          , RF2.6  -> FU_ALGO.P2     , FU_ALGO.P3 ->
 
 RF1.10     -> FU_ALGO.P1.add          , RF2.2  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.10         ; # inc_term
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.3  -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.12 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  , RF2.12 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.5  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.12 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.5          ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.16         ; # n_prev
@@ -90,7 +92,7 @@ RF1.10     -> FU_ALGO.P1.add          , RF2.6  -> FU_ALGO.P2     , FU_ALGO.P3 ->
 
 RF1.10     -> FU_ALGO.P1.add          , RF2.2  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.10         ; # inc_term
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.3  -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.16 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  , RF2.16 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.5  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.16 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.5          ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.20         ; # n_prev
@@ -99,7 +101,7 @@ RF1.10     -> FU_ALGO.P1.add          , RF2.6  -> FU_ALGO.P2     , FU_ALGO.P3 ->
 
 RF1.10     -> FU_ALGO.P1.add          , RF2.2  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.10         ; # inc_term
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.3  -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.20 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  , RF2.20 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.5  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.20 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.5          ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.24         ; # n_prev
@@ -108,7 +110,7 @@ RF1.10     -> FU_ALGO.P1.add          , RF2.6  -> FU_ALGO.P2     , FU_ALGO.P3 ->
 
 RF1.10     -> FU_ALGO.P1.add          , RF2.2  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.10         ; # inc_term
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.3  -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.24 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  , RF2.24 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.5  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.24  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.5          ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.28         ; # n_prev
@@ -117,7 +119,7 @@ RF1.10     -> FU_ALGO.P1.add          , RF2.6  -> FU_ALGO.P2     , FU_ALGO.P3 ->
 
 RF1.10     -> FU_ALGO.P1.add          , RF2.2  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.10         ; # inc_term
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.3  -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.28 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  , RF2.28 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.5  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.28 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.5          ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.32         ; # n_prev
@@ -125,10 +127,10 @@ RF1.1      -> FU_ALGO.P1.shift_add    , RF2.3  -> FU_ALGO.P2     , FU_ALGO.P3 ->
 RF1.10     -> FU_ALGO.P1.add          , RF2.6  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.3          ; # inc_prev
 
 
-
 ########################################### NEXT DELAY INT ###########################################
+next_int_delay:
 RF1.2      -> FU_ALGO.P1.add           , 0      -> FU_ALGO.P2    , ...                        ;
-RF1.2      -> FU_ALGO.P1.comp_iter_int , RF2.4  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+RF1.2      -> FU_ALGO.P1.compare_and_iter_int , RF2.4  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
 ...                                    ,  ...                    , ...                        ;
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , 0      -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.4  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.5        ; # a_prev
@@ -137,7 +139,7 @@ RF1.1      -> FU_ALGO.P1.shift_add     , 0      -> FU_ALGO.P2    , FU_ALGO.P3 ->
 RF1.10     -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.3        ; # inc_prev[0]
 
 RF1.3      -> FU_ALGO.P1.sub           , RF2.3  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.2        ; # inc_term[0]
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.8  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f   , RF2.8  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.5  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.8  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.9        ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.8        ; # n_prev
@@ -145,7 +147,7 @@ RF1.1      -> FU_ALGO.P1.shift_add     , RF2.3  -> FU_ALGO.P2    , FU_ALGO.P3 ->
 RF1.3      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.7        ; # inc_prev[1]
 
 RF1.4      -> FU_ALGO.P1.sub           , RF2.7  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.3        ; # inc_term[1]
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.12 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f   , RF2.12 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.9  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.12  -> FU_ALGO.P2   , FU_ALGO.P3 -> RF2.13       ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.12       ; # n_prev
@@ -153,7 +155,7 @@ RF1.1      -> FU_ALGO.P1.shift_add     , RF2.7  -> FU_ALGO.P2    , FU_ALGO.P3 ->
 RF1.4      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.11       ; # inc_prev[2]
 
 RF1.5      -> FU_ALGO.P1.sub           , RF2.11 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.4        ; # inc_term
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.16 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f   , RF2.16 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.13 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.16 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.17       ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.16       ; # n_prev
@@ -161,7 +163,7 @@ RF1.1      -> FU_ALGO.P1.shift_add     , RF2.11 -> FU_ALGO.P2    , FU_ALGO.P3 ->
 RF1.5      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.15       ; # inc_prev
 
 RF1.6      -> FU_ALGO.P1.sub           , RF2.15 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.5        ; # inc_term
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.20 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f   , RF2.20 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.17 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.20 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.21       ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.20       ; # n_prev
@@ -169,7 +171,7 @@ RF1.1      -> FU_ALGO.P1.shift_add     , RF2.15 -> FU_ALGO.P2    , FU_ALGO.P3 ->
 RF1.6      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.19       ; # inc_prev
 
 RF1.7      -> FU_ALGO.P1.sub           , RF2.19 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.6        ; # inc_term
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.24 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f   , RF2.24 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.21 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.24 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.25       ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.24       ; # n_prev
@@ -177,7 +179,7 @@ RF1.1      -> FU_ALGO.P1.shift_add     , RF2.19 -> FU_ALGO.P2    , FU_ALGO.P3 ->
 RF1.7      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.23       ; # inc_prev
 
 RF1.8      -> FU_ALGO.P1.sub           , RF2.23 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.7        ; # inc_term
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.28 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f   , RF2.28 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.25 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.28 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.29       ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.28       ; # n_prev
@@ -185,7 +187,7 @@ RF1.1      -> FU_ALGO.P1.shift_add     , RF2.23 -> FU_ALGO.P2    , FU_ALGO.P3 ->
 RF1.8      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.27       ; # inc_prev
 
 RF1.9      -> FU_ALGO.P1.sub           , RF2.27 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.8        ; # inc_term
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f   , RF2.32 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f   , RF2.32 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.1        ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add      , RF2.29 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF1.1        ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add           , RF2.32 -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.33       ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub     , RF2.1  -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.32       ; # n_prev
@@ -199,10 +201,10 @@ RF1.9      -> FU_ALGO.P1.add           , 32     -> FU_ALGO.P2    , FU_ALGO.P3 ->
 
 
 ########################################### NEXT DELAY FRAC ###########################################
-
+next_frac_delay:
 RF1.2      -> FU_ALGO.P1.add          ,  RF2.2 -> FU_ALGO.P2     , ...                          ;
 FU_ALGO.P3 -> FU_ALGO.P1.sub          ,  RF2.3 -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  ,  RF2.4 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  ,  RF2.4 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     ,  RF2.5 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          ,  RF2.4 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.5          ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    ,  RF2.1 -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.4          ; # n_prev
@@ -211,7 +213,7 @@ RF1.2      -> FU_ALGO.P1.add          ,  32    -> FU_ALGO.P2     , FU_ALGO.P3 ->
 
 RF1.3      -> FU_ALGO.P1.add          , RF2.6  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.2          ; # inc_term
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.7  -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.8  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  , RF2.8  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.9  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.8  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.9          ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.8          ; # n_prev
@@ -220,7 +222,7 @@ RF1.3      -> FU_ALGO.P1.add          , 32     -> FU_ALGO.P2     , FU_ALGO.P3 ->
 
 RF1.4      -> FU_ALGO.P1.add          , RF2.10  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.3          ; # inc_term
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.11  -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.12  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  , RF2.12  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.13  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.12  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.13         ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1   -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.12         ; # n_prev
@@ -229,7 +231,7 @@ RF1.4      -> FU_ALGO.P1.add          , 32      -> FU_ALGO.P2     , FU_ALGO.P3 -
 
 RF1.5      -> FU_ALGO.P1.add          , RF2.14  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.4          ; # inc_term
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.15  -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.16  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  , RF2.16  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.17  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.16  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.17         ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1   -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.16         ; # n_prev
@@ -238,7 +240,7 @@ RF1.5      -> FU_ALGO.P1.add          , 32      -> FU_ALGO.P2     , FU_ALGO.P3 -
 
 RF1.6      -> FU_ALGO.P1.add          , RF2.18  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.5          ; # inc_term
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.19  -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.20  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  , RF2.20  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.21  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.20  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.21         ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1   -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.20         ; # n_prev
@@ -247,7 +249,7 @@ RF1.6      -> FU_ALGO.P1.add          , 32      -> FU_ALGO.P2     , FU_ALGO.P3 -
 
 RF1.7      -> FU_ALGO.P1.add          , RF2.22  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.6          ; # inc_term
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.23  -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.24  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  , RF2.24  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.25  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.24  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.25         ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1   -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.24         ; # n_prev
@@ -256,7 +258,7 @@ RF1.7      -> FU_ALGO.P1.add          , 32      -> FU_ALGO.P2     , FU_ALGO.P3 -
 
 RF1.8      -> FU_ALGO.P1.add          , RF2.26  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.7          ; # inc_term
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.27  -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.28  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  , RF2.28  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.29  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.28  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.29         ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1   -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.28         ; # n_prev
@@ -265,7 +267,7 @@ RF1.8      -> FU_ALGO.P1.add          , 32      -> FU_ALGO.P2     , FU_ALGO.P3 -
 
 RF1.9      -> FU_ALGO.P1.add          , RF2.30  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.8          ; # inc_term
 FU_ALGO.P3 -> FU_ALGO.P1.sub          , RF2.31  -> FU_ALGO.P2     , ...                          ;
-FU_ALGO.P3 -> FU_ALGO.P1.comp_iter_f  , RF2.32  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
+FU_ALGO.P3 -> FU_ALGO.P1.compare_and_iter_f  , RF2.32  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.1          ; # in2
 FU_ALGO.P3 -> FU_ALGO.P1.mask_add     , RF2.33  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF1.1          ; # out
 FU_ALGO.P3 -> FU_ALGO.P1.add          , RF2.32  -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.33         ; # a_prev
 RF1.1      -> FU_ALGO.P1.shift_sub    , RF2.1   -> FU_ALGO.P2     , FU_ALGO.P3 -> RF2.32         ; # n_prev
@@ -281,14 +283,14 @@ RF1.9      -> FU_ALGO.P1.add          , 32      -> FU_ALGO.P2     , FU_ALGO.P3 -
 ####
 # Write result to memory
 ####
-fu_mul.r.mul -> fu_ld_st.o.stq, 2 -> fu_ld_st.t.stq          ,             ...                  ;
-             ...              ,                ...           ,             ...                  ;
-             ...              ,                ...           ,             ...                  ;
-             ...              ,                ...           ,             ...                  ;
-
+#fu_mul.r.mul -> fu_ld_st.o.stq, 2 -> fu_ld_st.t.stq          ,             ...                  ;
+#             ...              ,                ...           ,             ...                  ;
+#             ...              ,                ...           ,             ...                  ;
+#             ...              ,                ...           ,             ...                  ;
+#
 # initialization to memory
-DATA IODATA 0 ;
-
-DA 2
-1:0x0001
-1:0x0002;
+#DATA IODATA 0 ;
+#
+#DA 2
+#1:0x0001
+#1:0x0002;
