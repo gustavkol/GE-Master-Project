@@ -77,20 +77,6 @@
     </short-immediate>
   </bus>
 
-  <bus name="B4">
-    <width>32</width>
-    <guard>
-      <always-true/>
-    </guard>
-    <segment name="seg1">
-      <writes-to/>
-    </segment>
-    <short-immediate>
-      <extension>zero</extension>
-      <width>32</width>
-    </short-immediate>
-  </bus>
-
   <socket name="lsu_i1">
     <reads-from>
       <bus>B3</bus>
@@ -102,10 +88,6 @@
     </reads-from>
     <reads-from>
       <bus>B2</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B4</bus>
       <segment>seg1</segment>
     </reads-from>
   </socket>
@@ -123,10 +105,6 @@
       <bus>B2</bus>
       <segment>seg1</segment>
     </writes-to>
-    <writes-to>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </writes-to>
   </socket>
 
   <socket name="lsu_i2">
@@ -140,10 +118,6 @@
     </reads-from>
     <reads-from>
       <bus>B2</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B4</bus>
       <segment>seg1</segment>
     </reads-from>
   </socket>
@@ -161,10 +135,6 @@
       <bus>B3</bus>
       <segment>seg1</segment>
     </reads-from>
-    <reads-from>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </reads-from>
   </socket>
 
   <socket name="alu_comp_i2">
@@ -178,10 +148,6 @@
     </reads-from>
     <reads-from>
       <bus>B3</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B4</bus>
       <segment>seg1</segment>
     </reads-from>
   </socket>
@@ -199,10 +165,6 @@
       <bus>B3</bus>
       <segment>seg1</segment>
     </writes-to>
-    <writes-to>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </writes-to>
   </socket>
 
   <socket name="bool_i1">
@@ -216,10 +178,6 @@
     </reads-from>
     <reads-from>
       <bus>B3</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B4</bus>
       <segment>seg1</segment>
     </reads-from>
   </socket>
@@ -237,10 +195,6 @@
       <bus>B3</bus>
       <segment>seg1</segment>
     </writes-to>
-    <writes-to>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </writes-to>
   </socket>
 
   <socket name="gcu_i1">
@@ -254,10 +208,6 @@
     </reads-from>
     <reads-from>
       <bus>B3</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B4</bus>
       <segment>seg1</segment>
     </reads-from>
   </socket>
@@ -275,10 +225,6 @@
       <bus>B3</bus>
       <segment>seg1</segment>
     </reads-from>
-    <reads-from>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </reads-from>
   </socket>
 
   <socket name="gcu_o1">
@@ -294,19 +240,11 @@
       <bus>B3</bus>
       <segment>seg1</segment>
     </writes-to>
-    <writes-to>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </writes-to>
   </socket>
 
   <socket name="FU_ALGORITHM_i1">
     <reads-from>
       <bus>B3</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B4</bus>
       <segment>seg1</segment>
     </reads-from>
     <reads-from>
@@ -325,10 +263,6 @@
       <segment>seg1</segment>
     </reads-from>
     <reads-from>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
       <bus>B1</bus>
       <segment>seg1</segment>
     </reads-from>
@@ -344,72 +278,11 @@
       <segment>seg1</segment>
     </writes-to>
     <writes-to>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
       <bus>B1</bus>
       <segment>seg1</segment>
     </writes-to>
     <writes-to>
       <bus>B2</bus>
-      <segment>seg1</segment>
-    </writes-to>
-  </socket>
-
-  <socket name="FU_SUPPORT_i1">
-    <reads-from>
-      <bus>B1</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B2</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B3</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </reads-from>
-  </socket>
-
-  <socket name="FU_SUPPORT_i2">
-    <reads-from>
-      <bus>B1</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B2</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B3</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </reads-from>
-  </socket>
-
-  <socket name="FU_SUPPORT_o1">
-    <writes-to>
-      <bus>B1</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B2</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B3</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B4</bus>
       <segment>seg1</segment>
     </writes-to>
   </socket>
@@ -427,10 +300,6 @@
       <bus>B3</bus>
       <segment>seg1</segment>
     </writes-to>
-    <writes-to>
-      <bus>B4</bus>
-      <segment>seg1</segment>
-    </writes-to>
   </socket>
 
   <socket name="RF_8x32_i1">
@@ -446,10 +315,51 @@
       <bus>B3</bus>
       <segment>seg1</segment>
     </reads-from>
+  </socket>
+
+  <socket name="FU_CORDIC_i1">
     <reads-from>
-      <bus>B4</bus>
+      <bus>B1</bus>
       <segment>seg1</segment>
     </reads-from>
+    <reads-from>
+      <bus>B2</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B3</bus>
+      <segment>seg1</segment>
+    </reads-from>
+  </socket>
+
+  <socket name="FU_CORDIC_i2">
+    <reads-from>
+      <bus>B1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B2</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B3</bus>
+      <segment>seg1</segment>
+    </reads-from>
+  </socket>
+
+  <socket name="FU_CORDIC_o1">
+    <writes-to>
+      <bus>B1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B2</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B3</bus>
+      <segment>seg1</segment>
+    </writes-to>
   </socket>
 
   <function-unit name="lsu">
@@ -795,6 +705,66 @@
         </writes>
       </pipeline>
     </operation>
+    <operation>
+      <name>const_mult_bn</name>
+      <bind name="1">in1t</bind>
+      <bind name="2">in2</bind>
+      <bind name="3">out1</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>const_mult_c0</name>
+      <bind name="1">in1t</bind>
+      <bind name="2">in2</bind>
+      <bind name="3">out1</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>const_mult_n0</name>
+      <bind name="1">in1t</bind>
+      <bind name="2">in2</bind>
+      <bind name="3">out1</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
     <address-space/>
   </function-unit>
 
@@ -956,19 +926,19 @@
     <address-space/>
   </function-unit>
 
-  <function-unit name="FU_SUPPORT">
+  <function-unit name="FU_CORDIC">
     <port name="P1">
-      <connects-to>FU_SUPPORT_i1</connects-to>
+      <connects-to>FU_CORDIC_i1</connects-to>
       <width>32</width>
       <triggers/>
       <sets-opcode/>
     </port>
     <port name="P2">
-      <connects-to>FU_SUPPORT_i2</connects-to>
+      <connects-to>FU_CORDIC_i2</connects-to>
       <width>32</width>
     </port>
     <port name="P3">
-      <connects-to>FU_SUPPORT_o1</connects-to>
+      <connects-to>FU_CORDIC_o1</connects-to>
       <width>32</width>
     </port>
     <operation>
@@ -987,66 +957,6 @@
         </reads>
         <writes name="3">
           <start-cycle>11</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>const_mult_bn</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>const_mult_c0</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>const_mult_n0</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
           <cycles>1</cycles>
         </writes>
       </pipeline>

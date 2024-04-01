@@ -1,0 +1,2 @@
+x /a data /n 32 /u w 4
+exit
