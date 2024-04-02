@@ -12,8 +12,9 @@
 #define B_N_CORDIC_CONST        0b010000001         // 8.125
 #define B_N_CONST               0b01000000111       // 32.4375
 
+
 // Calculates delay for all transducer elements to reference point k=0
-void init_delay(unsigned char r_0, unsigned char angle, int *delay_array, int *inc_term_array);
+void init_delay(unsigned char r_0, unsigned char angle, int *delay_array, int *inc_term_array, int *error_array);
 
 // Finds next delay based on previous delay for initial scanpoint k=0
 void compare_and_iter(int n_prev, int *n_next, signed int *a_next, signed int *inc_term_next, signed int *error_next, signed int inc_term);

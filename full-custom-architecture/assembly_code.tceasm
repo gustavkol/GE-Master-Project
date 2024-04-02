@@ -34,32 +34,32 @@ init_delay:
 ## Inc_term registers: RF1.2, RF1.3, RF1.4, RF1.5, RF1.6, RF1.7, RF1.8, RF1.9
 
 ## INIT ALGO 
-RF1.1    -> FU_CORDIC.P1.cordic           , 129        -> FU_CORDIC.P2      , ...                          ;
-RF1.0    -> alu.in1t.const_mult_bn        , 0          -> alu.in2           , ...                          ;
-alu.out1 -> alu.in1t.add                  , 1          -> alu.in2           , ...                          ;
-RF1.0    -> alu.in1t.const_mult_n0        , 0          -> alu.in2           , alu.out1      -> RF1.2       ; # inc_term[0] = mult_bn + 1
-RF1.0    -> alu.in1t.const_mult_c0        , 0          -> alu.in2           , alu.out1      -> RF2.4       ; # delay[0] = mult_n0
-264      -> alu.in1t.add                  , 264        -> alu.in2           , alu.out1      -> RF2.1       ; # x_scale
-alu.out1 -> alu.in1t.add                  , 264        -> alu.in2           , alu.out1      -> RF2.6       ; # A0_CONST << 1
- ...                                      , ...                             , alu.out1      -> RF2.3       ; # A0_CONST + (A0_CONST << 1)
- ...                                      , ...                             , ...                          ;
- ...                                      , ...                             , ...                          ;
- ...                                      , ...                             , ...                          ;
- ...                                      , ...                             , ...                          ;
-RF1.1    -> FU_CORDIC.P1.cordic           , RF2.1      -> FU_CORDIC.P2      , FU_CORDIC.P3 -> RF2.5        ; # cos_b_n
-RF1.2    -> alu.in1t.sub                  , RF2.5      -> alu.in2           , ...                          ;
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.2       ; # inc_term[0]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.3       ; # inc_term[1]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.4       ; # inc_term[2]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.5       ; # inc_term[3]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.6       ; # inc_term[4]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.7       ; # inc_term[5]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.8       ; # inc_term[6]
-alu.out1 -> alu.in1t.sub                  , RF2.5      -> alu.in2           , alu.out1      -> RF1.9       ; # inc_term[7]
- ...                                      , ...                             , ...                          ;
- ...                                      , ...                             , ...                          ;
-264 -> alu.in1t.sub                       , FU_CORDIC.P3 -> alu.in2         , ...                          ; # c0
- ...                                      , ...                             , alu.out1      -> RF1.10      ; # inc_term_pos
+RF1.1    -> FU_CORDIC.P1.cordic    , 129        -> FU_CORDIC.P2      , ...                          ;
+RF1.0    -> alu.in1t.const_mult_bn , 0          -> alu.in2           , ...                          ;
+alu.out1 -> alu.in1t.add           , 1          -> alu.in2           , ...                          ;
+RF1.0    -> alu.in1t.const_mult_n0 , 0          -> alu.in2           , alu.out1      -> RF1.2       ; # inc_term[0] = mult_bn + 1
+RF1.0    -> alu.in1t.const_mult_c0 , 0          -> alu.in2           , alu.out1      -> RF2.4       ; # delay[0] = mult_n0
+264      -> alu.in1t.add           , 264        -> alu.in2           , alu.out1      -> RF2.1       ; # x_scale
+alu.out1 -> alu.in1t.add           , 264        -> alu.in2           , alu.out1      -> RF2.6       ; # A0_CONST << 1
+ ...                               , ...                             , alu.out1      -> RF2.3       ; # A0_CONST + (A0_CONST << 1)
+ ...                               , ...                             , ...                          ;
+ ...                               , ...                             , ...                          ;
+ ...                               , ...                             , ...                          ;
+ ...                               , ...                             , ...                          ;
+RF1.1    -> FU_CORDIC.P1.cordic    , RF2.1      -> FU_CORDIC.P2      , FU_CORDIC.P3 -> RF2.5        ; # cos_b_n
+RF1.2    -> alu.in1t.sub           , RF2.5      -> alu.in2           , ...                          ;
+alu.out1 -> alu.in1t.sub           , RF2.5      -> alu.in2           , alu.out1      -> RF1.2       ; # inc_term[0]
+alu.out1 -> alu.in1t.sub           , RF2.5      -> alu.in2           , alu.out1      -> RF1.3       ; # inc_term[1]
+alu.out1 -> alu.in1t.sub           , RF2.5      -> alu.in2           , alu.out1      -> RF1.4       ; # inc_term[2]
+alu.out1 -> alu.in1t.sub           , RF2.5      -> alu.in2           , alu.out1      -> RF1.5       ; # inc_term[3]
+alu.out1 -> alu.in1t.sub           , RF2.5      -> alu.in2           , alu.out1      -> RF1.6       ; # inc_term[4]
+alu.out1 -> alu.in1t.sub           , RF2.5      -> alu.in2           , alu.out1      -> RF1.7       ; # inc_term[5]
+alu.out1 -> alu.in1t.sub           , RF2.5      -> alu.in2           , alu.out1      -> RF1.8       ; # inc_term[6]
+alu.out1 -> alu.in1t.sub           , RF2.5      -> alu.in2           , alu.out1      -> RF1.9       ; # inc_term[7]
+ ...                               , ...                             , ...                          ;
+ ...                               , ...                             , ...                          ;
+264 -> alu.in1t.sub                , FU_CORDIC.P3 -> alu.in2         , ...                          ; # c0
+ ...                               , ...                             , alu.out1      -> RF1.10      ; # inc_term_pos
 
 
 ########################################### INITIAL DELAY VALUES ###########################################
