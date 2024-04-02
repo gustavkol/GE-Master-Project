@@ -27,7 +27,7 @@ void init_delay(unsigned char r_0, unsigned char angle, int *delay_array, int *i
 
     int inc_term_prev = inc_term_next;
     int error_prev = error_next;
-    error_array[1] = error_next;
+    //error_array[1] = error_next;
     int a_prev = a_next;
 
     // for (int i = 1; i < NUM_HALF_TRANSDUCERS; ++i) {
@@ -50,91 +50,99 @@ void init_delay(unsigned char r_0, unsigned char angle, int *delay_array, int *i
     a_prev = a_next;
     inc_term_prev = inc_term_next;
     error_prev = error_next;
-    error_array[2] = error_next;
+    //error_array[2] = error_next;
 
     inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
     compare_and_iter_frac(delay_array[2], &delay_array[3], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
     a_prev = a_next;
     inc_term_prev = inc_term_next;
     error_prev = error_next;
-    error_array[3] = error_next;
+    //error_array[3] = error_next;
 
     inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
     compare_and_iter_frac(delay_array[3], &delay_array[4], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
     a_prev = a_next;
     inc_term_prev = inc_term_next;
     error_prev = error_next;
-    error_array[4] = error_next;
+    //error_array[4] = error_next;
 
     inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
     compare_and_iter_frac(delay_array[4], &delay_array[5], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
     a_prev = a_next;
     inc_term_prev = inc_term_next;
     error_prev = error_next;
-    error_array[5] = error_next;
+    //error_array[5] = error_next;
 
     inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
     compare_and_iter_frac(delay_array[5], &delay_array[6], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
     a_prev = a_next;
     inc_term_prev = inc_term_next;
     error_prev = error_next;
-    error_array[6] = error_next;
+    //error_array[6] = error_next;
 
     inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
     compare_and_iter_frac(delay_array[6], &delay_array[7], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
     a_prev = a_next;
     inc_term_prev = inc_term_next;
     error_prev = error_next;
-    error_array[7] = error_next;
+    //error_array[7] = error_next;
 
-    //inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
-    //compare_and_iter_frac(delay_array[7], &delay_array[8], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
-    //a_prev = a_next;
-    //inc_term_prev = inc_term_next;
-    //error_prev = error_next;
-//
-    //inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
-    //compare_and_iter_frac(delay_array[8], &delay_array[9], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
-    //a_prev = a_next;
-    //inc_term_prev = inc_term_next;
-    //error_prev = error_next;
-//
-    //inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
-    //compare_and_iter_frac(delay_array[9], &delay_array[10], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
-    //a_prev = a_next;
-    //inc_term_prev = inc_term_next;
-    //error_prev = error_next;
-//
-    //inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
-    //compare_and_iter_frac(delay_array[10], &delay_array[11], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
-    //a_prev = a_next;
-    //inc_term_prev = inc_term_next;
-    //error_prev = error_next;
-//
-    //inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
-    //compare_and_iter_frac(delay_array[11], &delay_array[12], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
-    //a_prev = a_next;
-    //inc_term_prev = inc_term_next;
-    //error_prev = error_next;
-//
-    //inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
-    //compare_and_iter_frac(delay_array[12], &delay_array[13], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
-    //a_prev = a_next;
-    //inc_term_prev = inc_term_next;
-    //error_prev = error_next;
-//
-    //inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
-    //compare_and_iter_frac(delay_array[13], &delay_array[14], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
-    //a_prev = a_next;
-    //inc_term_prev = inc_term_next;
-    //error_prev = error_next;
-//
-    //inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
-    //compare_and_iter_frac(delay_array[14], &delay_array[15], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
-    //a_prev = a_next;
-    //inc_term_prev = inc_term_next;
-    //error_prev = error_next;
-//
+    inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
+    compare_and_iter_frac(delay_array[7], &delay_array[8], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
+    a_prev = a_next;
+    inc_term_prev = inc_term_next;
+    error_prev = error_next;
+    //error_array[8] = error_next;
+
+    inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
+    compare_and_iter_frac(delay_array[8], &delay_array[9], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
+    a_prev = a_next;
+    inc_term_prev = inc_term_next;
+    error_prev = error_next;
+    //error_array[9] = error_next;
+
+    inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
+    compare_and_iter_frac(delay_array[9], &delay_array[10], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
+    a_prev = a_next;
+    inc_term_prev = inc_term_next;
+    error_prev = error_next;
+    //error_array[10] = error_next;
+
+    inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
+    compare_and_iter_frac(delay_array[10], &delay_array[11], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
+    a_prev = a_next;
+    inc_term_prev = inc_term_next;
+    error_prev = error_next;
+    //error_array[11] = error_next;
+
+    inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
+    compare_and_iter_frac(delay_array[11], &delay_array[12], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
+    a_prev = a_next;
+    inc_term_prev = inc_term_next;
+    error_prev = error_next;
+    //error_array[12] = error_next;
+
+    inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
+    compare_and_iter_frac(delay_array[12], &delay_array[13], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
+    a_prev = a_next;
+    inc_term_prev = inc_term_next;
+    error_prev = error_next;
+    //error_array[13] = error_next;
+
+    inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
+    compare_and_iter_frac(delay_array[13], &delay_array[14], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
+    a_prev = a_next;
+    inc_term_prev = inc_term_next;
+    error_prev = error_next;
+    //error_array[14] = error_next;
+
+    inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
+    compare_and_iter_frac(delay_array[14], &delay_array[15], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
+    a_prev = a_next;
+    inc_term_prev = inc_term_next;
+    error_prev = error_next;
+    //error_array[15] = error_next;
+
     //inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
     //compare_and_iter_frac(delay_array[15], &delay_array[16], a_prev, &a_next, inc_term_prev, &inc_term_next,error_prev, &error_next, inc_term_pos);
     //a_prev = a_next;
@@ -248,14 +256,14 @@ void init_delay(unsigned char r_0, unsigned char angle, int *delay_array, int *i
     inc_term_array[5] = inc_term_array[4] - cos_b_n;
     inc_term_array[6] = inc_term_array[5] - cos_b_n;
     inc_term_array[7] = inc_term_array[6] - cos_b_n;
-    //inc_term_array[8] = inc_term_array[7] - cos_b_n;
-    //inc_term_array[9] = inc_term_array[8] - cos_b_n;
-    //inc_term_array[10] = inc_term_array[9] - cos_b_n;
-    //inc_term_array[11] = inc_term_array[10] - cos_b_n;
-    //inc_term_array[12] = inc_term_array[11] - cos_b_n;
-    //inc_term_array[13] = inc_term_array[12] - cos_b_n;
-    //inc_term_array[14] = inc_term_array[13] - cos_b_n;
-    //inc_term_array[15] = inc_term_array[14] - cos_b_n;
+    inc_term_array[8] = inc_term_array[7] - cos_b_n;
+    inc_term_array[9] = inc_term_array[8] - cos_b_n;
+    inc_term_array[10] = inc_term_array[9] - cos_b_n;
+    inc_term_array[11] = inc_term_array[10] - cos_b_n;
+    inc_term_array[12] = inc_term_array[11] - cos_b_n;
+    inc_term_array[13] = inc_term_array[12] - cos_b_n;
+    inc_term_array[14] = inc_term_array[13] - cos_b_n;
+    inc_term_array[15] = inc_term_array[14] - cos_b_n;
     //inc_term_array[16] = inc_term_array[15] - cos_b_n;
     //inc_term_array[17] = inc_term_array[16] - cos_b_n;
     //inc_term_array[18] = inc_term_array[17] - cos_b_n;
@@ -363,14 +371,14 @@ void next_delay(int *delay_array, int *a_array, int *inc_term_prev_array, int *e
     compare_and_iter_next(&delay_array[5], &a_array[5], &error_array[5], &inc_term_prev_array[5], &inc_term_array[5]);
     compare_and_iter_next(&delay_array[6], &a_array[6], &error_array[6], &inc_term_prev_array[6], &inc_term_array[6]);
     compare_and_iter_next(&delay_array[7], &a_array[7], &error_array[7], &inc_term_prev_array[7], &inc_term_array[7]);
-    //compare_and_iter_next(&delay_array[8], &a_array[8], &error_array[8], &inc_term_prev_array[8], &inc_term_array[8]);
-    //compare_and_iter_next(&delay_array[9], &a_array[9], &error_array[9], &inc_term_prev_array[9], &inc_term_array[9]);
-    //compare_and_iter_next(&delay_array[10], &a_array[10], &error_array[10], &inc_term_prev_array[10], &inc_term_array[10]);
-    //compare_and_iter_next(&delay_array[11], &a_array[11], &error_array[11], &inc_term_prev_array[11], &inc_term_array[11]);
-    //compare_and_iter_next(&delay_array[12], &a_array[12], &error_array[12], &inc_term_prev_array[12], &inc_term_array[12]);
-    //compare_and_iter_next(&delay_array[13], &a_array[13], &error_array[13], &inc_term_prev_array[13], &inc_term_array[13]);
-    //compare_and_iter_next(&delay_array[14], &a_array[14], &error_array[14], &inc_term_prev_array[14], &inc_term_array[14]);
-    //compare_and_iter_next(&delay_array[15], &a_array[15], &error_array[15], &inc_term_prev_array[15], &inc_term_array[15]);
+    compare_and_iter_next(&delay_array[8], &a_array[8], &error_array[8], &inc_term_prev_array[8], &inc_term_array[8]);
+    compare_and_iter_next(&delay_array[9], &a_array[9], &error_array[9], &inc_term_prev_array[9], &inc_term_array[9]);
+    compare_and_iter_next(&delay_array[10], &a_array[10], &error_array[10], &inc_term_prev_array[10], &inc_term_array[10]);
+    compare_and_iter_next(&delay_array[11], &a_array[11], &error_array[11], &inc_term_prev_array[11], &inc_term_array[11]);
+    compare_and_iter_next(&delay_array[12], &a_array[12], &error_array[12], &inc_term_prev_array[12], &inc_term_array[12]);
+    compare_and_iter_next(&delay_array[13], &a_array[13], &error_array[13], &inc_term_prev_array[13], &inc_term_array[13]);
+    compare_and_iter_next(&delay_array[14], &a_array[14], &error_array[14], &inc_term_prev_array[14], &inc_term_array[14]);
+    compare_and_iter_next(&delay_array[15], &a_array[15], &error_array[15], &inc_term_prev_array[15], &inc_term_array[15]);
     //compare_and_iter_next(&delay_array[16], &a_array[16], &error_array[16], &inc_term_prev_array[16], &inc_term_array[16]);
     //compare_and_iter_next(&delay_array[17], &a_array[17], &error_array[17], &inc_term_prev_array[17], &inc_term_array[17]);
     //compare_and_iter_next(&delay_array[18], &a_array[18], &error_array[18], &inc_term_prev_array[18], &inc_term_array[18]);
@@ -405,14 +413,14 @@ void next_delay_frac(int *delay_array, int *a_array, int *inc_term_prev_array, i
     compare_and_iter_next_frac(&delay_array[5], &a_array[5], &error_array[5], &inc_term_prev_array[5], &inc_term_array[5]);
     compare_and_iter_next_frac(&delay_array[6], &a_array[6], &error_array[6], &inc_term_prev_array[6], &inc_term_array[6]);
     compare_and_iter_next_frac(&delay_array[7], &a_array[7], &error_array[7], &inc_term_prev_array[7], &inc_term_array[7]);
-    //compare_and_iter_next_frac(&delay_array[8], &a_array[8], &error_array[8], &inc_term_prev_array[8], &inc_term_array[8]);
-    //compare_and_iter_next_frac(&delay_array[9], &a_array[9], &error_array[9], &inc_term_prev_array[9], &inc_term_array[9]);
-    //compare_and_iter_next_frac(&delay_array[10], &a_array[10], &error_array[10], &inc_term_prev_array[10], &inc_term_array[10]);
-    //compare_and_iter_next_frac(&delay_array[11], &a_array[11], &error_array[11], &inc_term_prev_array[11], &inc_term_array[11]);
-    //compare_and_iter_next_frac(&delay_array[12], &a_array[12], &error_array[12], &inc_term_prev_array[12], &inc_term_array[12]);
-    //compare_and_iter_next_frac(&delay_array[13], &a_array[13], &error_array[13], &inc_term_prev_array[13], &inc_term_array[13]);
-    //compare_and_iter_next_frac(&delay_array[14], &a_array[14], &error_array[14], &inc_term_prev_array[14], &inc_term_array[14]);
-    //compare_and_iter_next_frac(&delay_array[15], &a_array[15], &error_array[15], &inc_term_prev_array[15], &inc_term_array[15]);
+    compare_and_iter_next_frac(&delay_array[8], &a_array[8], &error_array[8], &inc_term_prev_array[8], &inc_term_array[8]);
+    compare_and_iter_next_frac(&delay_array[9], &a_array[9], &error_array[9], &inc_term_prev_array[9], &inc_term_array[9]);
+    compare_and_iter_next_frac(&delay_array[10], &a_array[10], &error_array[10], &inc_term_prev_array[10], &inc_term_array[10]);
+    compare_and_iter_next_frac(&delay_array[11], &a_array[11], &error_array[11], &inc_term_prev_array[11], &inc_term_array[11]);
+    compare_and_iter_next_frac(&delay_array[12], &a_array[12], &error_array[12], &inc_term_prev_array[12], &inc_term_array[12]);
+    compare_and_iter_next_frac(&delay_array[13], &a_array[13], &error_array[13], &inc_term_prev_array[13], &inc_term_array[13]);
+    compare_and_iter_next_frac(&delay_array[14], &a_array[14], &error_array[14], &inc_term_prev_array[14], &inc_term_array[14]);
+    compare_and_iter_next_frac(&delay_array[15], &a_array[15], &error_array[15], &inc_term_prev_array[15], &inc_term_array[15]);
     //compare_and_iter_next_frac(&delay_array[16], &a_array[16], &error_array[16], &inc_term_prev_array[16], &inc_term_array[16]);
     //compare_and_iter_next_frac(&delay_array[17], &a_array[17], &error_array[17], &inc_term_prev_array[17], &inc_term_array[17]);
     //compare_and_iter_next_frac(&delay_array[18], &a_array[18], &error_array[18], &inc_term_prev_array[18], &inc_term_array[18]);
