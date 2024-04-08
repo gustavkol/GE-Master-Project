@@ -87,6 +87,48 @@
     </short-immediate>
   </bus>
 
+  <bus name="B1_4">
+    <width>32</width>
+    <guard>
+      <always-true/>
+    </guard>
+    <segment name="seg1">
+      <writes-to/>
+    </segment>
+    <short-immediate>
+      <extension>zero</extension>
+      <width>32</width>
+    </short-immediate>
+  </bus>
+
+  <bus name="B1_5">
+    <width>32</width>
+    <guard>
+      <always-true/>
+    </guard>
+    <segment name="seg1">
+      <writes-to/>
+    </segment>
+    <short-immediate>
+      <extension>zero</extension>
+      <width>32</width>
+    </short-immediate>
+  </bus>
+
+  <bus name="B1_6">
+    <width>32</width>
+    <guard>
+      <always-true/>
+    </guard>
+    <segment name="seg1">
+      <writes-to/>
+    </segment>
+    <short-immediate>
+      <extension>zero</extension>
+      <width>32</width>
+    </short-immediate>
+  </bus>
+
   <socket name="lsu_i1">
     <reads-from>
       <bus>B1</bus>
@@ -112,6 +154,10 @@
     </reads-from>
     <reads-from>
       <bus>B1_2</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_5</bus>
       <segment>seg1</segment>
     </reads-from>
   </socket>
@@ -141,6 +187,10 @@
     </writes-to>
     <writes-to>
       <bus>B1_3</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_6</bus>
       <segment>seg1</segment>
     </writes-to>
   </socket>
@@ -303,6 +353,10 @@
       <bus>B1_1</bus>
       <segment>seg1</segment>
     </writes-to>
+    <writes-to>
+      <bus>B1_6</bus>
+      <segment>seg1</segment>
+    </writes-to>
   </socket>
 
   <socket name="RF_8x32_1_o1_1_1">
@@ -329,6 +383,59 @@
   <socket name="RF_8x32_1_o1_1_1_2">
     <reads-from>
       <bus>B1_3</bus>
+      <segment>seg1</segment>
+    </reads-from>
+  </socket>
+
+  <socket name="RF_8x32_1_o1_2_1">
+    <reads-from>
+      <bus>B1_5</bus>
+      <segment>seg1</segment>
+    </reads-from>
+  </socket>
+
+  <socket name="RF_8x32_1_o1_1_3">
+    <reads-from>
+      <bus>B1_4</bus>
+      <segment>seg1</segment>
+    </reads-from>
+  </socket>
+
+  <socket name="RF_8x32_1_o1_3_1">
+    <writes-to>
+      <bus>B1_4</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_6</bus>
+      <segment>seg1</segment>
+    </writes-to>
+  </socket>
+
+  <socket name="RF_8x32_1_o1_1_2_1">
+    <writes-to>
+      <bus>B1_4</bus>
+      <segment>seg1</segment>
+    </writes-to>
+  </socket>
+
+  <socket name="RF_8x32_1_o1_1_1_3">
+    <reads-from>
+      <bus>B1_6</bus>
+      <segment>seg1</segment>
+    </reads-from>
+  </socket>
+
+  <socket name="RF_8x32_1_o1_1_1_3_1">
+    <writes-to>
+      <bus>B1_5</bus>
+      <segment>seg1</segment>
+    </writes-to>
+  </socket>
+
+  <socket name="RF_8x32_1_o1_1_2_1_1">
+    <reads-from>
+      <bus>B1_6</bus>
       <segment>seg1</segment>
     </reads-from>
   </socket>
@@ -894,6 +1001,26 @@
         </writes>
       </pipeline>
     </operation>
+    <operation>
+      <name>inc_comp_next</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
     <address-space/>
   </function-unit>
 
@@ -966,26 +1093,6 @@
         </reads>
         <writes name="3">
           <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>compare_and_iter_int</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>1</start-cycle>
           <cycles>1</cycles>
         </writes>
       </pipeline>
@@ -1090,12 +1197,190 @@
         </writes>
       </pipeline>
     </operation>
+    <operation>
+      <name>inc_comp_next</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <address-space/>
+  </function-unit>
+
+  <function-unit name="FU_ALGO_2">
+    <port name="P1">
+      <connects-to>RF_8x32_1_o1_1_3</connects-to>
+      <width>32</width>
+      <triggers/>
+      <sets-opcode/>
+    </port>
+    <port name="P2">
+      <connects-to>RF_8x32_1_o1_2_1</connects-to>
+      <width>32</width>
+    </port>
+    <port name="P3">
+      <connects-to>RF_8x32_1_o1_3_1</connects-to>
+      <width>32</width>
+    </port>
+    <operation>
+      <name>compare_and_iter_f</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>mask_add</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>shift_add</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>add</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>shift_sub</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>sub</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <operation>
+      <name>inc_comp_next</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
     <address-space/>
   </function-unit>
 
   <register-file name="RF1">
     <type>normal</type>
-    <size>11</size>
+    <size>10</size>
     <width>32</width>
     <max-reads>1</max-reads>
     <max-writes>1</max-writes>
@@ -1109,7 +1394,7 @@
 
   <register-file name="RF2">
     <type>normal</type>
-    <size>34</size>
+    <size>33</size>
     <width>32</width>
     <max-reads>1</max-reads>
     <max-writes>1</max-writes>
@@ -1123,7 +1408,7 @@
 
   <register-file name="RF1_1">
     <type>normal</type>
-    <size>11</size>
+    <size>10</size>
     <width>32</width>
     <max-reads>1</max-reads>
     <max-writes>1</max-writes>
@@ -1137,7 +1422,7 @@
 
   <register-file name="RF2_1">
     <type>normal</type>
-    <size>34</size>
+    <size>33</size>
     <width>32</width>
     <max-reads>1</max-reads>
     <max-writes>1</max-writes>
@@ -1146,6 +1431,34 @@
     </port>
     <port name="w0">
       <connects-to>RF_8x32_1_o1_1_1_2</connects-to>
+    </port>
+  </register-file>
+
+  <register-file name="RF1_2">
+    <type>normal</type>
+    <size>10</size>
+    <width>32</width>
+    <max-reads>1</max-reads>
+    <max-writes>1</max-writes>
+    <port name="r0">
+      <connects-to>RF_8x32_1_o1_1_2_1</connects-to>
+    </port>
+    <port name="w0">
+      <connects-to>RF_8x32_1_o1_1_1_3</connects-to>
+    </port>
+  </register-file>
+
+  <register-file name="RF2_2">
+    <type>normal</type>
+    <size>33</size>
+    <width>32</width>
+    <max-reads>1</max-reads>
+    <max-writes>1</max-writes>
+    <port name="r0">
+      <connects-to>RF_8x32_1_o1_1_1_3_1</connects-to>
+    </port>
+    <port name="w0">
+      <connects-to>RF_8x32_1_o1_1_2_1_1</connects-to>
     </port>
   </register-file>
 
