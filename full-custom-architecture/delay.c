@@ -284,17 +284,17 @@ void init_delay(unsigned char r_0, unsigned char angle, int *delay_array, int *i
 }
 
 
+
 void compare_and_iter(int n_prev, int *n_next, int *a_next, int *inc_term_next, int *error_next, int inc_term) {
     int out;
 
     _OA_COMPARE_AND_ITER_INT(inc_term, n_prev, out);
-                                                            //int compensated    = out >> 8;
+                                                            //int compensated           = out >> 8;
                                                             //signed char delta_a       = out & 0xFF;
-    _OA_SHIFT_SUB(out, inc_term,*error_next);           //*error_next               = in2 - compensated;
-    _OA_SHIFT_ADD(out, 0,*inc_term_next);                //*inc_term_next            = compensated;
-    _OA_MASK_ADD(out, 0, *a_next);                       //*a_next                   = delta_a;
-
-    *n_next         = n_prev + *a_next;
+    _OA_SHIFT_SUB(out, inc_term,*error_next);               //*error_next               = in2 - compensated;
+    _OA_SHIFT_ADD(out, 0,*inc_term_next);                   //*inc_term_next            = compensated;
+    _OA_MASK_ADD(out, n_prev, *n_next);                     //*n_next                   = n_prev + delta_a;
+    _OA_MERGE(out, *n_next, *a_next);                       // a_n_next                 = a_next & n_next;
 }
 
 void compare_and_iter_frac(int n_prev, int *n_next, int a_prev, int *a_next, 
@@ -304,38 +304,14 @@ void compare_and_iter_frac(int n_prev, int *n_next, int a_prev, int *a_next,
     int in2 = inc_term_w_error - inc_term_prev;
     int out;
 
-    _OA_COMPARE_AND_ITER_F(in2, n_prev, out);    
-                                                            //int compensated    = out >> 8;
+    _OA_COMPARE_AND_ITER_F(in2, a_prev, out);    
+                                                            //int compensated           = out >> 8;
                                                             //signed char delta_a       = out & 0xFF;
-    _OA_SHIFT_SUB(out, in2,*error_next);                //*error_next               = in2 - compensated;
-    _OA_SHIFT_ADD(out, inc_term_prev,*inc_term_next);    //*inc_term_next            = compensated + inc_term_prev;
-    _OA_MASK_ADD(out, a_prev, *a_next);                  //*a_next                   = a_prev + delta_a;---------------
-    
-    *n_next         = n_prev + *a_next;
+    _OA_SHIFT_SUB(out, in2,*error_next);                    //*error_next               = in2 - compensated;
+    _OA_SHIFT_ADD(out, inc_term_prev,*inc_term_next);       //*inc_term_next            = compensated + inc_term_prev;
+    _OA_MASK_ADD(out, n_prev, *n_next);                     //*n_next                   = n_prev + delta_a;
+    _OA_MERGE(out, *n_next, *a_next);                       // a_n_next                 = a_next & n_next;
 }
-
-void compare_and_iter_next_frac(int *n_prev, int *a_prev, int *inc_term_prev, int *error_prev, int *inc_term) {
-
-    // Propagate previous values
-
-    int inc_term_w_error = *inc_term + *error_prev;
-    int in2 = inc_term_w_error - *inc_term_prev;
-    int out;
-
-    _OA_COMPARE_AND_ITER_F(in2, *n_prev, out);
-                                                            //int compensated    = out >> 8;
-                                                            //signed char delta_a       = out & 0xFF;
-    _OA_MASK_ADD(out, *a_prev, *a_prev);                    //*a_next                   = a_prev + delta_a;
-    *n_prev         = *n_prev + *a_prev;
-
-    _OA_SHIFT_SUB(out, in2,*error_prev);                    //*error_next               = in2 - compensated;
-    _OA_SHIFT_ADD(out, *inc_term_prev,*inc_term_prev);      //*inc_term_next            = compensated + inc_term_prev;
-
-    *inc_term = *inc_term + 0b0100000;
-}
-
-
-
 
 void compare_and_iter_next(int *n_prev, int *a_prev, int *inc_term_prev, int *error_prev, int *inc_term) {
     // Propagate previous values
@@ -349,14 +325,36 @@ void compare_and_iter_next(int *n_prev, int *a_prev, int *inc_term_prev, int *er
                                                             //signed char delta_a       = out & 0xFF;
     _OA_SHIFT_SUB(out, in2,*error_prev);                    //*error_next               = in2 - compensated;
     _OA_SHIFT_ADD(out, 0,*inc_term_prev);                   //*inc_term_next            = compensated + inc_term_prev;
-    _OA_MASK_ADD(out, 0, *a_prev);                          //*a_next                   = a_prev + delta_a;
-
-    *n_prev         = *n_prev + *a_prev;
+    _OA_MASK_ADD(out, *n_prev, *n_prev);                    //*a_next                   = a_prev + delta_a;
+    _OA_MERGE(out, *n_prev, *a_prev);                       // a_n_next                 = a_next & n_next;
 
     *inc_term = *inc_term + 0b0100000;
 
     //iprintf("%d\n%d\n%d\n%d\n%d\n\n", in2, *error_prev, *inc_term_prev, *n_prev, *a_prev);
 }
+
+void compare_and_iter_next_frac(int *n_prev, int *a_prev, int *inc_term_prev, int *error_prev, int *inc_term) {
+
+    // Propagate previous values
+
+    int inc_term_w_error = *inc_term + *error_prev;
+    int in2 = inc_term_w_error - *inc_term_prev;
+    int out;
+
+    _OA_COMPARE_AND_ITER_F(in2, *a_prev, out);
+                                                            //int compensated           = out >> 8;
+                                                            //signed char delta_a       = out & 0xFF;
+    _OA_SHIFT_SUB(out, in2,*error_prev);                    //*error_next               = in2 - compensated;
+    _OA_SHIFT_ADD(out, *inc_term_prev,*inc_term_prev);      //*inc_term_next            = compensated + inc_term_prev;
+    _OA_MASK_ADD(out, *n_prev, *n_prev);                    //*a_next                   = a_prev + delta_a;
+    _OA_MERGE(out, *n_prev, *a_prev);                       // a_n_next                 = a_next & n_next;
+
+    *inc_term = *inc_term + 0b0100000;
+}
+
+
+
+
 
 
 
@@ -992,23 +990,6 @@ void increment_and_compare_next(int *n_prev, int *a_prev, int *inc_term_prev, in
 
     int cur_error;
     int iter_term;
-    
-    // Finding a_n through increment and compare algorithm
-    // for (int i = 1; i <= MAX_ITER; i++) {
-    //     a += INC_STEP;
-
-    //     _OA_COMP_TERM_ITER(a, *n_prev, iter_term);
-    //     //iter_term = ((*n_prev + a) >> 1) + 0b0010;
-        
-    //     comp_term += iter_term;
-
-    //     if (comp_term > inc_term_w_error) {
-    //         comp_term -= iter_term;
-    //         a -= INC_STEP;
-    //         cur_error = inc_term_w_error - comp_term;
-    //         break;
-    //     }
-    // }
 
     if (sign_bit == -1) {
         while (comp_term > inc_term_w_error) {

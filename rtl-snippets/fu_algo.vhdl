@@ -6,8 +6,8 @@ package algo_opcodes is
   constant OPC_ALGO_ADD       : std_logic_vector(2 downto 0) := "000";
   constant OPC_ALGO_FRAC      : std_logic_vector(2 downto 0) := "001";
   constant OPC_ALGO_INIT      : std_logic_vector(2 downto 0) := "010";
-  constant OPC_ALGO_INC_COMP  : std_logic_vector(2 downto 0) := "011";
-  constant OPC_ALGO_MASK_ADD  : std_logic_vector(2 downto 0) := "100";
+  constant OPC_ALGO_MASK_ADD  : std_logic_vector(2 downto 0) := "011";
+  constant OPC_ALGO_MERGE     : std_logic_vector(2 downto 0) := "100";
   constant OPC_ALGO_SHIFT_ADD : std_logic_vector(2 downto 0) := "101";
   constant OPC_ALGO_SHIFT_SUB : std_logic_vector(2 downto 0) := "110";
   constant OPC_ALGO_SUB       : std_logic_vector(2 downto 0) := "111";
@@ -47,15 +47,16 @@ architecture rtl of fu_algo is
     signal state, nextState : states;
 
     -- Internal registers
-    signal inc_term_frac, t2data_reg, compensated_reg, comp_term   : signed(dataw-1 downto 0);
-    signal a_reg                                        : signed(DW_A-1 downto 0);
-    signal sign_bit                                     : std_logic;
-    signal int_1, int_4, int_9, int_16                : integer;
+    signal inc_term_frac, t2data_reg, compensated_reg, comp_term    : signed(dataw-1 downto 0);
+    signal a_reg                                                    : signed(DW_A-1 downto 0);
+    signal sign_bit                                                 : std_logic;
+    signal int_1, int_4, int_9, int_16                              : integer;
 
+    signal term_1_int, term_2_int, term_3_int, term_4_int           : signed(dataw-1 downto 0);
 
-    signal n_prev_frac : signed(dataw-1 downto DW_A);
-    signal a_prev_frac : signed(DW_A-1 downto 0);
-    signal term_025_frac, term_050_frac : signed(dataw-1 downto DW_A);
+    signal n_prev_frac                                              : signed(dataw-1 downto DW_A);
+    signal a_prev_frac                                              : signed(DW_A-1 downto 0);
+    signal term_025_frac, term_050_frac                             : signed(dataw-1 downto DW_A);
 
 begin
     
@@ -88,7 +89,7 @@ begin
         end if;
     end process;
 
-    --Algorithm signals: integer and fractional
+    --Algorithm signals: common for integer and fractional
     ALGO_SIGNALS: process(t1data, t2data, t1opcode, rstx) begin
        if (rstx = '0') then
            comp_term     <= (others => '0');
@@ -116,11 +117,16 @@ begin
            end if;
        end if;
     end process;
-    --Algorithm signals: fractional
-    a_prev_frac     <= signed(t2data(DW_A-1 downto 0))                                                                                                              when (t1opcode = OPC_ALGO_FRAC and rstx = '1') else (others => '0');
-    n_prev_frac     <= signed(t2data(dataw-1 downto DW_A))                                                                                                          when (t1opcode = OPC_ALGO_FRAC and rstx = '1') else (others => '0');
-    term_025_frac   <= shift_right(signed(n_prev_frac), 1) + shift_right(signed(a_prev_frac), 1) + shift_left(to_signed(int_1, term_025_frac'length), DW_FRACTION)  when (t1opcode = OPC_ALGO_FRAC and rstx = '1') else (others => '0');
-    term_050_frac   <= n_prev_frac + a_prev_frac + shift_left(to_signed(int_4, term_050_frac'length), DW_FRACTION)                                                  when (t1opcode = OPC_ALGO_FRAC and rstx = '1') else (others => '0');
+    --Algorithm expressions: fractional
+    a_prev_frac     <= signed(t2data(DW_A-1 downto 0))                                                                                                                  when (t1opcode = OPC_ALGO_FRAC and rstx = '1') else (others => '0');
+    n_prev_frac     <= signed(t2data(dataw-1 downto DW_A))                                                                                                              when (t1opcode = OPC_ALGO_FRAC and rstx = '1') else (others => '0');
+    term_025_frac   <= shift_right(signed(n_prev_frac), 1) + shift_right(signed(a_prev_frac), 1) + shift_left(to_signed(int_1, term_025_frac'length), DW_FRACTION)      when (t1opcode = OPC_ALGO_FRAC and rstx = '1') else (others => '0');
+    term_050_frac   <= n_prev_frac + a_prev_frac + shift_left(to_signed(int_4, term_050_frac'length), DW_FRACTION)                                                      when (t1opcode = OPC_ALGO_FRAC and rstx = '1') else (others => '0');
+    --Algorithm expressions: integer
+    term_1_int      <= shift_left(signed(t2data), 1) + shift_left(to_signed(int_1, t2data'length),DW_FRACTION)                                      when (t1opcode = OPC_ALGO_INIT and rstx = '1') else (others => '0'); 
+    term_2_int      <= shift_left(signed(t2data), 2) + shift_left(to_signed(int_4, t2data'length), DW_FRACTION)                                     when (t1opcode = OPC_ALGO_INIT and rstx = '1') else (others => '0');
+    term_3_int      <= shift_left(signed(t2data), 2) + shift_left(signed(t2data), 1) + shift_left(to_signed(int_9, t2data'length),DW_FRACTION)      when (t1opcode = OPC_ALGO_INIT and rstx = '1') else (others => '0');
+    term_4_int      <= shift_left(signed(t2data), 3) + shift_left(to_signed(int_16, t2data'length),DW_FRACTION)                                     when (t1opcode = OPC_ALGO_INIT and rstx = '1') else (others => '0');
 
     -- Module logic
     FUNC: process (clk) begin
@@ -139,29 +145,29 @@ begin
                                 sign_bit    <= t1data(dataw-1);
                                 t2data_reg  <= signed(t2data);
                                 -- INTEGER
-                                if (signed(signed(shift_left(signed(t2data), 1)) + shift_left(to_signed(int_1, t2data'length),DW_FRACTION)) > comp_term) then
+                                if (term_1_int > comp_term) then
                                     -- 0
                                     inc_term_frac <= comp_term;
-                                elsif (signed(signed(shift_left(signed(t2data), 2)) + shift_left(to_signed(int_4, t2data'length), DW_FRACTION)) > comp_term) then
+                                elsif (term_2_int > comp_term) then
                                     -- 1
                                     a_reg(DW_A-1 downto DW_FRACTION)    <= to_signed(1, a_reg'length-DW_FRACTION);
-                                    inc_term_frac                       <= comp_term - signed(shift_left(signed(t2data), 1)) - signed(shift_left(to_signed(int_1, t2data'length),DW_FRACTION));
-                                    compensated_reg                     <= signed(signed(shift_left(signed(t2data), 1)) + shift_left(to_signed(int_1, t2data'length),DW_FRACTION));
-                                elsif ((signed(signed(shift_left(signed(t2data), 2)) + signed(shift_left(signed(t2data), 1)) + shift_left(to_signed(int_9, t2data'length),DW_FRACTION))) > comp_term) then
+                                    inc_term_frac                       <= comp_term - term_1_int;
+                                    compensated_reg                     <= term_1_int;
+                                elsif (term_3_int > comp_term) then
                                     -- 2
                                     a_reg(DW_A-1 downto DW_FRACTION)    <= to_signed(2, a_reg'length-DW_FRACTION);
-                                    inc_term_frac                       <= comp_term - signed(shift_left(signed(t2data), 2)) - signed(shift_left(to_signed(int_4, t2data'length),DW_FRACTION));
-                                    compensated_reg                     <= signed(signed(shift_left(signed(t2data), 2)) + shift_left(to_signed(int_4, t2data'length), DW_FRACTION));
-                                elsif (signed(signed(shift_left(signed(t2data), 3)) + signed(shift_left(to_signed(int_16, t2data'length),DW_FRACTION))) > comp_term) then
+                                    inc_term_frac                       <= comp_term - term_2_int;
+                                    compensated_reg                     <= term_2_int;
+                                elsif (term_4_int > comp_term) then
                                     -- 3
                                     a_reg(DW_A-1 downto DW_FRACTION)    <= to_signed(3, a_reg'length-DW_FRACTION);
-                                    inc_term_frac                       <= comp_term - signed(shift_left(signed(t2data), 2)) - signed(shift_left(signed(t2data), 1)) - signed(shift_left(to_signed(int_9, t2data'length),DW_FRACTION));
-                                    compensated_reg                     <= (signed(signed(shift_left(signed(t2data), 2)) + signed(shift_left(signed(t2data), 1)) + shift_left(to_signed(int_9, t2data'length),DW_FRACTION)));
+                                    inc_term_frac                       <= comp_term - term_3_int;
+                                    compensated_reg                     <= term_3_int;
                                 else
                                     --4
                                     a_reg(DW_A-1 downto DW_FRACTION)    <= to_signed(4, a_reg'length-DW_FRACTION);
-                                    inc_term_frac                       <= comp_term - signed(shift_left(signed(t2data), 3)) - signed(shift_left(to_signed(int_16, t2data'length),DW_FRACTION));
-                                    compensated_reg                     <= signed(signed(shift_left(signed(t2data), 3)) + signed(shift_left(to_signed(int_16, t2data'length),DW_FRACTION)));
+                                    inc_term_frac                       <= comp_term - term_4_int;
+                                    compensated_reg                     <= term_4_int;
                                 end if;
                             when OPC_ALGO_FRAC  =>
                                 if (term_025_frac > comp_term) then
@@ -201,55 +207,50 @@ begin
                               r1data <= std_logic_vector(signed(t1data) + signed(t2data));
                             when OPC_ALGO_SUB         => 
                               r1data <= std_logic_vector(signed(t1data) - signed(t2data));
-                            when OPC_ALGO_INC_COMP    =>
-                              if (signed(t2data) < 0) then
-                                  r1data <= std_logic_vector(signed(t1data) - signed(shift_left(signed(t2data),1)));
-                              else
-                                  r1data <= std_logic_vector(signed(t1data) + signed(shift_left(signed(t2data),1)));
-                              end if;
+                            when OPC_ALGO_MERGE       =>
+                              r1data <= t2data(dataw-DW_A-1 downto 0) & t1data(DW_A-1 downto 0);
                             when others =>  null;
                         end case;
                     end if;
                 when Run    =>  
-                    -- FRACTION (FRACTIONAL PART CAN BE CONCATENATED INSTEAD OF ADDED)                  ||||||||||||||||||||||||
-                    if (signed(shift_right(signed(t2data_reg), 1)) + to_signed(1, t2data_reg'length) > inc_term_frac) then  -- 2*0.25*N_prev + 0.25^2
+                    if (shift_right(t2data_reg, 1) + to_signed(1, t2data_reg'length) > inc_term_frac) then  -- 2*0.25*N_prev + 0.25^2
                         -- 0.0
                         if (sign_bit = '0') then
                             r1data(DW_A-1 downto 0)         <= std_logic_vector(a_reg(DW_A-1 downto DW_FRACTION) & "0000");
                             r1data(dataw-1 downto DW_A)     <= std_logic_vector(compensated_reg(dataw-DW_A-1 downto 0));
                         else
                             r1data(DW_A-1 downto 0)         <= std_logic_vector(-signed(a_reg(DW_A-1 downto DW_FRACTION) & "0000"));
-                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(-signed(compensated_reg(dataw-DW_A-1 downto 0)));
+                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(-compensated_reg(dataw-DW_A-1 downto 0));
                         end if;
 
-                    elsif (signed(t2data_reg) + signed(shift_left(to_signed(1, t2data_reg'length),DW_FRACTION-2)) > inc_term_frac) then
+                    elsif (t2data_reg + to_signed(4, t2data_reg'length) > inc_term_frac) then -- 2*0.5*N_prev + 0.5^2
                         -- 0.25
                         if (sign_bit = '0') then
                             r1data(DW_A-1 downto 0)         <= std_logic_vector(a_reg(DW_A-1 downto DW_FRACTION) & "0100");
-                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(signed(compensated_reg(dataw-DW_A-1 downto 0)) + signed(shift_right(resize(a_reg,dataw-DW_A),1)) + signed(shift_right(signed(t2data_reg(dataw-DW_A-1 downto 0)), 1)) + signed(shift_left(to_signed(1, dataw-DW_A),DW_FRACTION-4)));
+                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(compensated_reg(dataw-DW_A-1 downto 0) + shift_right(resize(a_reg,dataw-DW_A),1) + shift_right(t2data_reg(dataw-DW_A-1 downto 0), 1) + to_signed(1, dataw-DW_A));
                         else
                             r1data(DW_A-1 downto 0)         <= std_logic_vector(-signed(a_reg(DW_A-1 downto DW_FRACTION) & "0100"));
-                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(signed(-signed(compensated_reg(dataw-DW_A-1 downto 0)) + signed(shift_right(resize(a_reg,dataw-DW_A),1)) - signed(shift_right(signed(t2data_reg(dataw-DW_A-1 downto 0)), 1)) + signed(shift_left(to_signed(1, dataw-DW_A),DW_FRACTION-4))));
+                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(-compensated_reg(dataw-DW_A-1 downto 0) + shift_right(resize(a_reg,dataw-DW_A),1) - shift_right(t2data_reg(dataw-DW_A-1 downto 0), 1) + to_signed(1, dataw-DW_A));
                         end if;
-                    elsif (signed(shift_right(signed(t2data_reg), 1)) + signed(t2data_reg)) + signed(shift_left(to_signed(1, t2data_reg'length),DW_FRACTION-4)) + signed(shift_left(to_signed(1, t2data_reg'length),DW_FRACTION-1)) > inc_term_frac then
+                    elsif (shift_right(t2data_reg, 1) + t2data_reg + to_signed(9, t2data_reg'length) > inc_term_frac) then -- 2*0.5*N_prev + 0.5^2
                         -- 0.5
                         if (sign_bit = '0') then
                             r1data(DW_A-1 downto 0)         <= std_logic_vector(a_reg(DW_A-1 downto DW_FRACTION) & "1000");
-                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(signed(compensated_reg(dataw-DW_A-1 downto 0)) + signed(t2data_reg(dataw-DW_A-1 downto 0)) + signed(resize(a_reg,dataw-DW_A)) + signed(shift_left(to_signed(1, dataw-DW_A),DW_FRACTION-2)));
+                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(compensated_reg(dataw-DW_A-1 downto 0) + t2data_reg(dataw-DW_A-1 downto 0) + resize(a_reg,dataw-DW_A) + to_signed(4, dataw-DW_A));
                         else
                             r1data(DW_A-1 downto 0)         <= std_logic_vector(-signed(a_reg(DW_A-1 downto DW_FRACTION) & "1000"));
-                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(signed(-signed(compensated_reg(dataw-DW_A-1 downto 0)) - signed(t2data_reg(dataw-DW_A-1 downto 0)) + signed(resize(a_reg,dataw-DW_A)) + signed(shift_left(to_signed(1, dataw-DW_A),DW_FRACTION-2))));
+                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(-compensated_reg(dataw-DW_A-1 downto 0) - t2data_reg(dataw-DW_A-1 downto 0) + resize(a_reg,dataw-DW_A) + to_signed(4, dataw-DW_A));
                         end if;
                     else
                         -- 0.75
                         if (sign_bit = '0') then
                             r1data(DW_A-1 downto 0)         <= std_logic_vector(a_reg(DW_A-1 downto DW_FRACTION) & "1100");
-                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(signed(compensated_reg(dataw-DW_A-1 downto 0)) + signed(shift_right(signed(t2data_reg(dataw-DW_A-1 downto 0)), 1)) + signed(t2data_reg(dataw-DW_A-1 downto 0)) 
-                                                                + signed(resize(a_reg,dataw-DW_A)) + signed(shift_right(resize(a_reg,dataw-DW_A),1)) + signed(shift_left(to_signed(1, dataw-DW_A),DW_FRACTION-4)) + signed(shift_left(to_signed(1, dataw-DW_A),DW_FRACTION-1)));
+                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(compensated_reg(dataw-DW_A-1 downto 0) + shift_right(t2data_reg(dataw-DW_A-1 downto 0), 1) + t2data_reg(dataw-DW_A-1 downto 0) 
+                                                                                + resize(a_reg,dataw-DW_A) + shift_right(resize(a_reg,dataw-DW_A),1) + to_signed(9, dataw-DW_A));
                         else
                             r1data(DW_A-1 downto 0)         <= std_logic_vector(-signed(a_reg(DW_A-1 downto DW_FRACTION) & "1100"));
-                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(signed(-signed(compensated_reg(dataw-DW_A-1 downto 0)) - signed(shift_right(signed(t2data_reg(dataw-DW_A-1 downto 0)), 1)) - signed(t2data_reg(dataw-DW_A-1 downto 0)) 
-                                                                + signed(resize(a_reg,dataw-DW_A)) + signed(shift_right(resize(a_reg,dataw-DW_A),1)) + signed(shift_left(to_signed(1, dataw-DW_A),DW_FRACTION-4)) + signed(shift_left(to_signed(1, dataw-DW_A),DW_FRACTION-1))));
+                            r1data(dataw-1 downto DW_A)     <= std_logic_vector(-compensated_reg(dataw-DW_A-1 downto 0) - shift_right(t2data_reg(dataw-DW_A-1 downto 0), 1) - t2data_reg(dataw-DW_A-1 downto 0) 
+                                                                                + resize(a_reg,dataw-DW_A) + shift_right(resize(a_reg,dataw-DW_A),1) + to_signed(9, dataw-DW_A));
                         end if;
                     end if;
 

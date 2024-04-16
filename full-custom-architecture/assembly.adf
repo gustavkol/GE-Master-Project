@@ -1109,47 +1109,7 @@
       </pipeline>
     </operation>
     <operation>
-      <name>inc_comp_next</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
       <name>merge</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>compare_and_iter_f_new</name>
       <bind name="1">P1</bind>
       <bind name="2">P2</bind>
       <bind name="3">P3</bind>
@@ -1349,47 +1309,7 @@
       </pipeline>
     </operation>
     <operation>
-      <name>inc_comp_next</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
       <name>merge</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>compare_and_iter_f_new</name>
       <bind name="1">P1</bind>
       <bind name="2">P2</bind>
       <bind name="3">P3</bind>
@@ -1547,47 +1467,7 @@
       </pipeline>
     </operation>
     <operation>
-      <name>inc_comp_next</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
       <name>merge</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>compare_and_iter_f_new</name>
       <bind name="1">P1</bind>
       <bind name="2">P2</bind>
       <bind name="3">P3</bind>
@@ -1745,47 +1625,7 @@
       </pipeline>
     </operation>
     <operation>
-      <name>inc_comp_next</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
       <name>merge</name>
-      <bind name="1">P1</bind>
-      <bind name="2">P2</bind>
-      <bind name="3">P3</bind>
-      <pipeline>
-        <reads name="1">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <reads name="2">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </reads>
-        <writes name="3">
-          <start-cycle>0</start-cycle>
-          <cycles>1</cycles>
-        </writes>
-      </pipeline>
-    </operation>
-    <operation>
-      <name>compare_and_iter_f_new</name>
       <bind name="1">P1</bind>
       <bind name="2">P2</bind>
       <bind name="3">P3</bind>

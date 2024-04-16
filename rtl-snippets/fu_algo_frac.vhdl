@@ -5,8 +5,8 @@ package algo_frac_opcodes is
 
   constant OPC_ALGO_ADD       : std_logic_vector(2 downto 0) := "000";
   constant OPC_ALGO_FRAC      : std_logic_vector(2 downto 0) := "001";
-  constant OPC_ALGO_INC_COMP  : std_logic_vector(2 downto 0) := "010";
-  constant OPC_ALGO_MASK_ADD  : std_logic_vector(2 downto 0) := "011";
+  constant OPC_ALGO_MASK_ADD  : std_logic_vector(2 downto 0) := "010";
+  constant OPC_ALGO_INC_COMP  : std_logic_vector(2 downto 0) := "011";
   constant OPC_ALGO_SHIFT_ADD : std_logic_vector(2 downto 0) := "100";
   constant OPC_ALGO_SHIFT_SUB : std_logic_vector(2 downto 0) := "101";
   constant OPC_ALGO_SUB       : std_logic_vector(2 downto 0) := "110";
@@ -127,12 +127,8 @@ begin
                         r1data <= std_logic_vector(signed(t1data) + signed(t2data));
                     when OPC_ALGO_SUB         => 
                         r1data <= std_logic_vector(signed(t1data) - signed(t2data));
-                    when OPC_ALGO_INC_COMP    =>
-                        if (signed(t2data) < 0) then
-                            r1data <= std_logic_vector(signed(t1data) - signed(shift_left(signed(t2data),1)));
-                        else
-                            r1data <= std_logic_vector(signed(t1data) + signed(shift_left(signed(t2data),1)));
-                        end if;
+                    when OPC_ALGO_MERGE    =>
+                        r1data <= t2data(dataw-DW_A downto 0) & t1data(DW_A-1 downto 0);
                     when others =>  null;
                 end case;
             end if;
