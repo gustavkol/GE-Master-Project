@@ -3,7 +3,7 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use ieee.std_logic_misc.all;
 
-entity cordic is 
+entity fu_cordic is 
     generic (
         DW_ANGLE                : integer := 8;
         DW_FRACTION             : integer := 6;
@@ -12,9 +12,9 @@ entity cordic is
         NUM_ITERATIONS          : integer := 11
     );
     port (
-        t1data : in std_logic_vector(DW_ANGLE-1 downto 0);
+        t1data : in std_logic_vector(dataw-1 downto 0);
         t1load : in std_logic;
-        t2data : in std_logic_vector(DW_CALCULATION_TERMS+DW_FRACTION-1 downto 0);
+        t2data : in std_logic_vector(dataw-1 downto 0);
         t2load : in std_logic;
         r1data : out std_logic_vector(dataw-1 downto 0);
 
@@ -22,9 +22,9 @@ entity cordic is
         clk     : in std_logic;
         rstx    : in std_logic
     );
-end cordic;
+end fu_cordic;
 
-architecture rtl of cordic is
+architecture rtl of fu_cordic is
     -- Local parameters
     constant DW_ROTATED_ANGLE_INTEGER : integer := 7;
 
@@ -89,13 +89,13 @@ begin
             case state is 
                 when Idle   => 
                     if (glock = '0' and t1load = '1') then 
-                        x_cur_reg <= (shift_right(signed(t2data), 1) + shift_right(signed(t2data), 4) + shift_right(signed(t2data), 5) + shift_right(signed(t2data), 6));
+                        x_cur_reg <= resize(shift_right(signed(t2data), 1) + shift_right(signed(t2data), 4) + shift_right(signed(t2data), 5) + shift_right(signed(t2data), 6), DW_CALCULATION_TERMS+DW_FRACTION);
                         --x_cur_reg <= shift_left(signed(t2data), 6-1) + shift_left(signed(t2data), 6-4) + shift_left(signed(t2data), 6-5) + signed(t2data);
                         if (to_integer(signed(t1data)) > 90) then
-                            angle_cur_reg <= signed(to_signed(180, t1data'length) - signed(t1data)) & (5 downto 0 => '0');
+                            angle_cur_reg <= resize(signed(to_signed(180, t1data'length) - signed(t1data)),DW_ANGLE) & (5 downto 0 => '0');
                             sign_bit      <= '1';
                         else
-                            angle_cur_reg <= (signed(t1data) & (5 downto 0 => '0'));
+                            angle_cur_reg <= resize(signed(t1data),DW_ANGLE) & (5 downto 0 => '0');
                             sign_bit      <= '0';
                         end if;                        
                     end if;

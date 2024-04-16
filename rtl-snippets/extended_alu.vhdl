@@ -37,7 +37,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_misc.all;
 
-entity minimal_alu is
+entity extended_alu is
   port (
     clk : in std_logic;
     rstx : in std_logic;
@@ -48,24 +48,25 @@ entity minimal_alu is
     data_in2_in : in std_logic_vector(32-1 downto 0);
     load_in2_in : in std_logic;
     data_out1_out : out std_logic_vector(32-1 downto 0));
-end entity minimal_alu;
+end entity extended_alu;
 
-architecture rtl of minimal_alu is
+architecture rtl of extended_alu is
 
   constant op_add_c : std_logic_vector(3 downto 0) := "0000";
   constant op_and_c : std_logic_vector(3 downto 0) := "0001";
-  constant op_eq_c : std_logic_vector(3 downto 0) := "0010";
-  constant op_gt_c : std_logic_vector(3 downto 0) := "0011";
-  constant op_gtu_c : std_logic_vector(3 downto 0) := "0100";
-  constant op_ior_c : std_logic_vector(3 downto 0) := "0101";
-  constant op_shr1_32_c : std_logic_vector(3 downto 0) := "0110";
-  constant op_shru1_32_c : std_logic_vector(3 downto 0) := "0111";
-  constant op_sub_c : std_logic_vector(3 downto 0) := "1000";
-  constant op_xor_c : std_logic_vector(3 downto 0) := "1001";
+  constant op_const_mult_bn : std_logic_vector(3 downto 0) := "0010";
+  constant op_const_mult_c0 : std_logic_vector(3 downto 0) := "0011";
+  constant op_const_mult_n0 : std_logic_vector(3 downto 0) := "0100";
+  constant op_eq_c : std_logic_vector(3 downto 0) := "0101";
+  constant op_gt_c : std_logic_vector(3 downto 0) := "0110";
+  constant op_gtu_c : std_logic_vector(3 downto 0) := "0111";
+  constant op_ior_c : std_logic_vector(3 downto 0) := "1000";
+  constant op_shr1_32_c : std_logic_vector(3 downto 0) := "1001";
+  constant op_shru1_32_c : std_logic_vector(3 downto 0) := "1010";
+  constant op_sub_c : std_logic_vector(3 downto 0) := "1011";
+  constant op_xor_c : std_logic_vector(3 downto 0) := "1100";
 
-  constant op_const_mult_bn : std_logic_vector(3 downto 0) := "1010";
-  constant op_const_mult_c0 : std_logic_vector(3 downto 0) := "1011";
-  constant op_const_mult_n0 : std_logic_vector(3 downto 0) := "1100";
+
 
   signal data_in1t : std_logic_vector(31 downto 0);
   signal data_in2 : std_logic_vector(31 downto 0);
@@ -159,13 +160,11 @@ begin
               data_out1_r <= data_in1t xor data_in2;
 
             when op_const_mult_bn =>
-              data_out1_r  <= std_logic_vector(unsigned(shift_left(unsigned(data_in1t),5+4)) + unsigned(shift_left(unsigned(data_in1t),4-1)) 
-                                            - unsigned(shift_right(unsigned(data_in1t),5-4)) - unsigned(shift_right(unsigned(data_in1t),10-4))); 
+              data_out1_r  <= std_logic_vector(signed(shift_left(signed(data_in1t),5+4)) + signed(shift_left(signed(data_in1t),4-1)) - signed(shift_right(signed(data_in1t),5-4)) - signed(shift_right(signed(data_in1t),10-4))); 
             when op_const_mult_c0 =>
-              data_out1_r  <= std_logic_vector(unsigned(shift_left(unsigned(data_in1t),7+4)) + unsigned(shift_left(unsigned(data_in1t),1+4)) + unsigned(shift_left(unsigned(data_in1t),0+4))
-                                            + unsigned(shift_left(unsigned(data_in1t),4-1)) + unsigned(shift_left(unsigned(data_in1t),4-2)));
+              data_out1_r  <= std_logic_vector(unsigned(shift_left(unsigned(data_in1t),7+4)) + unsigned(shift_left(unsigned(data_in1t),1+4)) + unsigned(shift_left(unsigned(data_in1t),0+4)) + unsigned(shift_left(unsigned(data_in1t),4-1)) + unsigned(shift_left(unsigned(data_in1t),4-2)));
             when op_const_mult_n0 =>
-              data_out1_r  <= std_logic_vector(unsigned(shift_left(unsigned(data_in1t),4+4)) + unsigned(shift_left(unsigned(data_in1t),4-2)) - unsigned(shift_right(unsigned(data_in1t),6-4)));
+              data_out1_r  <= std_logic_vector(signed(shift_left(signed(data_in1t),4+4)) + signed(shift_left(signed(data_in1t),4-2)) - signed(shift_right(signed(data_in1t),6-4)));
             when others =>
           end case;
         end if;
