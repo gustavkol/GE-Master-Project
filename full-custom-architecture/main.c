@@ -1,8 +1,8 @@
 #include "delay.h"
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 #include <stdio.h>
-#endif
+//#endif
 
 volatile int delay_array_v[NUM_HALF_TRANSDUCERS+1];
 
@@ -14,19 +14,22 @@ int main(void)
 
     int delay_array[NUM_HALF_TRANSDUCERS+1];
     int inc_term_array[NUM_HALF_TRANSDUCERS+1];
+
     int error_array[NUM_HALF_TRANSDUCERS+1]         = {0};
-
-    init_delay(r_0, angle, delay_array, inc_term_array, error_array);
-    //init_delay_base(r_0, angle, delay_array, inc_term_array);
-
     int a_array[NUM_HALF_TRANSDUCERS+1]             = {0};
     int inc_term_prev_array[NUM_HALF_TRANSDUCERS+1] = {0};
 
-    next_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+    //init_delay(r_0, angle, delay_array, inc_term_array);
+    //next_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+    //next_delay_frac(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+    //next_delay_frac(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+    //next_delay_frac(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
 
-    next_delay_frac(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
-    //next_delay_frac(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
-    //next_delay_frac(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+    init_delay_base(r_0, angle, delay_array, inc_term_array);
+    next_delay_base(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+    //next_delay_base(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+
+
 
 
     for (int i = 0; i < NUM_HALF_TRANSDUCERS+1; i++) {

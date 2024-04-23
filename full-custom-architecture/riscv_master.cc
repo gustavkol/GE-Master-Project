@@ -77,71 +77,83 @@ TRIGGER
     signed int delta_a = 0;
     signed int compensated_term = 0;
     signed int fractional_inc_term = 0;
+    signed int shift_int = 0;
+    signed int shift_true = 1;
 
     if (inc_term < 0) {
-        if (((1 << 4) - (a_n_prev << 1)) < inc_term) {  // < 1
+        if (((1 << 4) - ((a_n_prev-16) << 1)) < inc_term) {  // < 1
             delta_a = 0;
             compensated_term = 0;
-        } else if (((4 << 4) - (a_n_prev << 2)) < inc_term) { // < 2
+            shift_true = 0;
+        } else if (((4 << 4) - ((a_n_prev-32) << 2)) < inc_term) { // < 2
             delta_a = -(1 << 4);
-            compensated_term = (1 << 4) - (a_n_prev << 1);
-        } else if (((9 << 4) - (a_n_prev << 1) - (a_n_prev << 2)) < inc_term) { // < 3
+            compensated_term = (1 << 4) - ((a_n_prev-16) << 1);
+            shift_int = 1;
+        } else if (((9 << 4) - ((a_n_prev-48) << 1) - ((a_n_prev-48) << 2)) < inc_term) { // < 3
             delta_a = -(2 << 4);
-            compensated_term = (4 << 4) - (a_n_prev << 2);
-        } else if (((16 << 4) - (a_n_prev << 3)) < inc_term) { // < 4
+            compensated_term = (4 << 4) - ((a_n_prev-32) << 2);
+            shift_int = 2;
+        } else if (((16 << 4) - ((a_n_prev-64) << 3)) < inc_term) { // < 4
             delta_a = -(3 << 4);
-            compensated_term = (9 << 4) - (a_n_prev << 1) - (a_n_prev << 2);
+            compensated_term = (9 << 4) - ((a_n_prev-48) << 1) - ((a_n_prev-48) << 2);
+            shift_int = 3;
         } else {
             delta_a = -(4 << 4);
-            compensated_term = (16 << 4) - (a_n_prev << 3);
+            compensated_term = (16 << 4) - ((a_n_prev-64) << 3);
+            shift_int = 4;
         }
 
         fractional_inc_term = inc_term - compensated_term;
 
-        if ((1 - (a_n_prev >> 1)) < fractional_inc_term) { // 0.25
+        if ((1 - ((a_n_prev+delta_a-4) >> 1) - (delta_a >> 1) + shift_true*(4 << shift_int)) < fractional_inc_term) { // 0.25
             compensated_term = compensated_term + 0;
             delta_a = delta_a + 0;
-        } else if (((1 << 2) - a_n_prev) < fractional_inc_term) { // 0.5
-            compensated_term = compensated_term - (a_n_prev >> 1) + 1 + (delta_a >> 1);
+        } else if (((1 << 2) - a_n_prev+delta_a-8 - delta_a + shift_true*(8 << shift_int)) < fractional_inc_term) { // 0.5
+            compensated_term = compensated_term + 1 - ((a_n_prev+delta_a-4) >> 1) - (delta_a >> 1) + shift_true*(4 << shift_int);//((a_n_prev-4) >> 1) + 1 + (delta_a >> 1);
             delta_a = delta_a - (1 << 2);
-        } else if (((1 << 3) + 1 - a_n_prev - (a_n_prev >> 1)) < fractional_inc_term) { // 0.75
-            compensated_term = compensated_term + ((1 << 2) - a_n_prev + delta_a);
+        } else if (((1 << 3) + 1 - a_n_prev+delta_a-12 - ((a_n_prev+delta_a-12) >> 1) - delta_a - (delta_a >> 1) + shift_true*(8 << shift_int)) < fractional_inc_term) { // 0.75
+            compensated_term = compensated_term + (1 << 2) - a_n_prev+delta_a-8 - delta_a + shift_true*(8 << shift_int);//((1 << 2) - a_n_prev-8 + delta_a);
             delta_a = delta_a - (1 << 3);
         } else {    // 0.5
-            compensated_term = compensated_term + ((1 << 3) + 1 - a_n_prev - (a_n_prev >> 1) + delta_a + (delta_a >> 1));
+            compensated_term = compensated_term + (1 << 3) + 1 - a_n_prev+delta_a-12 - ((a_n_prev+delta_a-12) >> 1) - delta_a - (delta_a >> 1) + shift_true*(8 << shift_int);//((1 << 3) + 1 - a_n_prev-12 - ((a_n_prev-12) >> 1) + delta_a + (delta_a >> 1));
             delta_a = delta_a - (1 << 2) - (1 << 3);
         } 
     } else {
-        if (((1 << 4) + (a_n_prev << 1)) > inc_term) {
+        if (((1 << 4) + ((a_n_prev+16) << 1)) > inc_term) {
             delta_a = 0;
             compensated_term = 0;
-        } else if (((4 << 4) + (a_n_prev << 2)) > inc_term) {
+            shift_true = 0;
+        } else if (((4 << 4) + ((a_n_prev+32) << 2)) > inc_term) {
             delta_a = (1 << 4);
-            compensated_term = (1 << 4) + (a_n_prev << 1);
-        } else if (((9 << 4) + (a_n_prev << 1) + (a_n_prev << 2)) > inc_term) {
+            compensated_term = (1 << 4) + ((a_n_prev+16) << 1);
+            shift_int = 1;
+        } else if (((9 << 4) + ((a_n_prev+48) << 1) + ((a_n_prev+48) << 2)) > inc_term) {
             delta_a = (2 << 4);
-            compensated_term = (4 << 4) + (a_n_prev << 2);
-        } else if (((16 << 4) + (a_n_prev << 3)) > inc_term) {
+            compensated_term = (4 << 4) + ((a_n_prev+32) << 2);
+            shift_int = 2;
+        } else if (((16 << 4) + ((a_n_prev+64) << 3)) > inc_term) {
             delta_a = (3 << 4);
-            compensated_term = (9 << 4) + (a_n_prev << 1) + (a_n_prev << 2);
+            compensated_term = (9 << 4) + ((a_n_prev+48) << 1) + ((a_n_prev+48) << 2);
+            shift_int = 3;
         } else {
             delta_a = (4 << 4);
-            compensated_term = (16 << 4) + (a_n_prev << 3);
+            compensated_term = (16 << 4) + ((a_n_prev+64) << 3);
+            shift_int = 4;
         }
 
         fractional_inc_term = inc_term - compensated_term;
 
-        if ((1 + (a_n_prev >> 1)) > fractional_inc_term) { // 0.25
+        if ((1 + ((a_n_prev+delta_a+4) >> 1) + (delta_a >> 1) + shift_true*(4 << shift_int)) > fractional_inc_term) { // 0.25
             compensated_term = compensated_term + 0;
             delta_a = delta_a + 0;
-        } else if (((1 << 2) + a_n_prev) > fractional_inc_term) { // 0.5
-            compensated_term = compensated_term + 1 + (a_n_prev >> 1) + (delta_a >> 1);
+        } else if (((1 << 2) + a_n_prev+delta_a+8 + delta_a + shift_true*(8 << shift_int)) > fractional_inc_term) { // 0.5
+            compensated_term = compensated_term + 1 + ((a_n_prev+delta_a+4) >> 1) + (delta_a >> 1) + shift_true*(4 << shift_int);
             delta_a = delta_a + (1 << 2);
-        } else if (((1 << 3) + 1 + a_n_prev + (a_n_prev >> 1)) > fractional_inc_term) { // 0.75
-            compensated_term = compensated_term + ((1 << 2) + a_n_prev + delta_a);
+        } else if (((1 << 3) + 1 + a_n_prev+delta_a+12 + ((a_n_prev+delta_a+12) >> 1)) > fractional_inc_term) { // 0.75
+            compensated_term = compensated_term + ((1 << 2) + a_n_prev+delta_a+8 + delta_a + shift_true*(8 << shift_int));
             delta_a = delta_a + (1 << 3);
         } else {    // 0.5
-            compensated_term = compensated_term + ((1 << 3) + 1 + a_n_prev + (a_n_prev >> 1) + delta_a + (delta_a >> 1));
+            compensated_term = compensated_term + ((1 << 3) + 1 + a_n_prev+delta_a+12 + ((a_n_prev+delta_a+12) >> 1) + delta_a + (delta_a >> 1) + shift_true*(8 << shift_int));
             delta_a = delta_a + (1 << 2) + (1 << 3);
         }      
     }
@@ -153,51 +165,23 @@ END_TRIGGER;
 END_OPERATION(COMPARE_AND_ITER_INT)
 
 
-// OPERATION(COMPARE_AND_ITER_F_OLD)
-// TRIGGER
-// 	signed int a_n_prev = INT(2);   // a_prev + n_prev
-// 	signed int inc_term = INT(1);   // inc_term_w_error - inc_term_prev
+OPERATION(COMPARE_AND_ITER_F_INIT)
+TRIGGER
+	signed int a_n_prev_n = INT(1);   // N_{n-1,k} & a_{n-1}
+	signed int a_n_prev_k = INT(2);   // N_{n,k-1} & a_{k-1}
 
-//     signed int delta_a = 0;
-//     signed int compensated_term = 0;
+    /********************* NEW SOLUTION *********************/
+    signed int a_n = ((a_n_prev_n << 32-8) >> 32-8);
+    signed int a_k = ((a_n_prev_k << 32-8) >> 32-8);
 
+    signed int compensated_term = (a_k << 3) * ((a_n >> 6) & 1) + (a_k << 2) * ((a_n >> 5) & 1) + (a_k << 1) * ((a_n >> 4) & 1) + a_k * ((a_n >> 3) & 1) + (a_k >> 1) * ((a_n >> 2) & 1);
+    /********************************************************/
 
-//     if (inc_term < 0) {
-//         if (((1 << 2) - (a_n_prev >> 1)) < inc_term) { // 0.25
-//             delta_a = 0;
-//             compensated_term = 0;
-//         } else if (((1 << 3) - a_n_prev) < inc_term) { // 0.5
-//             delta_a = -(1 << 2);
-//             compensated_term = (1 << 2) - (a_n_prev >> 1);
-//         } else if (((1 << 3) + 1 - a_n_prev - (a_n_prev >> 1)) < inc_term) { // 0.75
-//             delta_a = -(1 << 3);
-//             compensated_term = (1 << 3) - a_n_prev;
-//         } else {
-//             delta_a = -(1 << 2) - (1 << 3);
-//             compensated_term = (1 << 3) + 1 - a_n_prev - (a_n_prev >> 1);
-//         }
-            
-//     } else {
-//         if (((1 << 2) + (a_n_prev >> 1)) > inc_term) { // 0.25
-//             delta_a = 0;
-//             compensated_term = 0;
-//         } else if (((1 << 3) + a_n_prev) > inc_term) { // 0.5
-//             delta_a = (1 << 2);
-//             compensated_term = ((1 << 2) + (a_n_prev >> 1));
-//         } else if (((1 << 3) + 1 + a_n_prev + (a_n_prev >> 1)) > inc_term) { // 0.75
-//             delta_a = (1 << 3);
-//             compensated_term = ((1 << 3) + a_n_prev);
-//         } else {
-//             delta_a = (1 << 2) + (1 << 3);
-//             compensated_term = ((1 << 3) + 1 + a_n_prev + (a_n_prev >> 1));
-//         }      
-//     }
-
-// 	signed int result = (compensated_term  << 8) | (delta_a & 0x000000FF); // a_next & inc_term_next
-//     IO(3) = static_cast<signed> (result);
-//     return true;
-// END_TRIGGER;
-// END_OPERATION(COMPARE_AND_ITER_F_OLD)
+	signed int result = (compensated_term  << 8) | (a_n & 0x000000FF); // a_next & inc_term_next
+    IO(3) = static_cast<signed> (result);
+    return true;
+END_TRIGGER;
+END_OPERATION(COMPARE_AND_ITER_F_INIT)
 
 
 OPERATION(COMPARE_AND_ITER_F)
@@ -210,36 +194,42 @@ TRIGGER
 
     /********************* NEW SOLUTION *********************/
     signed int a_prev = ((a_n_prev << 32-8) >> 32-8);
+    signed int a_abs;
     signed int n_prev = a_n_prev >> 8;
+    
+    if(a_prev < 0)
+        a_abs = -a_prev;
+    else
+        a_abs = a_prev;
 
-    signed int a_sq = 0;//(a_prev << 3) * ((a_prev >> 6) & 1) + (a_prev << 2) * ((a_prev >> 5) & 1) + (a_prev << 1) * ((a_prev >> 4) & 1) + a_prev * ((a_prev >> 3) & 1) + (a_prev >> 1) * ((a_prev >> 2) & 1); // 2*a_n^2
+    signed int a_sq = (a_abs << 3) * ((a_abs >> 6) & 1) + (a_abs << 2) * ((a_abs >> 5) & 1) + (a_abs << 1) * ((a_abs >> 4) & 1) + a_abs * ((a_abs >> 3) & 1) + (a_abs >> 1) * ((a_abs >> 2) & 1); // 2*a_n^2
 
     if (inc_term < 0) {
-        if (((1 << 4) - (n_prev >> 1) - (a_prev >> 1) + a_sq) < inc_term) { // 0.25
+        if ((1 - (n_prev-4 >> 1) - (a_prev >> 1) - a_prev + a_sq) < inc_term) { // 0.25
             compensated_term    = a_sq; //0;
             a_next              = a_prev;
-        } else if (((4 << 4) - n_prev - a_prev + a_sq) < inc_term) { // 0.5
-            compensated_term    = (1 << 4) - (n_prev >> 1) - (a_prev >> 1) + a_sq;
+        } else if ((4 - n_prev-8 - a_prev - (a_prev << 1) + a_sq) < inc_term) { // 0.5
+            compensated_term    = 1 - (n_prev-4 >> 1) - (a_prev >> 1) - a_prev + a_sq;      
             a_next              = a_prev - (1 << 2);
-        } else if (((9 << 4) - n_prev - (n_prev >> 1) - a_prev - (a_prev >> 1) + a_sq) < inc_term) { // 0.75
-            compensated_term    = (4 << 4) - n_prev - a_prev + a_sq;
+        } else if ((9 - n_prev-12 - (n_prev-12 >> 1) - a_prev - (a_prev >> 1) + a_sq) < inc_term) { // 0.75
+            compensated_term    = 4 - n_prev-8 - a_prev - (a_prev << 1) + a_sq;
             a_next              = a_prev - (1 << 3);
         } else {    // 0.5
-            compensated_term    = (9 << 4) - n_prev - (n_prev >> 1) - a_prev - (a_prev >> 1) + a_sq;
+            compensated_term    = 9 - n_prev-12 - (n_prev-12 >> 1) - a_prev - (a_prev >> 1) + a_sq;
             a_next              = a_prev - (1 << 2) - (1 << 3);
         }
     } else {
-        if (((n_prev >> 1) + (a_prev >> 1) + (1 << 4) + a_sq) > inc_term) { // 0.25
+        if (((n_prev >> 1) + (a_prev >> 1) + 1 + a_sq) > inc_term) { // 0.25
             compensated_term    = a_sq;// 0;
             a_next              = a_prev;
-        } else if ((n_prev + a_prev + (4 << 4) + a_sq) > inc_term) { // 0.5
-            compensated_term    = (n_prev >> 1) + (a_prev >> 1) + (1 << 4) + a_sq;
+        } else if ((n_prev + a_prev + 4 + a_sq) > inc_term) { // 0.5
+            compensated_term    = ((n_prev+4) >> 1) + (a_prev >> 1) + 1 + a_sq + a_prev;
             a_next              = a_prev + (1 << 2);
-        } else if ((n_prev + (n_prev >> 1) + a_prev + (a_prev >> 1) + (9 << 4) + a_sq) > inc_term) { // 0.75
-            compensated_term    = n_prev + a_prev + (4 << 4) + a_sq;
+        } else if ((n_prev + (n_prev >> 1) + a_prev + (a_prev >> 1) + 4 + a_sq) > inc_term) { // 0.75
+            compensated_term    = n_prev + a_prev + 4 + a_sq + (a_prev<<1) + 4;
             a_next              = a_prev + (1 << 3);
         } else {    // 0.5
-            compensated_term    = n_prev + (n_prev >> 1) + a_prev + (a_prev >> 1) + (9 << 4) + a_sq;
+            compensated_term    = n_prev + (n_prev >> 1) + a_prev + (a_prev >> 1) + 9 + a_sq;
             a_next              = a_prev + (1 << 2) + (1 << 3);
         }
     }
@@ -345,22 +335,3 @@ TRIGGER
     return true;
 END_TRIGGER;
 END_OPERATION(MERGE)
-
-
-// OPERATION(INC_COMP_NEXT)
-// TRIGGER
-// 	signed int inc_term = INT(1);
-// 	signed int a_prev   = INT(2);
-
-//     signed int result;
-//     if (a_prev < 0) {
-//         result = inc_term - (a_prev << 1);
-//     }
-//     else {
-//         result = inc_term + (a_prev << 1);
-//     }
-
-//     IO(3) = static_cast<signed> (result);
-//     return true;
-// END_TRIGGER;
-// END_OPERATION(INC_COMP_NEXT)

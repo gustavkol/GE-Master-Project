@@ -473,6 +473,7 @@ void init_delay_base(unsigned char r_0, unsigned char angle, int *delay_array, i
     // Finding cosine expressions
     int x_scale = (r_0 << (7+4)) + (r_0 << (1+4)) + (r_0 << (0+4)) + (r_0 << (4-1)) + (r_0 << (4-2)); //C0_CONST * r_0;                           //  2*p*(f_s/v_s)^2*r_0
     int c_0 = cordic_cosine(x_scale, angle);         //  2*p*(f_s/v_s)^2*r_0 * cos(angle)
+    //iprintf("C0 = %d\n", c_0);
     int inc_term_pos = A0_CONST - c_0;               //  A_0 - C_0
 
     int term_b_n = (r_0 << (5+4)) + (r_0 << (4-1)) - (r_0 >> (5-4)) - (r_0 >> (10-4)); //B_N_CONST * r_0;                  // 2(f_s/v_s)*r_0
@@ -507,6 +508,37 @@ void init_delay_base(unsigned char r_0, unsigned char angle, int *delay_array, i
     int i = 0;
 
     inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
+    //iprintf("Inc: %d\n", inc_term_pos);
+    increment_and_compare_init(delay_array[i], a_prev, inc_term_prev, error_prev, inc_term_pos, &delay_array[i+1], &a_next, &inc_term_next, &error_next);
+    a_prev = a_next;
+    inc_term_prev = inc_term_next;
+    error_prev = error_next;
+    inc_term_array[i+1] = inc_term_array[i] - cos_b_n;
+
+    i = i + 1;
+
+    inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
+    //iprintf("Inc: %d\n", inc_term_pos);
+    increment_and_compare_init(delay_array[i], a_prev, inc_term_prev, error_prev, inc_term_pos, &delay_array[i+1], &a_next, &inc_term_next, &error_next);
+    a_prev = a_next;
+    inc_term_prev = inc_term_next;
+    error_prev = error_next;
+    inc_term_array[i+1] = inc_term_array[i] - cos_b_n;
+
+    i = i + 1;
+
+    inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
+    //iprintf("Inc: %d\n", inc_term_pos);
+    increment_and_compare_init(delay_array[i], a_prev, inc_term_prev, error_prev, inc_term_pos, &delay_array[i+1], &a_next, &inc_term_next, &error_next);
+    a_prev = a_next;
+    inc_term_prev = inc_term_next;
+    error_prev = error_next;
+    inc_term_array[i+1] = inc_term_array[i] - cos_b_n;
+
+    i = i + 1;
+
+    inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
+    //iprintf("Inc: %d\n", inc_term_pos);
     increment_and_compare_init(delay_array[i], a_prev, inc_term_prev, error_prev, inc_term_pos, &delay_array[i+1], &a_next, &inc_term_next, &error_next);
     a_prev = a_next;
     inc_term_prev = inc_term_next;
@@ -750,33 +782,6 @@ void init_delay_base(unsigned char r_0, unsigned char angle, int *delay_array, i
     i = i + 1;
 
     inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
-    increment_and_compare_init(delay_array[i], a_prev, inc_term_prev, error_prev, inc_term_pos, &delay_array[i+1], &a_next, &inc_term_next, &error_next);
-    a_prev = a_next;
-    inc_term_prev = inc_term_next;
-    error_prev = error_next;
-    inc_term_array[i+1] = inc_term_array[i] - cos_b_n;
-
-    i = i + 1;
-
-    inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
-    increment_and_compare_init(delay_array[i], a_prev, inc_term_prev, error_prev, inc_term_pos, &delay_array[i+1], &a_next, &inc_term_next, &error_next);
-    a_prev = a_next;
-    inc_term_prev = inc_term_next;
-    error_prev = error_next;
-    inc_term_array[i+1] = inc_term_array[i] - cos_b_n;
-
-    i = i + 1;
-
-    inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
-    increment_and_compare_init(delay_array[i], a_prev, inc_term_prev, error_prev, inc_term_pos, &delay_array[i+1], &a_next, &inc_term_next, &error_next);
-    a_prev = a_next;
-    inc_term_prev = inc_term_next;
-    error_prev = error_next;
-    inc_term_array[i+1] = inc_term_array[i] - cos_b_n;
-
-    i = i + 1;
-
-        inc_term_pos = inc_term_pos + (A0_CONST << 1);      // A_0(2n+1) - C_0
     increment_and_compare_init(delay_array[i], a_prev, inc_term_prev, error_prev, inc_term_pos, &delay_array[i+1], &a_next, &inc_term_next, &error_next);
     a_prev = a_next;
     inc_term_prev = inc_term_next;
@@ -935,47 +940,58 @@ void increment_and_compare_init(int n_prev, int a_prev, int inc_term_prev, int e
                                 int *n_next, int *a_next, int *inc_term_next, int *error_next) {
 
     // Propagate previous a to get an initial guess for a
-    int a = a_prev;
+    int a_cur = 0;//a_prev;
     int inc_term_w_error = inc_term + error_prev;
-    int sign_bit = (inc_term_w_error >= inc_term_prev) ? 1 : -1;
-    int comp_term = inc_term_prev;
+    int sign_bit = (inc_term_w_error >= 0) ? 1 : -1;
+    int comp_term = 0;//inc_term_prev;
 
     int cur_error = 0;
     int iter_term = 0;
 
 
     // Finding a_n through increment and compare algorithm
-
-
-    // *********************CAUSES STALLS**********************//
+    //iprintf("n_prev: %d\ninc_term: %d\n\n", n_prev, inc_term_w_error);
+    int n_cur = n_prev;
     if (sign_bit == -1) {
-        while (comp_term > inc_term_w_error) {
-            iter_term = - (n_prev >> 1) + 1 - (a >> 1);
-            a -= INC_STEP;                                   
+        //while (comp_term > inc_term_w_error) {          
+        while ((comp_term >> 1) > inc_term_w_error) {
+            n_cur -= INC_STEP;
+            //iter_term = - (n_cur >> 1) - a_cur + 1;     
+            iter_term = - n_cur - (a_cur << 1) + (1 << 1); //- n_cur - a_cur + 1 - a_int; 
+            a_cur -= INC_STEP;
             comp_term += iter_term;
         }
-
-        comp_term -= iter_term;
-        a += INC_STEP;
-        cur_error = inc_term_w_error - comp_term;    
+        if(inc_term + error_prev - inc_term_prev < 0) {
+            comp_term -= iter_term;
+            a_cur += INC_STEP;
+        }
+        //cur_error = inc_term_w_error - comp_term;       
+        cur_error = inc_term_w_error - (comp_term >> 1);
     } else {
-        while (comp_term < inc_term_w_error) {
-            iter_term = (n_prev >> 1) + 1 + (a >> 1);;
-            a += INC_STEP;
+        //while (comp_term < inc_term_w_error) {
+        while ((comp_term >> 1) < inc_term_w_error) {
+            n_cur += INC_STEP;
+            //iter_term = (n_cur >> 1) + a_cur + 1; //(n_cur >> 1) + (a_cur >> 1) + 1 + (a_int << 1); 
+            iter_term = n_cur + (a_cur << 1) + (1 << 1); //- n_cur - a_cur + 1 - a_int; 
+            a_cur += INC_STEP;
             comp_term += iter_term;
         } 
-
-        comp_term -= iter_term;
-        a -= INC_STEP;
-        cur_error = inc_term_w_error - comp_term;        
+        if(inc_term + error_prev - inc_term_prev > 0) {
+            comp_term -= iter_term;
+            a_cur -= INC_STEP;
+        }
+        //cur_error = inc_term_w_error - comp_term;
+        cur_error = inc_term_w_error - (comp_term >> 1);
     }
-    // *********************CAUSES STALLS**********************//
 
     // Values to propagate to next calculation
-    *inc_term_next = comp_term;
+    //*inc_term_next = comp_term;
+    *inc_term_next = (comp_term >> 1);
     *error_next = cur_error;
-    *n_next = n_prev + a;
-    *a_next = a;
+    *n_next = n_prev + a_cur;
+    *a_next = a_cur;
+
+    //iprintf("err: %d\ninc: %d\nN: %d\n\n", *error_next, *inc_term_next, *n_next);
 }
 
 
@@ -983,38 +999,61 @@ void increment_and_compare_init(int n_prev, int a_prev, int inc_term_prev, int e
 void increment_and_compare_next(int *n_prev, int *a_prev, int *inc_term_prev, int *error_prev, int inc_term) {
 
     // Propagate previous values
-    int a = *a_prev;
+    int a_cur = 0;//*a_prev;
     int inc_term_w_error = inc_term + *error_prev;
-    int sign_bit = (inc_term_w_error >= *inc_term_prev) ? 1 : -1;
-    int comp_term = *inc_term_prev;
+    int sign_bit = (inc_term_w_error >= 0) ? 1 : -1;
+    int comp_term = 0;
 
-    int cur_error;
-    int iter_term;
-
+    int cur_error = 0;
+    int iter_term = 0;
+    
+    //iprintf("n_prev: %d\ninc_term: %d\ninc_term_w_err: %d\ninc_term_prev: %d\n\n", *n_prev, inc_term, inc_term_w_error, *inc_term_prev);
+    //iprintf("n_prev: %d\n, inc_term: %d\n\n", *n_prev, inc_term);
+    int n_cur = *n_prev;
     if (sign_bit == -1) {
-        while (comp_term > inc_term_w_error) {
-            iter_term = - (*n_prev >> 1) + 1 - (a >> 1);
-            a -= INC_STEP;                                  
-            comp_term += iter_term;                        
-        }
-        comp_term -= iter_term;
-        a += INC_STEP;
-        cur_error = inc_term_w_error - comp_term;    
-    } else {
-        while (comp_term < inc_term_w_error) {
-            iter_term = (*n_prev >> 1) + 1 + (a >> 1);
-            a += INC_STEP;
+        //while (comp_term > inc_term_w_error) {
+        while ((comp_term >> 1) > inc_term_w_error) {
+            n_cur -= INC_STEP;
+            //iter_term = - (n_cur >> 1) - a_cur + 1;
+            iter_term = - n_cur - (a_cur << 1) + (1 << 1); //- n_cur - a_cur + 1 - a_int; 
+            a_cur -= INC_STEP;
             comp_term += iter_term;
         }
-        comp_term -= iter_term;
-        a -= INC_STEP;
-        cur_error = inc_term_w_error - comp_term;        
+        //cur_error = inc_term_w_error - comp_term;
+        cur_error = inc_term_w_error - (comp_term >> 1);
+        //if(cur_error > -(iter_term >> 1)) {
+        if(cur_error > -(iter_term >> 2)) {
+            comp_term -= iter_term;
+            a_cur += INC_STEP;
+            //cur_error = inc_term_w_error - comp_term;
+            cur_error = inc_term_w_error - (comp_term >> 1);
+        }
+    } else {
+        //while (comp_term < inc_term_w_error) {
+        while ((comp_term >> 1) < inc_term_w_error) {
+            n_cur += INC_STEP;
+            //iter_term = (n_cur >> 1) + a_cur + 1;
+            iter_term = n_cur + (a_cur << 1) + (1 << 1);
+            a_cur += INC_STEP;
+            comp_term += iter_term;
+        }
+        //cur_error = inc_term_w_error - comp_term;
+        cur_error = inc_term_w_error - (comp_term >> 1);
+        //if(-cur_error > (iter_term >> 1)) {
+        if(-cur_error > (iter_term >> 2)) {
+            comp_term -= iter_term;
+            a_cur -= INC_STEP;
+            //cur_error = inc_term_w_error - comp_term;
+            cur_error = inc_term_w_error - (comp_term >> 1);
+        }
     }
 
 
     // Values to propagate to next calculation
+    //*inc_term_prev = comp_term;
+    *inc_term_prev = comp_term >> 1;
     *error_prev = cur_error;
-    *inc_term_prev = comp_term;
-    *n_prev = *n_prev + a;
-    *a_prev = a;
+    *n_prev = *n_prev + a_cur;
+    *a_prev = a_cur;
+    //iprintf("err: %d\ninc: %d\nN: %d\n\n", *error_prev, *inc_term_prev, *n_prev);
 }
