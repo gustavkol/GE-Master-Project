@@ -209,7 +209,7 @@ TRIGGER
             compensated_term    = a_sq; //0;
             a_next              = a_prev;
         } else if ((4 - n_prev-8 - a_prev - (a_prev << 1) + a_sq) < inc_term) { // 0.5
-            compensated_term    = 1 - (n_prev-4 >> 1) - (a_prev >> 1) - a_prev + a_sq;      
+            compensated_term    = 1 - ((n_prev-4) >> 1) - (a_prev >> 1) - a_prev + a_sq;      
             a_next              = a_prev - (1 << 2);
         } else if ((9 - n_prev-12 - (n_prev-12 >> 1) - a_prev - (a_prev >> 1) + a_sq) < inc_term) { // 0.75
             compensated_term    = 4 - n_prev-8 - a_prev - (a_prev << 1) + a_sq;
@@ -226,7 +226,7 @@ TRIGGER
             compensated_term    = ((n_prev+4) >> 1) + (a_prev >> 1) + 1 + a_sq + a_prev;
             a_next              = a_prev + (1 << 2);
         } else if ((n_prev + (n_prev >> 1) + a_prev + (a_prev >> 1) + 4 + a_sq) > inc_term) { // 0.75
-            compensated_term    = n_prev + a_prev + 4 + a_sq + (a_prev<<1) + 4;
+            compensated_term    = 4 + n_prev+8 + a_prev + (a_prev << 1) + a_sq;
             a_next              = a_prev + (1 << 3);
         } else {    // 0.5
             compensated_term    = n_prev + (n_prev >> 1) + a_prev + (a_prev >> 1) + 9 + a_sq;
