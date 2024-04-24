@@ -16,7 +16,7 @@ architecture behav of testbench is
       t2data    : in std_logic_vector(31 downto 0);
       t2load    : in  std_logic;
       r1data    : out std_logic_vector(31 downto 0);
-      t1opcode  : in std_logic_vector(2 downto 0);
+      t1opcode  : in std_logic_vector(3 downto 0);
       glock     : in  std_logic;
       rstx      : in  std_logic;
       clk       : in  std_logic);
@@ -31,7 +31,7 @@ architecture behav of testbench is
    signal t2data        : std_logic_vector(31 downto 0);
    signal t2load        : std_logic_vector(1-1 downto 0);
    signal r1data        : std_logic_vector(31 downto 0);
-   signal t1opcode      : std_logic_vector(2 downto 0);
+   signal t1opcode      : std_logic_vector(3 downto 0);
    signal glock : std_logic;
    signal rstx  : std_logic;
    signal clk   : std_logic;
@@ -150,6 +150,17 @@ begin
        "10101101010000010000100010100001",       -- @77 = 2906720417
        "11101010100001010000101111100111",       -- @78 = 3934587879
        "00100100001011101001110110010101",       -- @79 = 607034773
+
+       "00000000000000000000000000000000",       -- @70 = 0 (compare_and_iter_f_init)
+       "00000000000000000000000000000100",       -- @71 = 0.25 (compare_and_iter_f_init)
+       "00000000000000000000000000010100",       -- @72 = 1.25 (compare_and_iter_f_init)
+       "00000000000000000000000000011000",       -- @73 = 1.5 (compare_and_iter_f_init)
+       "00000000000000000000000000101000",       -- @74 = 2.5 (compare_and_iter_f_init)
+       "00000000000000000000000001001000",       -- @75 = 4.5 (compare_and_iter_f_init)
+       "00000000000000000000000001000100",       -- @76 = 4.25 (compare_and_iter_f_init)
+       "00000000000000000000000000100000",       -- @77 = 2 (compare_and_iter_f_init)
+       "00000000000000000000000001001000",       -- @78 = 4.5 (compare_and_iter_f_init)
+       "00000000000000000000000000111100",       -- @79 = 3.75 (compare_and_iter_f_init)
        "00000000000000000000000000000000");      -- @80 = 0
 
       type t2data_data_array is array (natural range <>) of
@@ -249,110 +260,130 @@ begin
        "11110111110011101110110000010011",       -- @77 = 4157533203
        "00001100010000001001010110110011",       -- @78 = 205559219
        "11111100011101101001000111110000",       -- @79 = 4235629040
+       "00000000000000000000000000010000",       -- @70 = 16 (compare_and_iter_f_init)
+       "00000000000000000000000000100100",       -- @71 = 36 (compare_and_iter_f_init)
+       "00000000000000000000000000011100",       -- @72 = 28 (compare_and_iter_f_init)
+       "11111111111111111111111111010100",       -- @73 = -44 (compare_and_iter_f_init)
+       "00000000000000000000000001011000",       -- @74 = 88 (compare_and_iter_f_init)
+       "11111111111111111111111111000100",       -- @75 = -60 (compare_and_iter_f_init)
+       "00000000000000000000000001000000",       -- @76 = 64 (compare_and_iter_f_init)
+       "11111111111111111111111111110000",       -- @77 = -16 (compare_and_iter_f_init)
+       "00000000000000000000000001001100",       -- @78 = 76 (compare_and_iter_f_init)
+       "00000000000000000000000000100100",       -- @79 = 36 (compare_and_iter_f_init)
        "00000000000000000000000000000000");      -- @80 = 0
 
 
     -- Opcodes for each clock cycle.
       type t1opcode_data_array is array (natural range <>) of
-         std_logic_vector(2 downto 0);
+         std_logic_vector(3 downto 0);
 
       constant t1opcode_data : t1opcode_data_array :=
-      ("001",    -- @0 = 1 (compare_and_iter_f)
-       "001",    -- @1 = 1 (compare_and_iter_f)
-       "001",    -- @2 = 1 (compare_and_iter_f)
-       "001",    -- @3 = 1 (compare_and_iter_f)
-       "001",    -- @4 = 1 (compare_and_iter_f)
-       "001",    -- @5 = 1 (compare_and_iter_f)
-       "001",    -- @6 = 1 (compare_and_iter_f)
-       "001",    -- @7 = 1 (compare_and_iter_f)
-       "001",    -- @8 = 1 (compare_and_iter_f)
-       "001",    -- @9 = 1 (compare_and_iter_f)
-       "001",    -- @9 = 1 (compare_and_iter_f)
-       "001",    -- @9 = 1 (compare_and_iter_f)
-       "001",    -- @9 = 1 (compare_and_iter_f)
-
-       "010",    -- @10 = 2 (compare_and_iter_int)
-       "000",
-       "010",    -- @11 = 2 (compare_and_iter_int)
-       "000",
-       "010",    -- @12 = 2 (compare_and_iter_int)
-       "000",
-       "010",    -- @13 = 2 (compare_and_iter_int)
-       "000",
-       "010",    -- @14 = 2 (compare_and_iter_int)
-       "000",
-       "010",    -- @15 = 2 (compare_and_iter_int)
-       "000",
-       "010",    -- @16 = 2 (compare_and_iter_int)
-       "000",
-       "010",    -- @17 = 2 (compare_and_iter_int)
-       "000",
-       "010",    -- @18 = 2 (compare_and_iter_int)
-       "000",
-       "010",    -- @19 = 2 (compare_and_iter_int)
-       "000",
-
-       "011",    -- @20 = 4 (mask_add)
-       "011",    -- @21 = 4 (mask_add)
-       "011",    -- @22 = 4 (mask_add)
-       "011",    -- @23 = 4 (mask_add)
-       "011",    -- @24 = 4 (mask_add)
-       "011",    -- @25 = 4 (mask_add)
-       "011",    -- @26 = 4 (mask_add)
-       "011",    -- @27 = 4 (mask_add)
-       "011",    -- @28 = 4 (mask_add)
-       "011",    -- @29 = 4 (mask_add)
-       "101",    -- @30 = 5 (shift_add)
-       "101",    -- @31 = 5 (shift_add)
-       "101",    -- @32 = 5 (shift_add)
-       "101",    -- @33 = 5 (shift_add)
-       "101",    -- @34 = 5 (shift_add)
-       "101",    -- @35 = 5 (shift_add)
-       "101",    -- @36 = 5 (shift_add)
-       "101",    -- @37 = 5 (shift_add)
-       "101",    -- @38 = 5 (shift_add)
-       "101",    -- @39 = 5 (shift_add)
-       "000",    -- @40 = 0 (add)
-       "000",    -- @41 = 0 (add)
-       "000",    -- @42 = 0 (add)
-       "000",    -- @43 = 0 (add)
-       "000",    -- @44 = 0 (add)
-       "000",    -- @45 = 0 (add)
-       "000",    -- @46 = 0 (add)
-       "000",    -- @47 = 0 (add)
-       "000",    -- @48 = 0 (add)
-       "000",    -- @49 = 0 (add)
-       "110",    -- @50 = 6 (shift_sub)
-       "110",    -- @51 = 6 (shift_sub)
-       "110",    -- @52 = 6 (shift_sub)
-       "110",    -- @53 = 6 (shift_sub)
-       "110",    -- @54 = 6 (shift_sub)
-       "110",    -- @55 = 6 (shift_sub)
-       "110",    -- @56 = 6 (shift_sub)
-       "110",    -- @57 = 6 (shift_sub)
-       "110",    -- @58 = 6 (shift_sub)
-       "110",    -- @59 = 6 (shift_sub)
-       "111",    -- @60 = 7 (sub)
-       "111",    -- @61 = 7 (sub)
-       "111",    -- @62 = 7 (sub)
-       "111",    -- @63 = 7 (sub)
-       "111",    -- @64 = 7 (sub)
-       "111",    -- @65 = 7 (sub)
-       "111",    -- @66 = 7 (sub)
-       "111",    -- @67 = 7 (sub)
-       "111",    -- @68 = 7 (sub)
-       "111",    -- @69 = 7 (sub)
-       "100",    -- @70 = 3 (merge)
-       "100",    -- @71 = 3 (merge)
-       "100",    -- @72 = 3 (merge)
-       "100",    -- @73 = 3 (merge)
-       "100",    -- @74 = 3 (merge)
-       "100",    -- @75 = 3 (merge)
-       "100",    -- @76 = 3 (merge)
-       "100",    -- @77 = 3 (merge)
-       "100",    -- @78 = 3 (merge)
-       "100",    -- @79 = 3 (merge)
-       "100");   -- @80 = 3 (merge)
+      ("0001",    -- @0 = 1 (compare_and_iter_f)
+       "0001",    -- @1 = 1 (compare_and_iter_f)
+       "0001",    -- @2 = 1 (compare_and_iter_f)
+       "0001",    -- @3 = 1 (compare_and_iter_f)
+       "0001",    -- @4 = 1 (compare_and_iter_f)
+       "0001",    -- @5 = 1 (compare_and_iter_f)
+       "0001",    -- @6 = 1 (compare_and_iter_f)
+       "0001",    -- @7 = 1 (compare_and_iter_f)
+       "0001",    -- @8 = 1 (compare_and_iter_f)
+       "0001",    -- @9 = 1 (compare_and_iter_f)
+       "0001",    -- @9 = 1 (compare_and_iter_f)
+       "0001",    -- @9 = 1 (compare_and_iter_f)
+       "0001",    -- @9 = 1 (compare_and_iter_f)
+       "0011",    -- @10 = 2 (compare_and_iter_int)
+       "0000",
+       "0011",    -- @11 = 2 (compare_and_iter_int)
+       "0000",
+       "0011",    -- @12 = 2 (compare_and_iter_int)
+       "0000",
+       "0011",    -- @13 = 2 (compare_and_iter_int)
+       "0000",
+       "0011",    -- @14 = 2 (compare_and_iter_int)
+       "0000",
+       "0011",    -- @15 = 2 (compare_and_iter_int)
+       "0000",
+       "0011",    -- @16 = 2 (compare_and_iter_int)
+       "0000",
+       "0011",    -- @17 = 2 (compare_and_iter_int)
+       "0000",
+       "0011",    -- @18 = 2 (compare_and_iter_int)
+       "0000",
+       "0011",    -- @19 = 2 (compare_and_iter_int)
+       "0000",
+       "0100",    -- @20 = 4 (mask_add)
+       "0100",    -- @21 = 4 (mask_add)
+       "0100",    -- @22 = 4 (mask_add)
+       "0100",    -- @23 = 4 (mask_add)
+       "0100",    -- @24 = 4 (mask_add)
+       "0100",    -- @25 = 4 (mask_add)
+       "0100",    -- @26 = 4 (mask_add)
+       "0100",    -- @27 = 4 (mask_add)
+       "0100",    -- @28 = 4 (mask_add)
+       "0100",    -- @29 = 4 (mask_add)
+       "0110",    -- @30 = 5 (shift_add)
+       "0110",    -- @31 = 5 (shift_add)
+       "0110",    -- @32 = 5 (shift_add)
+       "0110",    -- @33 = 5 (shift_add)
+       "0110",    -- @34 = 5 (shift_add)
+       "0110",    -- @35 = 5 (shift_add)
+       "0110",    -- @36 = 5 (shift_add)
+       "0110",    -- @37 = 5 (shift_add)
+       "0110",    -- @38 = 5 (shift_add)
+       "0110",    -- @39 = 5 (shift_add)
+       "0000",    -- @40 = 0 (add)
+       "0000",    -- @41 = 0 (add)
+       "0000",    -- @42 = 0 (add)
+       "0000",    -- @43 = 0 (add)
+       "0000",    -- @44 = 0 (add)
+       "0000",    -- @45 = 0 (add)
+       "0000",    -- @46 = 0 (add)
+       "0000",    -- @47 = 0 (add)
+       "0000",    -- @48 = 0 (add)
+       "0000",    -- @49 = 0 (add)
+       "0111",    -- @50 = 6 (shift_sub)
+       "0111",    -- @51 = 6 (shift_sub)
+       "0111",    -- @52 = 6 (shift_sub)
+       "0111",    -- @53 = 6 (shift_sub)
+       "0111",    -- @54 = 6 (shift_sub)
+       "0111",    -- @55 = 6 (shift_sub)
+       "0111",    -- @56 = 6 (shift_sub)
+       "0111",    -- @57 = 6 (shift_sub)
+       "0111",    -- @58 = 6 (shift_sub)
+       "0111",    -- @59 = 6 (shift_sub)
+       "1000",    -- @60 = 7 (sub)
+       "1000",    -- @61 = 7 (sub)
+       "1000",    -- @62 = 7 (sub)
+       "1000",    -- @63 = 7 (sub)
+       "1000",    -- @64 = 7 (sub)
+       "1000",    -- @65 = 7 (sub)
+       "1000",    -- @66 = 7 (sub)
+       "1000",    -- @67 = 7 (sub)
+       "1000",    -- @68 = 7 (sub)
+       "1000",    -- @69 = 7 (sub)
+       "0101",    -- @70 = 3 (merge)
+       "0101",    -- @71 = 3 (merge)
+       "0101",    -- @72 = 3 (merge)
+       "0101",    -- @73 = 3 (merge)
+       "0101",    -- @74 = 3 (merge)
+       "0101",    -- @75 = 3 (merge)
+       "0101",    -- @76 = 3 (merge)
+       "0101",    -- @77 = 3 (merge)
+       "0101",    -- @78 = 3 (merge)
+       "0101",    -- @79 = 3 (merge)
+       "0101",     -- @80 = 3 (merge)
+       "0010",    -- @70 = 3 (f_init)
+       "0010",    -- @71 = 3 (f_init)
+       "0010",    -- @72 = 3 (f_init)
+       "0010",    -- @73 = 3 (f_init)
+       "0010",    -- @74 = 3 (f_init)
+       "0010",    -- @75 = 3 (f_init)
+       "0010",    -- @76 = 3 (f_init)
+       "0010",    -- @77 = 3 (f_init)
+       "0010",    -- @78 = 3 (f_init)
+       "0010",    -- @79 = 3 (f_init)
+       "0010"     -- @80 = 3 (f_init)
+       );
 
     -- Load signals for each cycle
       type t1load_data_array is array (natural range <>) of
@@ -452,6 +483,16 @@ begin
        "1",      -- @77 = 1
        "1",      -- @78 = 1
        "1",      -- @79 = 1
+       "1",      -- @70 = 1
+       "1",      -- @71 = 1
+       "1",      -- @72 = 1
+       "1",      -- @73 = 1
+       "1",      -- @74 = 1
+       "1",      -- @75 = 1
+       "1",      -- @76 = 1
+       "1",      -- @77 = 1
+       "1",      -- @78 = 1
+       "1",      -- @79 = 1
        "0");     -- @80 = 0
 
       type t2load_data_array is array (natural range <>) of
@@ -541,6 +582,16 @@ begin
        "1",      -- @67 = 1
        "1",      -- @68 = 1
        "1",      -- @69 = 1
+       "1",      -- @70 = 1
+       "1",      -- @71 = 1
+       "1",      -- @72 = 1
+       "1",      -- @73 = 1
+       "1",      -- @74 = 1
+       "1",      -- @75 = 1
+       "1",      -- @76 = 1
+       "1",      -- @77 = 1
+       "1",      -- @78 = 1
+       "1",      -- @79 = 1
        "1",      -- @70 = 1
        "1",      -- @71 = 1
        "1",      -- @72 = 1
@@ -652,7 +703,19 @@ begin
        "10011011000001011010011011110110",       -- @77 = 1870913602
        "11001110111011000001001110100001",       -- @78 = 3181588603
        "01000000100101011011001111100111",       -- @79 = 50739021
-       "01110110100100011111000010010101");      -- @80 = 725711285
+       "01110110100100011111000010010101",       -- @80 = 725711285
+
+       "00000000000000000000000000000000",       -- @71 = 2213459199
+       "00000000000000000001001000000100",       -- @72 = 1454268293
+       "00000000000000000100011000010100",       -- @73 = 1614888088
+       "11111111111111110111110000011000",       -- @74 = 2241593203
+       "00000000000000011011100000101000",       -- @75 = 2740546453
+       "11111111111111011110010001001000",       -- @76 = 4255533836
+       "00000000000000100010000001000100",       -- @77 = 1870913602
+       "11111111111111111100000000100000",       -- @78 = 3181588603
+       "00000000000000101010110001001000",       -- @79 = 50739021
+       "00000000000000010000111000111100"        -- @80 = 725711285
+       );      
 
       constant IGNORE_OUTPUT_COUNT : integer := 1;
       constant TOTAL_CYCLE_COUNT : integer := 90;

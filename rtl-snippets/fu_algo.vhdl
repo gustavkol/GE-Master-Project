@@ -4,14 +4,15 @@ use IEEE.numeric_std.all;
 
 package algo_opcodes is
 
-  constant OPC_ALGO_ADD       : std_logic_vector(2 downto 0) := "000";
-  constant OPC_ALGO_FRAC      : std_logic_vector(2 downto 0) := "001";
-  constant OPC_ALGO_INIT      : std_logic_vector(2 downto 0) := "010";
-  constant OPC_ALGO_MASK_ADD  : std_logic_vector(2 downto 0) := "011";
-  constant OPC_ALGO_MERGE     : std_logic_vector(2 downto 0) := "100";
-  constant OPC_ALGO_SHIFT_ADD : std_logic_vector(2 downto 0) := "101";
-  constant OPC_ALGO_SHIFT_SUB : std_logic_vector(2 downto 0) := "110";
-  constant OPC_ALGO_SUB       : std_logic_vector(2 downto 0) := "111";
+  constant OPC_ALGO_ADD       : std_logic_vector(3 downto 0) := "0000";
+  constant OPC_ALGO_FRAC      : std_logic_vector(3 downto 0) := "0001";
+  constant OPC_ALGO_F_INIT    : std_logic_vector(3 downto 0) := "0010";
+  constant OPC_ALGO_INIT      : std_logic_vector(3 downto 0) := "0011";
+  constant OPC_ALGO_MASK_ADD  : std_logic_vector(3 downto 0) := "0100";
+  constant OPC_ALGO_MERGE     : std_logic_vector(3 downto 0) := "0101";
+  constant OPC_ALGO_SHIFT_ADD : std_logic_vector(3 downto 0) := "0110";
+  constant OPC_ALGO_SHIFT_SUB : std_logic_vector(3 downto 0) := "0111";
+  constant OPC_ALGO_SUB       : std_logic_vector(3 downto 0) := "1000";
   
 end algo_opcodes;
 
@@ -30,7 +31,7 @@ entity fu_algo is
     port (
         t1data : in std_logic_vector(dataw-1 downto 0);
         t1load : in std_logic;
-        t1opcode : in  std_logic_vector(2 downto 0);
+        t1opcode : in  std_logic_vector(3 downto 0);
         t2data : in std_logic_vector(dataw-1 downto 0);
         t2load : in std_logic;
         r1data : out std_logic_vector(dataw-1 downto 0);    --a_next & inc_term_next
@@ -57,8 +58,8 @@ architecture rtl of fu_algo is
 
     signal n_prev_frac, a_sq, term_025_int, term_050_int, term_075_int  : signed(dataw-1 downto DW_A);
     signal a_prev_frac                                                  : signed(DW_A-1 downto 0);
-    signal a_prev_abs                                                   : signed(8-1 downto 0);
-    signal term_025_frac                                                : signed(dataw-1 downto DW_A);
+    signal a_prev_abs, a_n, a_k                                         : signed(8-1 downto 0);
+    signal term_025_frac, a_sq_frac, a_sq_int                           : signed(dataw-1 downto DW_A);
 begin
     
     -- Updating next state
@@ -182,6 +183,30 @@ begin
         end if;
     end process;
 
+    A_SQUARED_INIT: process(a_n, rstx) begin
+        if (rstx = '0') then
+            a_sq_int    <= (others => '0');
+            a_sq_frac   <= (others => '0');
+        else
+            -- integer
+            case a_n(6 downto 4) is
+                when "001"  =>  a_sq_int <= shift_left(a_k, 1);                         -- 2*1*a_k
+                when "010"  =>  a_sq_int <= shift_left(a_k, 2);                         -- 2*2*a_k
+                when "011"  =>  a_sq_int <= shift_left(a_k, 1) + shift_left(a_k, 2);    -- 2*3*a_k
+                when "100"  =>  a_sq_int <= shift_left(a_k, 3);                         -- 2*4*a_k
+                when others =>  a_sq_int <= (others => '0');
+            end case;
+            -- fraction
+            case a_n(3 downto 2) is
+                when "01"   =>  a_sq_frac <= shift_right(a_k, 1);           -- 2*0.25*a_k
+                when "10"   =>  a_sq_frac <= a_k;                           -- 2*0.5*a_k
+                when "11"   =>  a_sq_frac <= shift_right(a_k, 1) + a_k;     -- 2*0.75*a_k
+                when others =>  a_sq_frac <= (others => '0');
+            end case;
+        end if;
+    end process;
+
+
     --Algorithm expressions: fractional
     a_prev_frac     <= signed(t2data(DW_A-1 downto 0))      when (t1opcode = OPC_ALGO_FRAC and rstx = '1')      else (others => '0');
     n_prev_frac     <= signed(t2data(dataw-1 downto DW_A))  when (t1opcode = OPC_ALGO_FRAC and rstx = '1')      else (others => '0');
@@ -199,6 +224,10 @@ begin
     term_050_int    <= to_signed(int_4, dataw-DW_A) + shift_left(resize(a_reg,dataw-DW_A),1) + int_8 + n_prev_reg(dataw-DW_A-1 downto 0)                     when (state = Run and rstx = '1') else (others => '0');
     term_075_int    <= to_signed(int_9, dataw-DW_A) + shift_left(resize(a_reg,dataw-DW_A),1) + resize(a_reg,dataw-DW_A) 
                                                     + n_prev_reg(dataw-DW_A-1 downto 0) + int_12 + shift_right(int_12+n_prev_reg(dataw-DW_A-1 downto 0), 1)  when (state = Run and rstx = '1') else (others => '0');
+
+    -- Algorithm expression: fractional init
+    a_k             <= signed(t2data(DW_A-1 downto 0))      when (t1opcode = OPC_ALGO_F_INIT and rstx = '1')      else (others => '0');
+    a_n             <= signed(t1data(DW_A-1 downto 0))      when (t1opcode = OPC_ALGO_F_INIT and rstx = '1')      else (others => '0');
                                                   
 
     -- Module logic
@@ -278,6 +307,9 @@ begin
                               r1data <= std_logic_vector(signed(t1data) - signed(t2data));
                             when OPC_ALGO_MERGE       =>
                               r1data <= t2data(dataw-DW_A-1 downto 0) & t1data(DW_A-1 downto 0);
+                            when OPC_ALGO_F_INIT      =>
+                              r1data(DW_A-1 downto 0)       <= std_logic_vector(a_n);
+                              r1data(dataw-1 downto DW_A)   <= std_logic_vector(a_sq_int + a_sq_frac);
                             when others =>  null;
                         end case;
                     end if;
