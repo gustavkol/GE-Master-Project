@@ -183,24 +183,24 @@ begin
         end if;
     end process;
 
-    A_SQUARED_INIT: process(a_n, rstx) begin
+    A_SQUARED_INIT: process(a_n, a_k, rstx) begin
         if (rstx = '0') then
             a_sq_int    <= (others => '0');
             a_sq_frac   <= (others => '0');
         else
             -- integer
             case a_n(6 downto 4) is
-                when "001"  =>  a_sq_int <= shift_left(a_k, 1);                         -- 2*1*a_k
-                when "010"  =>  a_sq_int <= shift_left(a_k, 2);                         -- 2*2*a_k
-                when "011"  =>  a_sq_int <= shift_left(a_k, 1) + shift_left(a_k, 2);    -- 2*3*a_k
-                when "100"  =>  a_sq_int <= shift_left(a_k, 3);                         -- 2*4*a_k
+                when "001"  =>  a_sq_int <= shift_left(resize(a_k,a_sq_int'length),1);                                              -- 2*1*a_k
+                when "010"  =>  a_sq_int <= shift_left(resize(a_k,a_sq_int'length),2);                                              -- 2*2*a_k
+                when "011"  =>  a_sq_int <= shift_left(resize(a_k,a_sq_int'length),1) + shift_left(resize(a_k,a_sq_int'length),2);  -- 2*3*a_k
+                when "100"  =>  a_sq_int <= shift_left(resize(a_k,a_sq_int'length),3);                                              -- 2*4*a_k
                 when others =>  a_sq_int <= (others => '0');
             end case;
             -- fraction
             case a_n(3 downto 2) is
-                when "01"   =>  a_sq_frac <= shift_right(a_k, 1);           -- 2*0.25*a_k
-                when "10"   =>  a_sq_frac <= a_k;                           -- 2*0.5*a_k
-                when "11"   =>  a_sq_frac <= shift_right(a_k, 1) + a_k;     -- 2*0.75*a_k
+                when "01"   =>  a_sq_frac <= resize(shift_right(a_k, 1), a_sq_frac'length);           -- 2*0.25*a_k
+                when "10"   =>  a_sq_frac <= resize(a_k, a_sq_frac'length);                           -- 2*0.5*a_k
+                when "11"   =>  a_sq_frac <= resize(shift_right(a_k, 1) + a_k, a_sq_frac'length);     -- 2*0.75*a_k
                 when others =>  a_sq_frac <= (others => '0');
             end case;
         end if;
