@@ -105,19 +105,21 @@ TRIGGER
 
         fractional_inc_term = inc_term - compensated_term;
 
-        if ((1 - ((a_n_prev+delta_a-4) >> 1) - (delta_a >> 1) + shift_true*(4 << shift_int)) < fractional_inc_term) { // 0.25
+
+        if ((1 - ((a_n_prev+delta_a-4) >> 1) - delta_a) < fractional_inc_term) { // 0.25
             compensated_term = compensated_term + 0;
             delta_a = delta_a + 0;
-        } else if (((1 << 2) - a_n_prev+delta_a-8 - delta_a + shift_true*(8 << shift_int)) < fractional_inc_term) { // 0.5
-            compensated_term = compensated_term + 1 - ((a_n_prev+delta_a-4) >> 1) - (delta_a >> 1) + shift_true*(4 << shift_int);//((a_n_prev-4) >> 1) + 1 + (delta_a >> 1);
+        } else if (((1 << 2) - (a_n_prev+delta_a-8) - (delta_a << 1)) < fractional_inc_term) { // 0.5
+            compensated_term = compensated_term + 1 - ((a_n_prev+delta_a-4) >> 1) - delta_a;
             delta_a = delta_a - (1 << 2);
-        } else if (((1 << 3) + 1 - a_n_prev+delta_a-12 - ((a_n_prev+delta_a-12) >> 1) - delta_a - (delta_a >> 1) + shift_true*(8 << shift_int)) < fractional_inc_term) { // 0.75
-            compensated_term = compensated_term + (1 << 2) - a_n_prev+delta_a-8 - delta_a + shift_true*(8 << shift_int);//((1 << 2) - a_n_prev-8 + delta_a);
+        } else if (((1 << 3) + 1 - (a_n_prev+delta_a-12) - ((a_n_prev+delta_a-12) >> 1) - delta_a - (delta_a << 1)) < fractional_inc_term) { // 0.75
+            compensated_term = compensated_term + ((1 << 2) - (a_n_prev+delta_a-8) - (delta_a << 1));
             delta_a = delta_a - (1 << 3);
-        } else {    // 0.5
-            compensated_term = compensated_term + (1 << 3) + 1 - a_n_prev+delta_a-12 - ((a_n_prev+delta_a-12) >> 1) - delta_a - (delta_a >> 1) + shift_true*(8 << shift_int);//((1 << 3) + 1 - a_n_prev-12 - ((a_n_prev-12) >> 1) + delta_a + (delta_a >> 1));
+        } else {
+            compensated_term = compensated_term + ((1 << 3) + 1 - (a_n_prev+delta_a-12) - ((a_n_prev+delta_a-12) >> 1) - delta_a - (delta_a << 1));
             delta_a = delta_a - (1 << 2) - (1 << 3);
-        } 
+        }
+
     } else {
         if (((1 << 4) + ((a_n_prev+16) << 1)) > inc_term) {
             delta_a = 0;
@@ -143,19 +145,19 @@ TRIGGER
 
         fractional_inc_term = inc_term - compensated_term;
 
-        if ((1 + ((a_n_prev+delta_a+4) >> 1) + (delta_a >> 1) + shift_true*(4 << shift_int)) > fractional_inc_term) { // 0.25
+        if ((1 + ((a_n_prev+delta_a+4) >> 1) + delta_a) > fractional_inc_term) { // 0.25
             compensated_term = compensated_term + 0;
             delta_a = delta_a + 0;
-        } else if (((1 << 2) + a_n_prev+delta_a+8 + delta_a + shift_true*(8 << shift_int)) > fractional_inc_term) { // 0.5
-            compensated_term = compensated_term + 1 + ((a_n_prev+delta_a+4) >> 1) + (delta_a >> 1) + shift_true*(4 << shift_int);
+        } else if (((1 << 2) + a_n_prev+delta_a+8 + (delta_a << 1)) > fractional_inc_term) { // 0.5
+            compensated_term = compensated_term + 1 + ((a_n_prev+delta_a+4) >> 1) + delta_a;
             delta_a = delta_a + (1 << 2);
-        } else if (((1 << 3) + 1 + a_n_prev+delta_a+12 + ((a_n_prev+delta_a+12) >> 1)) > fractional_inc_term) { // 0.75
-            compensated_term = compensated_term + ((1 << 2) + a_n_prev+delta_a+8 + delta_a + shift_true*(8 << shift_int));
+        } else if (((1 << 3) + 1 + a_n_prev+delta_a+12 + ((a_n_prev+delta_a+12) >> 1) + delta_a + (delta_a << 1)) > fractional_inc_term) { // 0.75
+            compensated_term = compensated_term + ((1 << 2) + a_n_prev+delta_a+8 + (delta_a << 1));
             delta_a = delta_a + (1 << 3);
-        } else {    // 0.5
-            compensated_term = compensated_term + ((1 << 3) + 1 + a_n_prev+delta_a+12 + ((a_n_prev+delta_a+12) >> 1) + delta_a + (delta_a >> 1) + shift_true*(8 << shift_int));
+        } else {
+            compensated_term = compensated_term + ((1 << 3) + 1 + a_n_prev+delta_a+12 + ((a_n_prev+delta_a+12) >> 1) + delta_a + (delta_a << 1));
             delta_a = delta_a + (1 << 2) + (1 << 3);
-        }      
+        }
     }
 
 	
