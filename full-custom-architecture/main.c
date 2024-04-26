@@ -10,7 +10,7 @@ volatile int delay_array_v[NUM_HALF_TRANSDUCERS+1];
 int main(void) 
 {   
     unsigned char r_0 = 100;
-    unsigned char angle = 110;//110;
+    unsigned char angle = 70;//110;
 
     int delay_array[NUM_HALF_TRANSDUCERS+1];
     int inc_term_array[NUM_HALF_TRANSDUCERS+1];
@@ -19,14 +19,12 @@ int main(void)
     int a_array[NUM_HALF_TRANSDUCERS+1]             = {0};
     int inc_term_prev_array[NUM_HALF_TRANSDUCERS+1] = {0};
 
-    //init_delay(r_0, angle, delay_array, inc_term_array);
-    //next_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
-    //next_delay_frac(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
-    //next_delay_frac(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
-    //next_delay_frac(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+    first_point_delay(r_0, angle, delay_array, inc_term_array);
+    second_point_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+    next_point_delay(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
 
-    init_delay_base(r_0, angle, delay_array, inc_term_array);
-    next_delay_base(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
+    //init_delay_base(r_0, angle, delay_array, inc_term_array);
+    //next_delay_base(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
     //next_delay_base(delay_array, a_array, inc_term_prev_array, error_array, inc_term_array);
 
 

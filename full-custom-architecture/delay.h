@@ -13,27 +13,28 @@
 #define B_N_CONST               0b01000000111       // 32.4375
 
 
+// Initiates compare and iter algorithm
+void compare_and_iter_init(int n_prev, int *n_next, signed int *a_next, signed int *inc_term_next, signed int *error_next, signed int inc_term);
+
 // Calculates delay for all transducer elements to reference point k=0
-void init_delay(unsigned char r_0, unsigned char angle, int *delay_array, int *inc_term_array);
+void first_point_delay(unsigned char r_0, unsigned char angle, int *delay_array, int *inc_term_array);
+void compare_and_iter_first_point(int n_prev, int *n_next, int *a_prev, int *inc_term_prev, int *error_prev, int *inc_term);
 
-// Finds next delay based on previous delay for initial scanpoint k=0
-void compare_and_iter(int n_prev, int *n_next, signed int *a_next, signed int *inc_term_next, signed int *error_next, signed int inc_term);
-void compare_and_iter_frac(int n_prev, int *n_next, signed int a_prev, signed int *a_next, signed int inc_term_prev, signed int *inc_term_next, signed int error_prev, signed int *error_next, signed int inc_term);
+// Finds delays for all elements in next scanpoint k=1
+void second_point_delay(int *delay_array, int *a_array, int *inc_term_prev_array, int *error_array, int *inc_term_array);
+void compare_and_iter_second_point(int *n_prev, int a_prev, int *a_cur, int inc_term_prev, int *inc_term_next, int *error_prev, int *inc_term);
 
-// Finds delays for all elements in next scanpoint k+1
-void next_delay(int *delay_array, int *a_array, int *inc_term_prev_array, int *error_array, int *inc_term_array);
-void compare_and_iter_next(int *n_prev, signed int *a_prev, signed int *inc_term_prev, signed int *error_prev, signed int *inc_term);
-void next_delay_frac(int *delay_array, int *a_array, int *inc_term_prev_array, int *error_array, int *inc_term_array);
-void compare_and_iter_next_frac(int *n_prev, signed int *a_prev, signed int *inc_term_prev, signed int *error_prev, signed int *inc_term);
+// Finds delays for all elements in next scanpoint k>1
+void next_point_delay(int *delay_array, int *a_array, int *inc_term_prev_array, int *error_array, int *inc_term_array);
+void compare_and_iter_next_point(int *n_prev, signed int *a_prev, signed int *inc_term_prev, signed int *error_prev, signed int *inc_term);
 
 // Fits fraction of cordic module (6) with rest of application (4)
 signed int cordic_cosine(int x_scale, unsigned char angle);
 
-// Old functions
+// Base instruction set functions
 void init_delay_base(unsigned char r_0, unsigned char angle, int *delay_array, int *inc_term_array);
 void next_delay_base(int *delay_array, int *a_array, int *inc_term_prev_array, int *error_array, int *inc_term_array);
 void increment_and_compare_next(int *n_prev, signed int *a_prev, signed int *inc_term_prev, signed int *error_prev, signed int inc_term);
-void increment_and_compare_init(int n_prev, int a_prev, signed int inc_term_prev, signed int error_prev, signed int inc_term, 
-                                int *n_next, int *a_next, signed int *inc_term_next, signed int *error_next);
+void increment_and_compare_init(int n_prev, int a_prev, signed int inc_term_prev, signed int error_prev, signed int inc_term, int *n_next, int *a_next, signed int *inc_term_next, signed int *error_next);
 
 #endif
