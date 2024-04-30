@@ -7,6 +7,7 @@ signed int     angle     = INT(1);
 signed int     x_scale   = INT(2);
 
 signed int     y_cur_reg = 0;
+signed int     x_scale_next = 0;
 unsigned int   iterations = 11;
 signed int     sign_increment = 0;
 signed int     sign_bit;
@@ -26,7 +27,7 @@ const int rotated_angle_array[11] = {
 };
 
 // Initializing
-x_scale       = (x_scale >> 1) + (x_scale >> 4) + (x_scale >> 5) + (x_scale >> 6); // K_n = 0.6088 ~ 0.609375 = 2^-1 + 2^-4 + 2^-5 + 2^-6
+x_scale       = (x_scale << 2-1) + (x_scale >> 4-2) + (x_scale >> 5-2) + (x_scale >> 6-2); // K_n = 0.6088 ~ 0.609375 = 2^-1 + 2^-4 + 2^-5 + 2^-6
 if (angle > 90) {
     angle       = (180 - angle) << 6;
     sign_bit    = -1;
@@ -37,17 +38,18 @@ else {
 }
 
 // Iterations
-for (int iter = 0; iter < iterations; ++iter) {
+for (int iter = 0; iter < iterations-1; ++iter) {
     if (sign_increment == 0) {   // +
-        x_scale         = x_scale - (y_cur_reg >> iter);
+        x_scale_next    = x_scale - (y_cur_reg >> iter);
         y_cur_reg       = y_cur_reg + (x_scale >> iter);
         angle           = angle - rotated_angle_array[iter];
     }
     else {                          //-
-        x_scale         = x_scale + (y_cur_reg >> iter);
+        x_scale_next    = x_scale + (y_cur_reg >> iter);
         y_cur_reg       = y_cur_reg - (x_scale >> iter);
         angle           = angle + rotated_angle_array[iter];
     }
+    x_scale = x_scale_next;
 
     if (angle >= 0)
         sign_increment    = 0;
@@ -61,7 +63,9 @@ if (sign_bit == -1) {
     x_scale = -x_scale;
 }
 
-IO(3) = static_cast<signed> (x_scale);
+signed result = (x_scale >> 2);
+
+IO(3) = static_cast<signed> (result);
 return true;
 
 END_TRIGGER;
