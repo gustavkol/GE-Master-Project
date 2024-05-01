@@ -63,7 +63,7 @@ architecture rtl of fu_algo is
 begin
     
     -- Updating next state
-    STATE_FF: process (clk) begin
+    STATE_FF: process (clk, rstx) begin
         if (rstx = '0') then
             state <= Idle;
         elsif (clk'event and clk = '1') then
@@ -72,7 +72,7 @@ begin
     end process;
 
     -- Next state logic
-    COMB: process(glock, t1load, t2load, t1opcode, rstx) begin
+    COMB: process(glock, t1load, t1opcode, state, rstx) begin
         if (rstx = '0') then
             nextState <= Idle;
         else
@@ -80,11 +80,11 @@ begin
                 when Idle   =>      
                     if (glock = '0' and t1load = '1') then 
                         case t1opcode is
-                            when OPC_ALGO_INIT  =>  
-                                nextState <= Run;
-                            when others         =>  
-                                nextState <= Idle;
+                            when OPC_ALGO_INIT  => nextState <= Run;
+                            when others         => nextState <= Idle;
                         end case;
+                    else
+                        nextState <= Idle;
                     end if;
                 when Run    =>  nextState <= Idle;
             end case;
@@ -92,7 +92,7 @@ begin
     end process;
 
     --Algorithm signals: common for integer and fractional
-    ALGO_SIGNALS: process(t1data, t2data, t1opcode, state, rstx) begin
+    ALGO_SIGNALS: process(t1data, t1opcode, state, sign_bit, rstx) begin
        if (rstx = '0') then
             comp_term       <= (others => '0');
             int_64          <= 0;
@@ -153,6 +153,17 @@ begin
                     int_4           <= -4;
                     int_1           <= -1;
                 end if;
+            else
+                comp_term       <= (others => '0');
+                int_64          <= 0;
+                int_48          <= 0;
+                int_32          <= 0;
+                int_16          <= 0;
+                int_12          <= 0;
+                int_9           <= 0;
+                int_8           <= 0;
+                int_4           <= 0;
+                int_1           <= 0;
             end if;
        end if;
     end process;
@@ -231,7 +242,7 @@ begin
                                                   
 
     -- Module logic
-    FUNC: process (clk) begin
+    FUNC: process (clk, rstx) begin
         if (rstx = '0') then
             inc_term_frac   <= (others => '0');
             a_reg           <= (others => '0');

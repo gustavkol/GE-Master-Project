@@ -547,7 +547,10 @@ architecture structural of tta0 is
 
   component fu_cordic is
     generic (
-      dataw : integer);
+      dataw : integer;
+      NUM_ITERATIONS : integer;
+      DW_ANGLE : integer;
+      DW_FRACTION : integer);
     port (
       t1data : in std_logic_vector(dataw-1 downto 0);
       t1load : in std_logic;
@@ -834,22 +837,22 @@ begin
   fu_FU_ALGO_3_t1data_wire <= ic_socket_RF_8x32_1_o1_1_3_1_data_wire;
   fu_FU_ALGO_3_t2data_wire <= ic_socket_RF_8x32_1_o1_2_1_1_data_wire;
   ic_socket_RF_8x32_1_o1_3_1_1_data0_wire <= fu_FU_ALGO_3_r1data_wire;
+  ic_socket_RF_8x32_o1_data0_wire <= rf_RF1_r1data_wire;
+  rf_RF1_t1data_wire <= ic_socket_RF_8x32_i1_data_wire;
+  ic_socket_RF_8x32_1_o1_data0_wire <= rf_RF2_r1data_wire;
+  rf_RF2_t1data_wire <= ic_socket_RF_8x32_1_i1_data_wire;
+  ic_socket_RF_8x32_1_o1_1_1_data0_wire <= rf_RF1_1_r1data_wire;
+  rf_RF1_1_t1data_wire <= ic_socket_RF_8x32_1_o1_1_2_data_wire;
+  ic_socket_RF_8x32_1_o1_1_1_1_data0_wire <= rf_RF2_1_r1data_wire;
+  rf_RF2_1_t1data_wire <= ic_socket_RF_8x32_1_o1_1_1_2_data_wire;
+  ic_socket_RF_8x32_1_o1_1_2_1_data0_wire <= rf_RF1_2_r1data_wire;
+  rf_RF1_2_t1data_wire <= ic_socket_RF_8x32_1_o1_1_1_3_data_wire;
   ic_socket_RF_8x32_1_o1_1_1_3_1_data0_wire <= rf_RF2_2_r1data_wire;
   rf_RF2_2_t1data_wire <= ic_socket_RF_8x32_1_o1_1_2_1_1_data_wire;
   ic_socket_RF_8x32_1_o1_1_2_1_2_data0_wire <= rf_RF1_3_r1data_wire;
   rf_RF1_3_t1data_wire <= ic_socket_RF_8x32_1_o1_1_1_3_2_data_wire;
   ic_socket_RF_8x32_1_o1_1_2_1_1_1_data0_wire <= rf_RF2_3_r1data_wire;
   rf_RF2_3_t1data_wire <= ic_socket_RF_8x32_1_o1_1_1_3_1_1_data_wire;
-  ic_socket_RF_8x32_1_o1_1_2_1_data0_wire <= rf_RF1_2_r1data_wire;
-  rf_RF1_2_t1data_wire <= ic_socket_RF_8x32_1_o1_1_1_3_data_wire;
-  ic_socket_RF_8x32_o1_data0_wire <= rf_RF1_r1data_wire;
-  rf_RF1_t1data_wire <= ic_socket_RF_8x32_i1_data_wire;
-  ic_socket_RF_8x32_1_o1_1_1_1_data0_wire <= rf_RF2_1_r1data_wire;
-  rf_RF2_1_t1data_wire <= ic_socket_RF_8x32_1_o1_1_1_2_data_wire;
-  ic_socket_RF_8x32_1_o1_data0_wire <= rf_RF2_r1data_wire;
-  rf_RF2_t1data_wire <= ic_socket_RF_8x32_1_i1_data_wire;
-  ic_socket_RF_8x32_1_o1_1_1_data0_wire <= rf_RF1_1_r1data_wire;
-  rf_RF1_1_t1data_wire <= ic_socket_RF_8x32_1_o1_1_2_data_wire;
   ground_signal <= (others => '0');
 
   inst_fetch : tta0_ifetch
@@ -1044,7 +1047,10 @@ begin
 
   fu_FU_CORDIC : fu_cordic
     generic map (
-      dataw => 32)
+      dataw => 32,
+      NUM_ITERATIONS => 11,
+      DW_ANGLE => 8,
+      DW_FRACTION => 6)
     port map (
       t1data => fu_FU_CORDIC_t1data_wire,
       t1load => fu_FU_CORDIC_t1load_wire,
@@ -1103,6 +1109,86 @@ begin
       rstx => rstx,
       glock => fu_FU_ALGO_3_glock_wire);
 
+  rf_RF1 : rf_1wr_1rd_always_1_guarded_1
+    generic map (
+      dataw => 32,
+      rf_size => 10)
+    port map (
+      r1data => rf_RF1_r1data_wire,
+      r1load => rf_RF1_r1load_wire,
+      r1opcode => rf_RF1_r1opcode_wire,
+      t1data => rf_RF1_t1data_wire,
+      t1load => rf_RF1_t1load_wire,
+      t1opcode => rf_RF1_t1opcode_wire,
+      guard => rf_RF1_guard_wire,
+      clk => clk,
+      rstx => rstx,
+      glock => rf_RF1_glock_wire);
+
+  rf_RF2 : rf_1wr_1rd_always_1_guarded_1
+    generic map (
+      dataw => 32,
+      rf_size => 33)
+    port map (
+      r1data => rf_RF2_r1data_wire,
+      r1load => rf_RF2_r1load_wire,
+      r1opcode => rf_RF2_r1opcode_wire,
+      t1data => rf_RF2_t1data_wire,
+      t1load => rf_RF2_t1load_wire,
+      t1opcode => rf_RF2_t1opcode_wire,
+      guard => rf_RF2_guard_wire,
+      clk => clk,
+      rstx => rstx,
+      glock => rf_RF2_glock_wire);
+
+  rf_RF1_1 : rf_1wr_1rd_always_1_guarded_1
+    generic map (
+      dataw => 32,
+      rf_size => 10)
+    port map (
+      r1data => rf_RF1_1_r1data_wire,
+      r1load => rf_RF1_1_r1load_wire,
+      r1opcode => rf_RF1_1_r1opcode_wire,
+      t1data => rf_RF1_1_t1data_wire,
+      t1load => rf_RF1_1_t1load_wire,
+      t1opcode => rf_RF1_1_t1opcode_wire,
+      guard => rf_RF1_1_guard_wire,
+      clk => clk,
+      rstx => rstx,
+      glock => rf_RF1_1_glock_wire);
+
+  rf_RF2_1 : rf_1wr_1rd_always_1_guarded_1
+    generic map (
+      dataw => 32,
+      rf_size => 33)
+    port map (
+      r1data => rf_RF2_1_r1data_wire,
+      r1load => rf_RF2_1_r1load_wire,
+      r1opcode => rf_RF2_1_r1opcode_wire,
+      t1data => rf_RF2_1_t1data_wire,
+      t1load => rf_RF2_1_t1load_wire,
+      t1opcode => rf_RF2_1_t1opcode_wire,
+      guard => rf_RF2_1_guard_wire,
+      clk => clk,
+      rstx => rstx,
+      glock => rf_RF2_1_glock_wire);
+
+  rf_RF1_2 : rf_1wr_1rd_always_1_guarded_1
+    generic map (
+      dataw => 32,
+      rf_size => 10)
+    port map (
+      r1data => rf_RF1_2_r1data_wire,
+      r1load => rf_RF1_2_r1load_wire,
+      r1opcode => rf_RF1_2_r1opcode_wire,
+      t1data => rf_RF1_2_t1data_wire,
+      t1load => rf_RF1_2_t1load_wire,
+      t1opcode => rf_RF1_2_t1opcode_wire,
+      guard => rf_RF1_2_guard_wire,
+      clk => clk,
+      rstx => rstx,
+      glock => rf_RF1_2_glock_wire);
+
   rf_RF2_2 : rf_1wr_1rd_always_1_guarded_1
     generic map (
       dataw => 32,
@@ -1150,86 +1236,6 @@ begin
       clk => clk,
       rstx => rstx,
       glock => rf_RF2_3_glock_wire);
-
-  rf_RF1_2 : rf_1wr_1rd_always_1_guarded_1
-    generic map (
-      dataw => 32,
-      rf_size => 10)
-    port map (
-      r1data => rf_RF1_2_r1data_wire,
-      r1load => rf_RF1_2_r1load_wire,
-      r1opcode => rf_RF1_2_r1opcode_wire,
-      t1data => rf_RF1_2_t1data_wire,
-      t1load => rf_RF1_2_t1load_wire,
-      t1opcode => rf_RF1_2_t1opcode_wire,
-      guard => rf_RF1_2_guard_wire,
-      clk => clk,
-      rstx => rstx,
-      glock => rf_RF1_2_glock_wire);
-
-  rf_RF1 : rf_1wr_1rd_always_1_guarded_1
-    generic map (
-      dataw => 32,
-      rf_size => 10)
-    port map (
-      r1data => rf_RF1_r1data_wire,
-      r1load => rf_RF1_r1load_wire,
-      r1opcode => rf_RF1_r1opcode_wire,
-      t1data => rf_RF1_t1data_wire,
-      t1load => rf_RF1_t1load_wire,
-      t1opcode => rf_RF1_t1opcode_wire,
-      guard => rf_RF1_guard_wire,
-      clk => clk,
-      rstx => rstx,
-      glock => rf_RF1_glock_wire);
-
-  rf_RF2_1 : rf_1wr_1rd_always_1_guarded_1
-    generic map (
-      dataw => 32,
-      rf_size => 33)
-    port map (
-      r1data => rf_RF2_1_r1data_wire,
-      r1load => rf_RF2_1_r1load_wire,
-      r1opcode => rf_RF2_1_r1opcode_wire,
-      t1data => rf_RF2_1_t1data_wire,
-      t1load => rf_RF2_1_t1load_wire,
-      t1opcode => rf_RF2_1_t1opcode_wire,
-      guard => rf_RF2_1_guard_wire,
-      clk => clk,
-      rstx => rstx,
-      glock => rf_RF2_1_glock_wire);
-
-  rf_RF2 : rf_1wr_1rd_always_1_guarded_1
-    generic map (
-      dataw => 32,
-      rf_size => 33)
-    port map (
-      r1data => rf_RF2_r1data_wire,
-      r1load => rf_RF2_r1load_wire,
-      r1opcode => rf_RF2_r1opcode_wire,
-      t1data => rf_RF2_t1data_wire,
-      t1load => rf_RF2_t1load_wire,
-      t1opcode => rf_RF2_t1opcode_wire,
-      guard => rf_RF2_guard_wire,
-      clk => clk,
-      rstx => rstx,
-      glock => rf_RF2_glock_wire);
-
-  rf_RF1_1 : rf_1wr_1rd_always_1_guarded_1
-    generic map (
-      dataw => 32,
-      rf_size => 10)
-    port map (
-      r1data => rf_RF1_1_r1data_wire,
-      r1load => rf_RF1_1_r1load_wire,
-      r1opcode => rf_RF1_1_r1opcode_wire,
-      t1data => rf_RF1_1_t1data_wire,
-      t1load => rf_RF1_1_t1load_wire,
-      t1opcode => rf_RF1_1_t1opcode_wire,
-      guard => rf_RF1_1_guard_wire,
-      clk => clk,
-      rstx => rstx,
-      glock => rf_RF1_1_glock_wire);
 
   ic : tta0_interconn
     port map (

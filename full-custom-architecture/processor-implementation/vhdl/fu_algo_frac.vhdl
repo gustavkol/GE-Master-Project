@@ -68,6 +68,10 @@ begin
                     int_4           <= -4;
                     int_1           <= -1;
                 end if;
+            else
+                comp_term     <= (others => '0');
+                int_4         <= 0;
+                int_1         <= 0;
             end if;
         end if;
     end process;
@@ -136,7 +140,7 @@ begin
 
 
     -- Module logic
-    FUNC: process (clk) begin
+    FUNC: process (clk, rstx) begin
         if (rstx = '0') then
             r1data <= (others => '0');
         elsif (clk'event and clk = '1') then
@@ -177,7 +181,7 @@ begin
                     when OPC_ALGO_F_INIT      =>
                         r1data(DW_A-1 downto 0)       <= std_logic_vector(a_n);
                         r1data(dataw-1 downto DW_A)   <= std_logic_vector(a_sq_int + a_sq_frac);
-                    when others =>  null;
+                    when others =>
                 end case;
             end if;
         end if;

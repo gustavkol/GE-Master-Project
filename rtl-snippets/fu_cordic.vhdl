@@ -8,7 +8,6 @@ entity fu_cordic is
         DW_ANGLE                : integer := 8;
         DW_FRACTION             : integer := 6;
         dataw                   : integer := 32;
-        DW_CALCULATION_TERMS    : integer := 16;
         NUM_ITERATIONS          : integer := 11
     );
     port (
@@ -55,7 +54,7 @@ architecture rtl of fu_cordic is
 begin
     
     -- Updating next state
-    STATE_FF: process (clk) begin
+    STATE_FF: process (clk, rstx) begin
         if (rstx = '0') then
             state <= Idle;
         elsif (clk'event and clk = '1') then
@@ -64,19 +63,29 @@ begin
     end process;
 
     -- Next state logic
-    COMB: process(glock, t1load, t2load, counter, rstx) begin
+    COMB: process(glock, t1load, state, counter, rstx) begin
         if (rstx = '0') then
             nextState <= Idle;
         else
             case state is 
-                when Idle   =>      if (glock = '0' and t1load = '1')   then nextState <= Run; end if;
-                when Run    =>      if (counter = NUM_ITERATIONS-1)     then nextState <= Idle; end if;
+                when Idle   =>      
+                    if (glock = '0' and t1load = '1') then 
+                        nextState <= Run; 
+                    else
+                        nextState <= Idle;    
+                    end if;
+                when Run    =>      
+                    if (counter = NUM_ITERATIONS-1) then 
+                        nextState <= Idle; 
+                    else
+                        nextState <= Run;    
+                    end if;
             end case;
         end if;
     end process;
 
     -- Module logic
-    FUNC: process (clk) begin
+    FUNC: process (clk, rstx) begin
         if (rstx = '0') then
             x_cur_reg       <= (others => '0');
             y_cur_reg       <= (others => '0');
@@ -89,13 +98,13 @@ begin
             case state is 
                 when Idle   => 
                     if (glock = '0' and t1load = '1') then 
-                        --x_cur_reg <= resize(shift_right(signed(t2data), 1) + shift_right(signed(t2data), 4) + shift_right(signed(t2data), 5) + shift_right(signed(t2data), 6), DW_CALCULATION_TERMS+DW_FRACTION);
+                        -- Adjusting from 4 fraction bits to 6 fraction bits
                         x_cur_reg <= shift_left(signed(t2data), 2-1) + shift_right(signed(t2data), 4-2) + shift_right(signed(t2data), 5-2) + shift_right(signed(t2data),6-2);
                         if (to_integer(signed(t1data)) > 90) then
-                            angle_cur_reg <= resize(signed(to_signed(180, t1data'length) - signed(t1data)),DW_ANGLE) & (5 downto 0 => '0');
+                            angle_cur_reg <= resize(signed(to_signed(180, t1data'length) - signed(t1data)),DW_ANGLE) & (DW_FRACTION-1 downto 0 => '0');
                             sign_bit      <= '1';
                         else
-                            angle_cur_reg <= resize(signed(t1data),DW_ANGLE) & (5 downto 0 => '0');
+                            angle_cur_reg <= resize(signed(t1data),DW_ANGLE) & (DW_FRACTION-1 downto 0 => '0');
                             sign_bit      <= '0';
                         end if;                        
                     end if;
@@ -123,10 +132,10 @@ begin
                         counter <= counter + 1;
                     else
                         if (sign_bit = '1') then
-                            --r1data <= std_logic_vector(resize(signed(-x_cur_reg), r1data'length)); -- updating output
+                            -- Adjusting from 6 fraction bits to 4 fraction bits
                             r1data <= std_logic_vector(shift_right(-x_cur_reg, 2)); -- updating output
                         else
-                            --r1data <= std_logic_vector(resize(x_cur_reg, r1data'length)); -- updating output
+                            -- Adjusting from 6 fraction bits to 4 fraction bits
                             r1data <= std_logic_vector(shift_right(x_cur_reg, 2)); -- updating output
                         end if ;
                         y_cur_reg       <= (others => '0');

@@ -650,88 +650,15 @@ begin
         else
           simm_cntrl_B1_9_reg(0) <= '0';
         end if;
-        if (squash_B3 = '0' and conv_integer(unsigned(src_B3(32 downto 29))) = 9) then
-          socket_lsu_o1_bus_cntrl_reg(0) <= '1';
-        else
-          socket_lsu_o1_bus_cntrl_reg(0) <= '0';
-        end if;
         if (squash_B2 = '0' and conv_integer(unsigned(src_B2(32 downto 29))) = 10) then
           socket_lsu_o1_bus_cntrl_reg(1) <= '1';
         else
           socket_lsu_o1_bus_cntrl_reg(1) <= '0';
         end if;
-        -- bus control signals for short immediate sockets
-        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(32 downto 32))) = 0) then
-          simm_cntrl_B1_reg(0) <= '1';
-        simm_B1_reg <= tce_ext(src_B1(31 downto 0), simm_B1_reg'length);
+        if (squash_B3 = '0' and conv_integer(unsigned(src_B3(32 downto 29))) = 9) then
+          socket_lsu_o1_bus_cntrl_reg(0) <= '1';
         else
-          simm_cntrl_B1_reg(0) <= '0';
-        end if;
-        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(32 downto 32))) = 0) then
-          simm_cntrl_B2_reg(0) <= '1';
-        simm_B2_reg <= tce_ext(src_B2(31 downto 0), simm_B2_reg'length);
-        else
-          simm_cntrl_B2_reg(0) <= '0';
-        end if;
-        if (squash_B3 = '0' and conv_integer(unsigned(src_B3(32 downto 32))) = 0) then
-          simm_cntrl_B3_reg(0) <= '1';
-        simm_B3_reg <= tce_ext(src_B3(31 downto 0), simm_B3_reg'length);
-        else
-          simm_cntrl_B3_reg(0) <= '0';
-        end if;
-        if (squash_B1_1 = '0' and conv_integer(unsigned(src_B1_1(32 downto 32))) = 0) then
-          simm_cntrl_B1_1_reg(0) <= '1';
-        simm_B1_1_reg <= tce_ext(src_B1_1(31 downto 0), simm_B1_1_reg'length);
-        else
-          simm_cntrl_B1_1_reg(0) <= '0';
-        end if;
-        if (squash_B1_2 = '0' and conv_integer(unsigned(src_B1_2(32 downto 32))) = 0) then
-          simm_cntrl_B1_2_reg(0) <= '1';
-        simm_B1_2_reg <= tce_ext(src_B1_2(31 downto 0), simm_B1_2_reg'length);
-        else
-          simm_cntrl_B1_2_reg(0) <= '0';
-        end if;
-        if (squash_B1_3 = '0' and conv_integer(unsigned(src_B1_3(32 downto 32))) = 0) then
-          simm_cntrl_B1_3_reg(0) <= '1';
-        simm_B1_3_reg <= tce_ext(src_B1_3(31 downto 0), simm_B1_3_reg'length);
-        else
-          simm_cntrl_B1_3_reg(0) <= '0';
-        end if;
-        if (squash_B1_4 = '0' and conv_integer(unsigned(src_B1_4(32 downto 32))) = 0) then
-          simm_cntrl_B1_4_reg(0) <= '1';
-        simm_B1_4_reg <= tce_ext(src_B1_4(31 downto 0), simm_B1_4_reg'length);
-        else
-          simm_cntrl_B1_4_reg(0) <= '0';
-        end if;
-        if (squash_B1_5 = '0' and conv_integer(unsigned(src_B1_5(32 downto 32))) = 0) then
-          simm_cntrl_B1_5_reg(0) <= '1';
-        simm_B1_5_reg <= tce_ext(src_B1_5(31 downto 0), simm_B1_5_reg'length);
-        else
-          simm_cntrl_B1_5_reg(0) <= '0';
-        end if;
-        if (squash_B1_6 = '0' and conv_integer(unsigned(src_B1_6(32 downto 32))) = 0) then
-          simm_cntrl_B1_6_reg(0) <= '1';
-        simm_B1_6_reg <= tce_ext(src_B1_6(31 downto 0), simm_B1_6_reg'length);
-        else
-          simm_cntrl_B1_6_reg(0) <= '0';
-        end if;
-        if (squash_B1_7 = '0' and conv_integer(unsigned(src_B1_7(32 downto 32))) = 0) then
-          simm_cntrl_B1_7_reg(0) <= '1';
-        simm_B1_7_reg <= tce_ext(src_B1_7(31 downto 0), simm_B1_7_reg'length);
-        else
-          simm_cntrl_B1_7_reg(0) <= '0';
-        end if;
-        if (squash_B1_8 = '0' and conv_integer(unsigned(src_B1_8(32 downto 32))) = 0) then
-          simm_cntrl_B1_8_reg(0) <= '1';
-        simm_B1_8_reg <= tce_ext(src_B1_8(31 downto 0), simm_B1_8_reg'length);
-        else
-          simm_cntrl_B1_8_reg(0) <= '0';
-        end if;
-        if (squash_B1_9 = '0' and conv_integer(unsigned(src_B1_9(32 downto 32))) = 0) then
-          simm_cntrl_B1_9_reg(0) <= '1';
-        simm_B1_9_reg <= tce_ext(src_B1_9(31 downto 0), simm_B1_9_reg'length);
-        else
-          simm_cntrl_B1_9_reg(0) <= '0';
+          socket_lsu_o1_bus_cntrl_reg(0) <= '0';
         end if;
         -- bus control signals for short immediate sockets
         if (squash_B1 = '0' and conv_integer(unsigned(src_B1(32 downto 32))) = 0) then
@@ -951,6 +878,89 @@ begin
         simm_B1_9_reg <= tce_ext(src_B1_9(31 downto 0), simm_B1_9_reg'length);
         else
           simm_cntrl_B1_9_reg(0) <= '0';
+        end if;
+        -- bus control signals for short immediate sockets
+        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(32 downto 32))) = 0) then
+          simm_cntrl_B1_reg(0) <= '1';
+        simm_B1_reg <= tce_ext(src_B1(31 downto 0), simm_B1_reg'length);
+        else
+          simm_cntrl_B1_reg(0) <= '0';
+        end if;
+        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(32 downto 32))) = 0) then
+          simm_cntrl_B2_reg(0) <= '1';
+        simm_B2_reg <= tce_ext(src_B2(31 downto 0), simm_B2_reg'length);
+        else
+          simm_cntrl_B2_reg(0) <= '0';
+        end if;
+        if (squash_B3 = '0' and conv_integer(unsigned(src_B3(32 downto 32))) = 0) then
+          simm_cntrl_B3_reg(0) <= '1';
+        simm_B3_reg <= tce_ext(src_B3(31 downto 0), simm_B3_reg'length);
+        else
+          simm_cntrl_B3_reg(0) <= '0';
+        end if;
+        if (squash_B1_1 = '0' and conv_integer(unsigned(src_B1_1(32 downto 32))) = 0) then
+          simm_cntrl_B1_1_reg(0) <= '1';
+        simm_B1_1_reg <= tce_ext(src_B1_1(31 downto 0), simm_B1_1_reg'length);
+        else
+          simm_cntrl_B1_1_reg(0) <= '0';
+        end if;
+        if (squash_B1_2 = '0' and conv_integer(unsigned(src_B1_2(32 downto 32))) = 0) then
+          simm_cntrl_B1_2_reg(0) <= '1';
+        simm_B1_2_reg <= tce_ext(src_B1_2(31 downto 0), simm_B1_2_reg'length);
+        else
+          simm_cntrl_B1_2_reg(0) <= '0';
+        end if;
+        if (squash_B1_3 = '0' and conv_integer(unsigned(src_B1_3(32 downto 32))) = 0) then
+          simm_cntrl_B1_3_reg(0) <= '1';
+        simm_B1_3_reg <= tce_ext(src_B1_3(31 downto 0), simm_B1_3_reg'length);
+        else
+          simm_cntrl_B1_3_reg(0) <= '0';
+        end if;
+        if (squash_B1_4 = '0' and conv_integer(unsigned(src_B1_4(32 downto 32))) = 0) then
+          simm_cntrl_B1_4_reg(0) <= '1';
+        simm_B1_4_reg <= tce_ext(src_B1_4(31 downto 0), simm_B1_4_reg'length);
+        else
+          simm_cntrl_B1_4_reg(0) <= '0';
+        end if;
+        if (squash_B1_5 = '0' and conv_integer(unsigned(src_B1_5(32 downto 32))) = 0) then
+          simm_cntrl_B1_5_reg(0) <= '1';
+        simm_B1_5_reg <= tce_ext(src_B1_5(31 downto 0), simm_B1_5_reg'length);
+        else
+          simm_cntrl_B1_5_reg(0) <= '0';
+        end if;
+        if (squash_B1_6 = '0' and conv_integer(unsigned(src_B1_6(32 downto 32))) = 0) then
+          simm_cntrl_B1_6_reg(0) <= '1';
+        simm_B1_6_reg <= tce_ext(src_B1_6(31 downto 0), simm_B1_6_reg'length);
+        else
+          simm_cntrl_B1_6_reg(0) <= '0';
+        end if;
+        if (squash_B1_7 = '0' and conv_integer(unsigned(src_B1_7(32 downto 32))) = 0) then
+          simm_cntrl_B1_7_reg(0) <= '1';
+        simm_B1_7_reg <= tce_ext(src_B1_7(31 downto 0), simm_B1_7_reg'length);
+        else
+          simm_cntrl_B1_7_reg(0) <= '0';
+        end if;
+        if (squash_B1_8 = '0' and conv_integer(unsigned(src_B1_8(32 downto 32))) = 0) then
+          simm_cntrl_B1_8_reg(0) <= '1';
+        simm_B1_8_reg <= tce_ext(src_B1_8(31 downto 0), simm_B1_8_reg'length);
+        else
+          simm_cntrl_B1_8_reg(0) <= '0';
+        end if;
+        if (squash_B1_9 = '0' and conv_integer(unsigned(src_B1_9(32 downto 32))) = 0) then
+          simm_cntrl_B1_9_reg(0) <= '1';
+        simm_B1_9_reg <= tce_ext(src_B1_9(31 downto 0), simm_B1_9_reg'length);
+        else
+          simm_cntrl_B1_9_reg(0) <= '0';
+        end if;
+        if (squash_B1_6 = '0' and conv_integer(unsigned(src_B1_6(32 downto 30))) = 5) then
+          socket_alu_comp_o1_bus_cntrl_reg(3) <= '1';
+        else
+          socket_alu_comp_o1_bus_cntrl_reg(3) <= '0';
+        end if;
+        if (squash_B1_9 = '0' and conv_integer(unsigned(src_B1_9(32 downto 30))) = 5) then
+          socket_alu_comp_o1_bus_cntrl_reg(4) <= '1';
+        else
+          socket_alu_comp_o1_bus_cntrl_reg(4) <= '0';
         end if;
         if (squash_B1 = '0' and conv_integer(unsigned(src_B1(32 downto 29))) = 10) then
           socket_alu_comp_o1_bus_cntrl_reg(1) <= '1';
@@ -962,20 +972,10 @@ begin
         else
           socket_alu_comp_o1_bus_cntrl_reg(2) <= '0';
         end if;
-        if (squash_B1_9 = '0' and conv_integer(unsigned(src_B1_9(32 downto 30))) = 5) then
-          socket_alu_comp_o1_bus_cntrl_reg(4) <= '1';
-        else
-          socket_alu_comp_o1_bus_cntrl_reg(4) <= '0';
-        end if;
         if (squash_B3 = '0' and conv_integer(unsigned(src_B3(32 downto 29))) = 10) then
           socket_alu_comp_o1_bus_cntrl_reg(0) <= '1';
         else
           socket_alu_comp_o1_bus_cntrl_reg(0) <= '0';
-        end if;
-        if (squash_B1_6 = '0' and conv_integer(unsigned(src_B1_6(32 downto 30))) = 5) then
-          socket_alu_comp_o1_bus_cntrl_reg(3) <= '1';
-        else
-          socket_alu_comp_o1_bus_cntrl_reg(3) <= '0';
         end if;
         -- bus control signals for short immediate sockets
         if (squash_B1 = '0' and conv_integer(unsigned(src_B1(32 downto 32))) = 0) then
@@ -1201,15 +1201,15 @@ begin
         else
           socket_gcu_o1_bus_cntrl_reg(0) <= '0';
         end if;
-        if (squash_B3 = '0' and conv_integer(unsigned(src_B3(32 downto 29))) = 11) then
-          socket_gcu_o1_bus_cntrl_reg(2) <= '1';
-        else
-          socket_gcu_o1_bus_cntrl_reg(2) <= '0';
-        end if;
         if (squash_B2 = '0' and conv_integer(unsigned(src_B2(32 downto 29))) = 11) then
           socket_gcu_o1_bus_cntrl_reg(1) <= '1';
         else
           socket_gcu_o1_bus_cntrl_reg(1) <= '0';
+        end if;
+        if (squash_B3 = '0' and conv_integer(unsigned(src_B3(32 downto 29))) = 11) then
+          socket_gcu_o1_bus_cntrl_reg(2) <= '1';
+        else
+          socket_gcu_o1_bus_cntrl_reg(2) <= '0';
         end if;
         -- bus control signals for short immediate sockets
         if (squash_B1 = '0' and conv_integer(unsigned(src_B1(32 downto 32))) = 0) then
@@ -1966,88 +1966,15 @@ begin
         else
           simm_cntrl_B1_9_reg(0) <= '0';
         end if;
-        if (squash_B3 = '0' and conv_integer(unsigned(src_B3(32 downto 29))) = 13) then
-          socket_FU_CORDIC_o1_bus_cntrl_reg(1) <= '1';
-        else
-          socket_FU_CORDIC_o1_bus_cntrl_reg(1) <= '0';
-        end if;
         if (squash_B2 = '0' and conv_integer(unsigned(src_B2(32 downto 29))) = 12) then
           socket_FU_CORDIC_o1_bus_cntrl_reg(0) <= '1';
         else
           socket_FU_CORDIC_o1_bus_cntrl_reg(0) <= '0';
         end if;
-        -- bus control signals for short immediate sockets
-        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(32 downto 32))) = 0) then
-          simm_cntrl_B1_reg(0) <= '1';
-        simm_B1_reg <= tce_ext(src_B1(31 downto 0), simm_B1_reg'length);
+        if (squash_B3 = '0' and conv_integer(unsigned(src_B3(32 downto 29))) = 13) then
+          socket_FU_CORDIC_o1_bus_cntrl_reg(1) <= '1';
         else
-          simm_cntrl_B1_reg(0) <= '0';
-        end if;
-        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(32 downto 32))) = 0) then
-          simm_cntrl_B2_reg(0) <= '1';
-        simm_B2_reg <= tce_ext(src_B2(31 downto 0), simm_B2_reg'length);
-        else
-          simm_cntrl_B2_reg(0) <= '0';
-        end if;
-        if (squash_B3 = '0' and conv_integer(unsigned(src_B3(32 downto 32))) = 0) then
-          simm_cntrl_B3_reg(0) <= '1';
-        simm_B3_reg <= tce_ext(src_B3(31 downto 0), simm_B3_reg'length);
-        else
-          simm_cntrl_B3_reg(0) <= '0';
-        end if;
-        if (squash_B1_1 = '0' and conv_integer(unsigned(src_B1_1(32 downto 32))) = 0) then
-          simm_cntrl_B1_1_reg(0) <= '1';
-        simm_B1_1_reg <= tce_ext(src_B1_1(31 downto 0), simm_B1_1_reg'length);
-        else
-          simm_cntrl_B1_1_reg(0) <= '0';
-        end if;
-        if (squash_B1_2 = '0' and conv_integer(unsigned(src_B1_2(32 downto 32))) = 0) then
-          simm_cntrl_B1_2_reg(0) <= '1';
-        simm_B1_2_reg <= tce_ext(src_B1_2(31 downto 0), simm_B1_2_reg'length);
-        else
-          simm_cntrl_B1_2_reg(0) <= '0';
-        end if;
-        if (squash_B1_3 = '0' and conv_integer(unsigned(src_B1_3(32 downto 32))) = 0) then
-          simm_cntrl_B1_3_reg(0) <= '1';
-        simm_B1_3_reg <= tce_ext(src_B1_3(31 downto 0), simm_B1_3_reg'length);
-        else
-          simm_cntrl_B1_3_reg(0) <= '0';
-        end if;
-        if (squash_B1_4 = '0' and conv_integer(unsigned(src_B1_4(32 downto 32))) = 0) then
-          simm_cntrl_B1_4_reg(0) <= '1';
-        simm_B1_4_reg <= tce_ext(src_B1_4(31 downto 0), simm_B1_4_reg'length);
-        else
-          simm_cntrl_B1_4_reg(0) <= '0';
-        end if;
-        if (squash_B1_5 = '0' and conv_integer(unsigned(src_B1_5(32 downto 32))) = 0) then
-          simm_cntrl_B1_5_reg(0) <= '1';
-        simm_B1_5_reg <= tce_ext(src_B1_5(31 downto 0), simm_B1_5_reg'length);
-        else
-          simm_cntrl_B1_5_reg(0) <= '0';
-        end if;
-        if (squash_B1_6 = '0' and conv_integer(unsigned(src_B1_6(32 downto 32))) = 0) then
-          simm_cntrl_B1_6_reg(0) <= '1';
-        simm_B1_6_reg <= tce_ext(src_B1_6(31 downto 0), simm_B1_6_reg'length);
-        else
-          simm_cntrl_B1_6_reg(0) <= '0';
-        end if;
-        if (squash_B1_7 = '0' and conv_integer(unsigned(src_B1_7(32 downto 32))) = 0) then
-          simm_cntrl_B1_7_reg(0) <= '1';
-        simm_B1_7_reg <= tce_ext(src_B1_7(31 downto 0), simm_B1_7_reg'length);
-        else
-          simm_cntrl_B1_7_reg(0) <= '0';
-        end if;
-        if (squash_B1_8 = '0' and conv_integer(unsigned(src_B1_8(32 downto 32))) = 0) then
-          simm_cntrl_B1_8_reg(0) <= '1';
-        simm_B1_8_reg <= tce_ext(src_B1_8(31 downto 0), simm_B1_8_reg'length);
-        else
-          simm_cntrl_B1_8_reg(0) <= '0';
-        end if;
-        if (squash_B1_9 = '0' and conv_integer(unsigned(src_B1_9(32 downto 32))) = 0) then
-          simm_cntrl_B1_9_reg(0) <= '1';
-        simm_B1_9_reg <= tce_ext(src_B1_9(31 downto 0), simm_B1_9_reg'length);
-        else
-          simm_cntrl_B1_9_reg(0) <= '0';
+          socket_FU_CORDIC_o1_bus_cntrl_reg(1) <= '0';
         end if;
         -- bus control signals for short immediate sockets
         if (squash_B1 = '0' and conv_integer(unsigned(src_B1(32 downto 32))) = 0) then
@@ -2195,10 +2122,78 @@ begin
         else
           simm_cntrl_B1_9_reg(0) <= '0';
         end if;
-        if (squash_B1_3 = '0' and conv_integer(unsigned(src_B1_3(32 downto 30))) = 7) then
-          socket_RF_8x32_1_o1_3_bus_cntrl_reg(0) <= '1';
+        -- bus control signals for short immediate sockets
+        if (squash_B1 = '0' and conv_integer(unsigned(src_B1(32 downto 32))) = 0) then
+          simm_cntrl_B1_reg(0) <= '1';
+        simm_B1_reg <= tce_ext(src_B1(31 downto 0), simm_B1_reg'length);
         else
-          socket_RF_8x32_1_o1_3_bus_cntrl_reg(0) <= '0';
+          simm_cntrl_B1_reg(0) <= '0';
+        end if;
+        if (squash_B2 = '0' and conv_integer(unsigned(src_B2(32 downto 32))) = 0) then
+          simm_cntrl_B2_reg(0) <= '1';
+        simm_B2_reg <= tce_ext(src_B2(31 downto 0), simm_B2_reg'length);
+        else
+          simm_cntrl_B2_reg(0) <= '0';
+        end if;
+        if (squash_B3 = '0' and conv_integer(unsigned(src_B3(32 downto 32))) = 0) then
+          simm_cntrl_B3_reg(0) <= '1';
+        simm_B3_reg <= tce_ext(src_B3(31 downto 0), simm_B3_reg'length);
+        else
+          simm_cntrl_B3_reg(0) <= '0';
+        end if;
+        if (squash_B1_1 = '0' and conv_integer(unsigned(src_B1_1(32 downto 32))) = 0) then
+          simm_cntrl_B1_1_reg(0) <= '1';
+        simm_B1_1_reg <= tce_ext(src_B1_1(31 downto 0), simm_B1_1_reg'length);
+        else
+          simm_cntrl_B1_1_reg(0) <= '0';
+        end if;
+        if (squash_B1_2 = '0' and conv_integer(unsigned(src_B1_2(32 downto 32))) = 0) then
+          simm_cntrl_B1_2_reg(0) <= '1';
+        simm_B1_2_reg <= tce_ext(src_B1_2(31 downto 0), simm_B1_2_reg'length);
+        else
+          simm_cntrl_B1_2_reg(0) <= '0';
+        end if;
+        if (squash_B1_3 = '0' and conv_integer(unsigned(src_B1_3(32 downto 32))) = 0) then
+          simm_cntrl_B1_3_reg(0) <= '1';
+        simm_B1_3_reg <= tce_ext(src_B1_3(31 downto 0), simm_B1_3_reg'length);
+        else
+          simm_cntrl_B1_3_reg(0) <= '0';
+        end if;
+        if (squash_B1_4 = '0' and conv_integer(unsigned(src_B1_4(32 downto 32))) = 0) then
+          simm_cntrl_B1_4_reg(0) <= '1';
+        simm_B1_4_reg <= tce_ext(src_B1_4(31 downto 0), simm_B1_4_reg'length);
+        else
+          simm_cntrl_B1_4_reg(0) <= '0';
+        end if;
+        if (squash_B1_5 = '0' and conv_integer(unsigned(src_B1_5(32 downto 32))) = 0) then
+          simm_cntrl_B1_5_reg(0) <= '1';
+        simm_B1_5_reg <= tce_ext(src_B1_5(31 downto 0), simm_B1_5_reg'length);
+        else
+          simm_cntrl_B1_5_reg(0) <= '0';
+        end if;
+        if (squash_B1_6 = '0' and conv_integer(unsigned(src_B1_6(32 downto 32))) = 0) then
+          simm_cntrl_B1_6_reg(0) <= '1';
+        simm_B1_6_reg <= tce_ext(src_B1_6(31 downto 0), simm_B1_6_reg'length);
+        else
+          simm_cntrl_B1_6_reg(0) <= '0';
+        end if;
+        if (squash_B1_7 = '0' and conv_integer(unsigned(src_B1_7(32 downto 32))) = 0) then
+          simm_cntrl_B1_7_reg(0) <= '1';
+        simm_B1_7_reg <= tce_ext(src_B1_7(31 downto 0), simm_B1_7_reg'length);
+        else
+          simm_cntrl_B1_7_reg(0) <= '0';
+        end if;
+        if (squash_B1_8 = '0' and conv_integer(unsigned(src_B1_8(32 downto 32))) = 0) then
+          simm_cntrl_B1_8_reg(0) <= '1';
+        simm_B1_8_reg <= tce_ext(src_B1_8(31 downto 0), simm_B1_8_reg'length);
+        else
+          simm_cntrl_B1_8_reg(0) <= '0';
+        end if;
+        if (squash_B1_9 = '0' and conv_integer(unsigned(src_B1_9(32 downto 32))) = 0) then
+          simm_cntrl_B1_9_reg(0) <= '1';
+        simm_B1_9_reg <= tce_ext(src_B1_9(31 downto 0), simm_B1_9_reg'length);
+        else
+          simm_cntrl_B1_9_reg(0) <= '0';
         end if;
         if (squash_B1_6 = '0' and conv_integer(unsigned(src_B1_6(32 downto 30))) = 6) then
           socket_RF_8x32_1_o1_3_bus_cntrl_reg(2) <= '1';
@@ -2209,6 +2204,11 @@ begin
           socket_RF_8x32_1_o1_3_bus_cntrl_reg(1) <= '1';
         else
           socket_RF_8x32_1_o1_3_bus_cntrl_reg(1) <= '0';
+        end if;
+        if (squash_B1_3 = '0' and conv_integer(unsigned(src_B1_3(32 downto 30))) = 7) then
+          socket_RF_8x32_1_o1_3_bus_cntrl_reg(0) <= '1';
+        else
+          socket_RF_8x32_1_o1_3_bus_cntrl_reg(0) <= '0';
         end if;
         -- bus control signals for short immediate sockets
         if (squash_B1 = '0' and conv_integer(unsigned(src_B1(32 downto 32))) = 0) then
@@ -2731,20 +2731,20 @@ begin
         else
           simm_cntrl_B1_9_reg(0) <= '0';
         end if;
-        if (squash_B1_4 = '0' and conv_integer(unsigned(src_B1_4(32 downto 30))) = 6) then
-          socket_RF_8x32_1_o1_3_1_bus_cntrl_reg(0) <= '1';
+        if (squash_B1_6 = '0' and conv_integer(unsigned(src_B1_6(32 downto 30))) = 7) then
+          socket_RF_8x32_1_o1_3_1_bus_cntrl_reg(1) <= '1';
         else
-          socket_RF_8x32_1_o1_3_1_bus_cntrl_reg(0) <= '0';
+          socket_RF_8x32_1_o1_3_1_bus_cntrl_reg(1) <= '0';
         end if;
         if (squash_B1_9 = '0' and conv_integer(unsigned(src_B1_9(32 downto 30))) = 6) then
           socket_RF_8x32_1_o1_3_1_bus_cntrl_reg(2) <= '1';
         else
           socket_RF_8x32_1_o1_3_1_bus_cntrl_reg(2) <= '0';
         end if;
-        if (squash_B1_6 = '0' and conv_integer(unsigned(src_B1_6(32 downto 30))) = 7) then
-          socket_RF_8x32_1_o1_3_1_bus_cntrl_reg(1) <= '1';
+        if (squash_B1_4 = '0' and conv_integer(unsigned(src_B1_4(32 downto 30))) = 6) then
+          socket_RF_8x32_1_o1_3_1_bus_cntrl_reg(0) <= '1';
         else
-          socket_RF_8x32_1_o1_3_1_bus_cntrl_reg(1) <= '0';
+          socket_RF_8x32_1_o1_3_1_bus_cntrl_reg(0) <= '0';
         end if;
         -- bus control signals for short immediate sockets
         if (squash_B1 = '0' and conv_integer(unsigned(src_B1(32 downto 32))) = 0) then
@@ -3267,15 +3267,15 @@ begin
         else
           simm_cntrl_B1_9_reg(0) <= '0';
         end if;
-        if (squash_B1_9 = '0' and conv_integer(unsigned(src_B1_9(32 downto 30))) = 7) then
-          socket_RF_8x32_1_o1_3_1_1_bus_cntrl_reg(1) <= '1';
-        else
-          socket_RF_8x32_1_o1_3_1_1_bus_cntrl_reg(1) <= '0';
-        end if;
         if (squash_B1_7 = '0' and conv_integer(unsigned(src_B1_7(32 downto 30))) = 6) then
           socket_RF_8x32_1_o1_3_1_1_bus_cntrl_reg(0) <= '1';
         else
           socket_RF_8x32_1_o1_3_1_1_bus_cntrl_reg(0) <= '0';
+        end if;
+        if (squash_B1_9 = '0' and conv_integer(unsigned(src_B1_9(32 downto 30))) = 7) then
+          socket_RF_8x32_1_o1_3_1_1_bus_cntrl_reg(1) <= '1';
+        else
+          socket_RF_8x32_1_o1_3_1_1_bus_cntrl_reg(1) <= '0';
         end if;
         -- bus control signals for short immediate sockets
         if (squash_B1 = '0' and conv_integer(unsigned(src_B1(32 downto 32))) = 0) then
@@ -3713,15 +3713,15 @@ begin
         else
           fu_lsu_in1t_load_reg <= '0';
         end if;
-        if (squash_B1_2 = '0' and conv_integer(unsigned(dst_B1_2(1 downto 0))) = 1) then
-          fu_lsu_in2_load_reg <= '1';
-          socket_lsu_i2_bus_cntrl_reg <= conv_std_logic_vector(1, socket_lsu_i2_bus_cntrl_reg'length);
-        elsif (squash_B1_5 = '0' and conv_integer(unsigned(dst_B1_5(1 downto 0))) = 1) then
+        if (squash_B1_5 = '0' and conv_integer(unsigned(dst_B1_5(1 downto 0))) = 1) then
           fu_lsu_in2_load_reg <= '1';
           socket_lsu_i2_bus_cntrl_reg <= conv_std_logic_vector(2, socket_lsu_i2_bus_cntrl_reg'length);
         elsif (squash_B1_8 = '0' and conv_integer(unsigned(dst_B1_8(1 downto 0))) = 1) then
           fu_lsu_in2_load_reg <= '1';
           socket_lsu_i2_bus_cntrl_reg <= conv_std_logic_vector(3, socket_lsu_i2_bus_cntrl_reg'length);
+        elsif (squash_B1_2 = '0' and conv_integer(unsigned(dst_B1_2(1 downto 0))) = 1) then
+          fu_lsu_in2_load_reg <= '1';
+          socket_lsu_i2_bus_cntrl_reg <= conv_std_logic_vector(1, socket_lsu_i2_bus_cntrl_reg'length);
         elsif (squash_B2 = '0' and conv_integer(unsigned(dst_B2(6 downto 2))) = 22) then
           fu_lsu_in2_load_reg <= '1';
           socket_lsu_i2_bus_cntrl_reg <= conv_std_logic_vector(0, socket_lsu_i2_bus_cntrl_reg'length);
@@ -3797,49 +3797,49 @@ begin
           fu_gcu_pc_load_reg <= '1';
           fu_gcu_opc_reg <= dst_B1(0 downto 0);
           socket_gcu_i1_bus_cntrl_reg <= conv_std_logic_vector(0, socket_gcu_i1_bus_cntrl_reg'length);
-        elsif (squash_B3 = '0' and conv_integer(unsigned(dst_B3(6 downto 4))) = 5) then
-          fu_gcu_pc_load_reg <= '1';
-          fu_gcu_opc_reg <= dst_B3(0 downto 0);
-          socket_gcu_i1_bus_cntrl_reg <= conv_std_logic_vector(2, socket_gcu_i1_bus_cntrl_reg'length);
         elsif (squash_B2 = '0' and conv_integer(unsigned(dst_B2(6 downto 2))) = 20) then
           fu_gcu_pc_load_reg <= '1';
           fu_gcu_opc_reg <= dst_B2(0 downto 0);
           socket_gcu_i1_bus_cntrl_reg <= conv_std_logic_vector(1, socket_gcu_i1_bus_cntrl_reg'length);
+        elsif (squash_B3 = '0' and conv_integer(unsigned(dst_B3(6 downto 4))) = 5) then
+          fu_gcu_pc_load_reg <= '1';
+          fu_gcu_opc_reg <= dst_B3(0 downto 0);
+          socket_gcu_i1_bus_cntrl_reg <= conv_std_logic_vector(2, socket_gcu_i1_bus_cntrl_reg'length);
         else
           fu_gcu_pc_load_reg <= '0';
         end if;
         if (squash_B1 = '0' and conv_integer(unsigned(dst_B1(5 downto 2))) = 12) then
           fu_gcu_ra_load_reg <= '1';
           socket_gcu_i2_bus_cntrl_reg <= conv_std_logic_vector(0, socket_gcu_i2_bus_cntrl_reg'length);
-        elsif (squash_B3 = '0' and conv_integer(unsigned(dst_B3(6 downto 4))) = 7) then
-          fu_gcu_ra_load_reg <= '1';
-          socket_gcu_i2_bus_cntrl_reg <= conv_std_logic_vector(2, socket_gcu_i2_bus_cntrl_reg'length);
         elsif (squash_B2 = '0' and conv_integer(unsigned(dst_B2(6 downto 2))) = 24) then
           fu_gcu_ra_load_reg <= '1';
           socket_gcu_i2_bus_cntrl_reg <= conv_std_logic_vector(1, socket_gcu_i2_bus_cntrl_reg'length);
+        elsif (squash_B3 = '0' and conv_integer(unsigned(dst_B3(6 downto 4))) = 7) then
+          fu_gcu_ra_load_reg <= '1';
+          socket_gcu_i2_bus_cntrl_reg <= conv_std_logic_vector(2, socket_gcu_i2_bus_cntrl_reg'length);
         else
           fu_gcu_ra_load_reg <= '0';
         end if;
         -- control signals for RF inputs
-        if (squash_B3 = '0' and conv_integer(unsigned(dst_B3(6 downto 4))) = 4 and true) then
-          rf_RF1_w0_load_reg <= '1';
-          rf_RF1_w0_opc_reg <= dst_B3(3 downto 0);
-          socket_RF_8x32_i1_bus_cntrl_reg <= conv_std_logic_vector(0, socket_RF_8x32_i1_bus_cntrl_reg'length);
-        elsif (squash_B2 = '0' and conv_integer(unsigned(dst_B2(6 downto 4))) = 4 and true) then
+        if (squash_B2 = '0' and conv_integer(unsigned(dst_B2(6 downto 4))) = 4 and true) then
           rf_RF1_w0_load_reg <= '1';
           rf_RF1_w0_opc_reg <= dst_B2(3 downto 0);
           socket_RF_8x32_i1_bus_cntrl_reg <= conv_std_logic_vector(1, socket_RF_8x32_i1_bus_cntrl_reg'length);
+        elsif (squash_B3 = '0' and conv_integer(unsigned(dst_B3(6 downto 4))) = 4 and true) then
+          rf_RF1_w0_load_reg <= '1';
+          rf_RF1_w0_opc_reg <= dst_B3(3 downto 0);
+          socket_RF_8x32_i1_bus_cntrl_reg <= conv_std_logic_vector(0, socket_RF_8x32_i1_bus_cntrl_reg'length);
         else
           rf_RF1_w0_load_reg <= '0';
         end if;
-        if (squash_B3 = '0' and conv_integer(unsigned(dst_B3(6 downto 6))) = 0 and true) then
-          rf_RF2_w0_load_reg <= '1';
-          rf_RF2_w0_opc_reg <= dst_B3(5 downto 0);
-          socket_RF_8x32_1_i1_bus_cntrl_reg <= conv_std_logic_vector(0, socket_RF_8x32_1_i1_bus_cntrl_reg'length);
-        elsif (squash_B2 = '0' and conv_integer(unsigned(dst_B2(6 downto 6))) = 0 and true) then
+        if (squash_B2 = '0' and conv_integer(unsigned(dst_B2(6 downto 6))) = 0 and true) then
           rf_RF2_w0_load_reg <= '1';
           rf_RF2_w0_opc_reg <= dst_B2(5 downto 0);
           socket_RF_8x32_1_i1_bus_cntrl_reg <= conv_std_logic_vector(1, socket_RF_8x32_1_i1_bus_cntrl_reg'length);
+        elsif (squash_B3 = '0' and conv_integer(unsigned(dst_B3(6 downto 6))) = 0 and true) then
+          rf_RF2_w0_load_reg <= '1';
+          rf_RF2_w0_opc_reg <= dst_B3(5 downto 0);
+          socket_RF_8x32_1_i1_bus_cntrl_reg <= conv_std_logic_vector(0, socket_RF_8x32_1_i1_bus_cntrl_reg'length);
         else
           rf_RF2_w0_load_reg <= '0';
         end if;
