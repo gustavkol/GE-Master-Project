@@ -1,5 +1,4 @@
-This repository contains all relevant code and files for the processor architecture presented in the master's thesis "Application Specific Instruction-Set Processor
-for Medical Ultrasound Beamforming".
+This repository contains all relevant code and files for the processor architecture presented in the master's thesis "Application Specific Instruction-Set Processor for Medical Ultrasound Beamforming".
 
 Some key folders and files in the repository:
 
