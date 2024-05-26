@@ -257,7 +257,7 @@ TRIGGER
 	int     a     	= INT(1);
 	int     b   	= INT(2);
 	
-    int result = (a << 5+4) + (a << 4-1) - (a >> 5-4) - (a >> 10-4);
+    int result = (a << 5+4) + (a << 4-1) - (a >> 5-4) - (a >> 10-4); //32.46777 * a
     IO(3) = static_cast<signed> (result);
     return true;
 END_TRIGGER;
@@ -268,7 +268,7 @@ TRIGGER
 	int     a     	= INT(1);
 	int     b   	= INT(2);
 
-    int result = (a << 7+4) + (a << 1+4) + (a << 0+4) + (a << 4-1) + (a << 4-2);
+    int result = (a << 7+4) + (a << 1+4) + (a << 0+4) + (a << 4-1) + (a << 4-2); // 131.75 * a
 	
     IO(3) = static_cast<signed> (result);
     return true;
@@ -280,7 +280,7 @@ TRIGGER
 	int     a     	= INT(1);
 	int     b   	= INT(2);
 
-    int result = (a << 4+4) + (a << 4-2) - (a >> 6-4);
+    int result = (a << 4+4) + (a << 4-2) - (a >> 6-4); // 16.234 * a
 
     IO(3) = static_cast<signed> (result);
     return true;

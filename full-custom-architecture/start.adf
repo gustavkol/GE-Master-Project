@@ -1,9 +1,101 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<adf version="1.8">
+<adf version="1.20">
 
   <little-endian/>
 
   <bus name="B1">
+    <width>32</width>
+    <guard>
+      <always-true/>
+    </guard>
+    <guard>
+      <simple-expr>
+        <bool>
+          <name>bool</name>
+          <index>0</index>
+        </bool>
+      </simple-expr>
+    </guard>
+    <guard>
+      <inverted-expr>
+        <bool>
+          <name>bool</name>
+          <index>0</index>
+        </bool>
+      </inverted-expr>
+    </guard>
+    <guard>
+      <simple-expr>
+        <bool>
+          <name>bool</name>
+          <index>1</index>
+        </bool>
+      </simple-expr>
+    </guard>
+    <guard>
+      <inverted-expr>
+        <bool>
+          <name>bool</name>
+          <index>1</index>
+        </bool>
+      </inverted-expr>
+    </guard>
+    <segment name="seg1">
+      <writes-to/>
+    </segment>
+    <short-immediate>
+      <extension>zero</extension>
+      <width>32</width>
+    </short-immediate>
+  </bus>
+
+  <bus name="B1_1">
+    <width>32</width>
+    <guard>
+      <always-true/>
+    </guard>
+    <guard>
+      <simple-expr>
+        <bool>
+          <name>bool</name>
+          <index>0</index>
+        </bool>
+      </simple-expr>
+    </guard>
+    <guard>
+      <inverted-expr>
+        <bool>
+          <name>bool</name>
+          <index>0</index>
+        </bool>
+      </inverted-expr>
+    </guard>
+    <guard>
+      <simple-expr>
+        <bool>
+          <name>bool</name>
+          <index>1</index>
+        </bool>
+      </simple-expr>
+    </guard>
+    <guard>
+      <inverted-expr>
+        <bool>
+          <name>bool</name>
+          <index>1</index>
+        </bool>
+      </inverted-expr>
+    </guard>
+    <segment name="seg1">
+      <writes-to/>
+    </segment>
+    <short-immediate>
+      <extension>zero</extension>
+      <width>32</width>
+    </short-immediate>
+  </bus>
+
+  <bus name="B1_2">
     <width>32</width>
     <guard>
       <always-true/>
@@ -54,11 +146,27 @@
       <bus>B1</bus>
       <segment>seg1</segment>
     </reads-from>
+    <reads-from>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_2</bus>
+      <segment>seg1</segment>
+    </reads-from>
   </socket>
 
   <socket name="lsu_o1">
     <writes-to>
       <bus>B1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_2</bus>
       <segment>seg1</segment>
     </writes-to>
   </socket>
@@ -68,11 +176,27 @@
       <bus>B1</bus>
       <segment>seg1</segment>
     </reads-from>
+    <reads-from>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_2</bus>
+      <segment>seg1</segment>
+    </reads-from>
   </socket>
 
   <socket name="alu_comp_i1">
     <reads-from>
       <bus>B1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_2</bus>
       <segment>seg1</segment>
     </reads-from>
   </socket>
@@ -82,11 +206,27 @@
       <bus>B1</bus>
       <segment>seg1</segment>
     </reads-from>
+    <reads-from>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_2</bus>
+      <segment>seg1</segment>
+    </reads-from>
   </socket>
 
   <socket name="alu_comp_o1">
     <writes-to>
       <bus>B1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_2</bus>
       <segment>seg1</segment>
     </writes-to>
   </socket>
@@ -96,11 +236,27 @@
       <bus>B1</bus>
       <segment>seg1</segment>
     </reads-from>
+    <reads-from>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_2</bus>
+      <segment>seg1</segment>
+    </reads-from>
   </socket>
 
   <socket name="RF_o1">
     <writes-to>
       <bus>B1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_2</bus>
       <segment>seg1</segment>
     </writes-to>
   </socket>
@@ -110,11 +266,27 @@
       <bus>B1</bus>
       <segment>seg1</segment>
     </reads-from>
+    <reads-from>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_2</bus>
+      <segment>seg1</segment>
+    </reads-from>
   </socket>
 
   <socket name="bool_o1">
     <writes-to>
       <bus>B1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_2</bus>
       <segment>seg1</segment>
     </writes-to>
   </socket>
@@ -124,6 +296,14 @@
       <bus>B1</bus>
       <segment>seg1</segment>
     </reads-from>
+    <reads-from>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_2</bus>
+      <segment>seg1</segment>
+    </reads-from>
   </socket>
 
   <socket name="gcu_i2">
@@ -131,11 +311,102 @@
       <bus>B1</bus>
       <segment>seg1</segment>
     </reads-from>
+    <reads-from>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_2</bus>
+      <segment>seg1</segment>
+    </reads-from>
   </socket>
 
   <socket name="gcu_o1">
     <writes-to>
       <bus>B1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_2</bus>
+      <segment>seg1</segment>
+    </writes-to>
+  </socket>
+
+  <socket name="RF_1_o1">
+    <writes-to>
+      <bus>B1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_2</bus>
+      <segment>seg1</segment>
+    </writes-to>
+  </socket>
+
+  <socket name="RF_1_i1">
+    <reads-from>
+      <bus>B1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_2</bus>
+      <segment>seg1</segment>
+    </reads-from>
+  </socket>
+
+  <socket name="cordic_i1">
+    <reads-from>
+      <bus>B1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_2</bus>
+      <segment>seg1</segment>
+    </reads-from>
+  </socket>
+
+  <socket name="cordic_i2">
+    <reads-from>
+      <bus>B1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B1_2</bus>
+      <segment>seg1</segment>
+    </reads-from>
+  </socket>
+
+  <socket name="cordic_o1">
+    <writes-to>
+      <bus>B1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B1_2</bus>
       <segment>seg1</segment>
     </writes-to>
   </socket>
@@ -486,9 +757,51 @@
     <address-space/>
   </function-unit>
 
+  <function-unit name="FU_CORDIC">
+    <port name="in1t">
+      <connects-to>cordic_i1</connects-to>
+      <width>32</width>
+      <triggers/>
+      <sets-opcode/>
+    </port>
+    <port name="in2">
+      <connects-to>cordic_i2</connects-to>
+      <width>32</width>
+    </port>
+    <port name="out1">
+      <connects-to>cordic_o1</connects-to>
+      <width>32</width>
+    </port>
+    <operation>
+      <name>cordic</name>
+      <bind name="1">in1t</bind>
+      <bind name="2">in2</bind>
+      <bind name="3">out1</bind>
+      <pipeline>
+        <resource name="res0">
+          <start-cycle>0</start-cycle>
+          <cycles>11</cycles>
+        </resource>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>11</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <address-space/>
+  </function-unit>
+
   <register-file name="RF">
     <type>normal</type>
-    <size>5</size>
+    <size>129</size>
     <width>32</width>
     <max-reads>1</max-reads>
     <max-writes>1</max-writes>
@@ -511,6 +824,20 @@
     </port>
     <port name="rd">
       <connects-to>bool_o1</connects-to>
+    </port>
+  </register-file>
+
+  <register-file name="RF_1">
+    <type>normal</type>
+    <size>34</size>
+    <width>32</width>
+    <max-reads>1</max-reads>
+    <max-writes>1</max-writes>
+    <port name="wr">
+      <connects-to>RF_1_o1</connects-to>
+    </port>
+    <port name="rd">
+      <connects-to>RF_1_i1</connects-to>
     </port>
   </register-file>
 

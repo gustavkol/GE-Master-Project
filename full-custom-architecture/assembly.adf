@@ -1842,13 +1842,13 @@
   <address-space name="data">
     <width>8</width>
     <min-address>0</min-address>
-    <max-address>16777215</max-address>
+    <max-address>255</max-address>
   </address-space>
 
   <address-space name="instructions">
     <width>8</width>
     <min-address>0</min-address>
-    <max-address>1048576</max-address>
+    <max-address>4096</max-address>
   </address-space>
 
   <global-control-unit name="gcu">

@@ -242,51 +242,6 @@
     </writes-to>
   </socket>
 
-  <socket name="FU_ALGORITHM_i1">
-    <reads-from>
-      <bus>B3</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B1</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B2</bus>
-      <segment>seg1</segment>
-    </reads-from>
-  </socket>
-
-  <socket name="FU_ALGORITHM_i2">
-    <reads-from>
-      <bus>B3</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B1</bus>
-      <segment>seg1</segment>
-    </reads-from>
-    <reads-from>
-      <bus>B2</bus>
-      <segment>seg1</segment>
-    </reads-from>
-  </socket>
-
-  <socket name="FU_ALGORITHM_o1">
-    <writes-to>
-      <bus>B3</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B1</bus>
-      <segment>seg1</segment>
-    </writes-to>
-    <writes-to>
-      <bus>B2</bus>
-      <segment>seg1</segment>
-    </writes-to>
-  </socket>
-
   <socket name="RF_8x32_o1">
     <writes-to>
       <bus>B1</bus>
@@ -390,6 +345,51 @@
       <bus>B3</bus>
       <segment>seg1</segment>
     </reads-from>
+  </socket>
+
+  <socket name="FU_ALGORITHM_1_i1">
+    <reads-from>
+      <bus>B1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B2</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B3</bus>
+      <segment>seg1</segment>
+    </reads-from>
+  </socket>
+
+  <socket name="FU_ALGORITHM_1_i2">
+    <reads-from>
+      <bus>B1</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B2</bus>
+      <segment>seg1</segment>
+    </reads-from>
+    <reads-from>
+      <bus>B3</bus>
+      <segment>seg1</segment>
+    </reads-from>
+  </socket>
+
+  <socket name="FU_ALGORITHM_1_o1">
+    <writes-to>
+      <bus>B1</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B2</bus>
+      <segment>seg1</segment>
+    </writes-to>
+    <writes-to>
+      <bus>B3</bus>
+      <segment>seg1</segment>
+    </writes-to>
   </socket>
 
   <socket name="stdout_i1">
@@ -813,19 +813,57 @@
     <address-space/>
   </function-unit>
 
-  <function-unit name="FU_ALGORITHM">
+  <function-unit name="FU_CORDIC">
     <port name="P1">
-      <connects-to>FU_ALGORITHM_i1</connects-to>
+      <connects-to>FU_CORDIC_i1</connects-to>
       <width>32</width>
       <triggers/>
       <sets-opcode/>
     </port>
     <port name="P2">
-      <connects-to>FU_ALGORITHM_i2</connects-to>
+      <connects-to>FU_CORDIC_i2</connects-to>
       <width>32</width>
     </port>
     <port name="P3">
-      <connects-to>FU_ALGORITHM_o1</connects-to>
+      <connects-to>FU_CORDIC_o1</connects-to>
+      <width>32</width>
+    </port>
+    <operation>
+      <name>cordic</name>
+      <bind name="1">P1</bind>
+      <bind name="2">P2</bind>
+      <bind name="3">P3</bind>
+      <pipeline>
+        <reads name="1">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <reads name="2">
+          <start-cycle>0</start-cycle>
+          <cycles>1</cycles>
+        </reads>
+        <writes name="3">
+          <start-cycle>11</start-cycle>
+          <cycles>1</cycles>
+        </writes>
+      </pipeline>
+    </operation>
+    <address-space/>
+  </function-unit>
+
+  <function-unit name="FU_ALGO">
+    <port name="P1">
+      <connects-to>FU_ALGORITHM_1_i1</connects-to>
+      <width>32</width>
+      <triggers/>
+      <sets-opcode/>
+    </port>
+    <port name="P2">
+      <connects-to>FU_ALGORITHM_1_i2</connects-to>
+      <width>32</width>
+    </port>
+    <port name="P3">
+      <connects-to>FU_ALGORITHM_1_o1</connects-to>
       <width>32</width>
     </port>
     <operation>
@@ -988,26 +1026,8 @@
         </writes>
       </pipeline>
     </operation>
-    <address-space/>
-  </function-unit>
-
-  <function-unit name="FU_CORDIC">
-    <port name="P1">
-      <connects-to>FU_CORDIC_i1</connects-to>
-      <width>32</width>
-      <triggers/>
-      <sets-opcode/>
-    </port>
-    <port name="P2">
-      <connects-to>FU_CORDIC_i2</connects-to>
-      <width>32</width>
-    </port>
-    <port name="P3">
-      <connects-to>FU_CORDIC_o1</connects-to>
-      <width>32</width>
-    </port>
     <operation>
-      <name>cordic</name>
+      <name>compare_and_iter_f_init</name>
       <bind name="1">P1</bind>
       <bind name="2">P2</bind>
       <bind name="3">P3</bind>
@@ -1021,7 +1041,7 @@
           <cycles>1</cycles>
         </reads>
         <writes name="3">
-          <start-cycle>11</start-cycle>
+          <start-cycle>0</start-cycle>
           <cycles>1</cycles>
         </writes>
       </pipeline>
@@ -1065,7 +1085,7 @@
 
   <register-file name="RF_8x32">
     <type>normal</type>
-    <size>8</size>
+    <size>34</size>
     <width>32</width>
     <max-reads>1</max-reads>
     <max-writes>1</max-writes>
@@ -1079,7 +1099,7 @@
 
   <register-file name="RF_8x32_1">
     <type>normal</type>
-    <size>8</size>
+    <size>129</size>
     <width>32</width>
     <max-reads>1</max-reads>
     <max-writes>1</max-writes>
