@@ -335,7 +335,7 @@ TRIGGER
 	signed int a_prev = INT(1);
 	signed int n_prev = INT(2);
     
-    signed int result = (n_prev  << 8) | (a_prev & 0x000000FF); // n_prev & a_prev 
+    signed int result = (n_prev  << 8) | (a_prev & 0x000000FF);
     
     IO(3) = static_cast<signed> (result);
     return true;
