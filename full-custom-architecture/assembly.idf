@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<adf-implementation>
+
+  <ic-decoder-plugin>
+    <name>DefaultICDecoder</name>
+    <file>tce:DefaultICDecoderPlugin.so</file>
+  </ic-decoder-plugin>
+
+  <fu name="lsu">
+    <hdb-file>tce:asic_130nm_1.5V.hdb</hdb-file>
+    <fu-id>399</fu-id>
+  </fu>
+
+  <fu name="alu">
+    <hdb-file>riscv-master.hdb</hdb-file>
+    <fu-id>7</fu-id>
+  </fu>
+
+  <fu name="FU_ALGO">
+    <hdb-file>riscv-master.hdb</hdb-file>
+    <fu-id>14</fu-id>
+  </fu>
+
+  <fu name="FU_CORDIC">
+    <hdb-file>riscv-master.hdb</hdb-file>
+    <fu-id>13</fu-id>
+  </fu>
+
+  <fu name="FU_ALGO_1">
+    <hdb-file>riscv-master.hdb</hdb-file>
+    <fu-id>15</fu-id>
+  </fu>
+
+  <fu name="FU_ALGO_2">
+    <hdb-file>riscv-master.hdb</hdb-file>
+    <fu-id>15</fu-id>
+  </fu>
+
+  <fu name="FU_ALGO_3">
+    <hdb-file>riscv-master.hdb</hdb-file>
+    <fu-id>15</fu-id>
+  </fu>
+
+  <rf name="RF1">
+    <hdb-file>tce:asic_130nm_1.5V.hdb</hdb-file>
+    <rf-id>958</rf-id>
+  </rf>
+
+  <rf name="RF2">
+    <hdb-file>tce:asic_130nm_1.5V.hdb</hdb-file>
+    <rf-id>958</rf-id>
+  </rf>
+
+  <rf name="RF1_1">
+    <hdb-file>tce:asic_130nm_1.5V.hdb</hdb-file>
+    <rf-id>958</rf-id>
+  </rf>
+
+  <rf name="RF2_1">
+    <hdb-file>tce:asic_130nm_1.5V.hdb</hdb-file>
+    <rf-id>958</rf-id>
+  </rf>
+
+  <rf name="RF1_2">
+    <hdb-file>tce:asic_130nm_1.5V.hdb</hdb-file>
+    <rf-id>958</rf-id>
+  </rf>
+
+  <rf name="RF2_2">
+    <hdb-file>tce:asic_130nm_1.5V.hdb</hdb-file>
+    <rf-id>958</rf-id>
+  </rf>
+
+  <rf name="RF1_3">
+    <hdb-file>tce:asic_130nm_1.5V.hdb</hdb-file>
+    <rf-id>958</rf-id>
+  </rf>
+
+  <rf name="RF2_3">
+    <hdb-file>tce:asic_130nm_1.5V.hdb</hdb-file>
+    <rf-id>958</rf-id>
+  </rf>
+
+</adf-implementation>
