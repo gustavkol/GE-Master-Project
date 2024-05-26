@@ -81,30 +81,23 @@ TRIGGER
     signed int delta_a = 0;
     signed int compensated_term = 0;
     signed int fractional_inc_term = 0;
-    signed int shift_int = 0;
-    signed int shift_true = 1;
 
     if (inc_term < 0) {
         if (((1 << 4) - ((a_n_prev-16) << 1)) < inc_term) {  // < 1
             delta_a = 0;
             compensated_term = 0;
-            shift_true = 0;
         } else if (((4 << 4) - ((a_n_prev-32) << 2)) < inc_term) { // < 2
             delta_a = -(1 << 4);
             compensated_term = (1 << 4) - ((a_n_prev-16) << 1);
-            shift_int = 1;
         } else if (((9 << 4) - ((a_n_prev-48) << 1) - ((a_n_prev-48) << 2)) < inc_term) { // < 3
             delta_a = -(2 << 4);
             compensated_term = (4 << 4) - ((a_n_prev-32) << 2);
-            shift_int = 2;
         } else if (((16 << 4) - ((a_n_prev-64) << 3)) < inc_term) { // < 4
             delta_a = -(3 << 4);
             compensated_term = (9 << 4) - ((a_n_prev-48) << 1) - ((a_n_prev-48) << 2);
-            shift_int = 3;
         } else {
             delta_a = -(4 << 4);
             compensated_term = (16 << 4) - ((a_n_prev-64) << 3);
-            shift_int = 4;
         }
 
         fractional_inc_term = inc_term - compensated_term;
@@ -128,23 +121,18 @@ TRIGGER
         if (((1 << 4) + ((a_n_prev+16) << 1)) > inc_term) {
             delta_a = 0;
             compensated_term = 0;
-            shift_true = 0;
         } else if (((4 << 4) + ((a_n_prev+32) << 2)) > inc_term) {
             delta_a = (1 << 4);
             compensated_term = (1 << 4) + ((a_n_prev+16) << 1);
-            shift_int = 1;
         } else if (((9 << 4) + ((a_n_prev+48) << 1) + ((a_n_prev+48) << 2)) > inc_term) {
             delta_a = (2 << 4);
             compensated_term = (4 << 4) + ((a_n_prev+32) << 2);
-            shift_int = 2;
         } else if (((16 << 4) + ((a_n_prev+64) << 3)) > inc_term) {
             delta_a = (3 << 4);
             compensated_term = (9 << 4) + ((a_n_prev+48) << 1) + ((a_n_prev+48) << 2);
-            shift_int = 3;
         } else {
             delta_a = (4 << 4);
             compensated_term = (16 << 4) + ((a_n_prev+64) << 3);
-            shift_int = 4;
         }
 
         fractional_inc_term = inc_term - compensated_term;
