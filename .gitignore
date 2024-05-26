@@ -20,6 +20,7 @@ full-custom-architecture/processor-implementation/execbus.dump
 full-custom-architecture/customized-optimized.adf
 full-custom-architecture/assembly_code.tceasm
 full-custom-architecture/assembly_code.tpef
+full-custom-architecture/customized.idf
 rtl-snippets/tb/cordic_waveform.gtkw
 rtl-snippets/tb/frac_waveform.gtkw
 rtl-snippets/tb/waveform

@@ -4,6 +4,7 @@
   <ic-decoder-plugin>
     <name>DefaultICDecoder</name>
     <file>tce:DefaultICDecoderPlugin.so</file>
+    <hdb-file>hw-database.hdb</hdb-file>
   </ic-decoder-plugin>
 
   <fu name="lsu">
@@ -12,32 +13,32 @@
   </fu>
 
   <fu name="alu">
-    <hdb-file>riscv-master.hdb</hdb-file>
+    <hdb-file>hw-database.hdb</hdb-file>
     <fu-id>7</fu-id>
   </fu>
 
   <fu name="FU_ALGO">
-    <hdb-file>riscv-master.hdb</hdb-file>
+    <hdb-file>hw-database.hdb</hdb-file>
     <fu-id>14</fu-id>
   </fu>
 
   <fu name="FU_CORDIC">
-    <hdb-file>riscv-master.hdb</hdb-file>
+    <hdb-file>hw-database.hdb</hdb-file>
     <fu-id>13</fu-id>
   </fu>
 
   <fu name="FU_ALGO_1">
-    <hdb-file>riscv-master.hdb</hdb-file>
+    <hdb-file>hw-database.hdb</hdb-file>
     <fu-id>15</fu-id>
   </fu>
 
   <fu name="FU_ALGO_2">
-    <hdb-file>riscv-master.hdb</hdb-file>
+    <hdb-file>hw-database.hdb</hdb-file>
     <fu-id>15</fu-id>
   </fu>
 
   <fu name="FU_ALGO_3">
-    <hdb-file>riscv-master.hdb</hdb-file>
+    <hdb-file>hw-database.hdb</hdb-file>
     <fu-id>15</fu-id>
   </fu>
 
