@@ -4,6 +4,7 @@ Some key folders and files in the repository:
 
 - folder full-custom-architecture/processor-implementation:     Contains the complete rtl code + testbenches + simulation scripts for processor configuration 6 presented in thesis
 - folder rtl-snippets:                                          Contains the rtl implementation of the developed FUs and their testbenches.
+- folder matlab-model:                                          Contains the high-level model of the delay algorithm developed in the preliminary project.
 - file full-custom-architecture/assembly.adf:                   Architecture definition file of processor configuration 6 presented in thesis.
 - file full-custom-architecture/assembly_code_4threads.tceasm:  Assembly implementation of the delay application targeted for configuration 6.
 - file full-custom-architecture/main.c:                         Main function of the high-level delay application
