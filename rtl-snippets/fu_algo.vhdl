@@ -1,3 +1,19 @@
+-- RTL implementation of FU_ALGO_{init} presented in report
+--
+-- Mapping to operations presented in the thesis:
+-- --------------------------------------------------
+-- This file               -   Thesis
+-- --------------------------------------------------
+-- OPC_ALGO_ADD            -   add
+-- OPC_ALGO_FRAC           -   compare_and_iter_frac
+-- OPC_ALGO_F_INIT         -   compare_and_iter_term
+-- OPC_ALGO_INIT           -   compare_and_iter_init
+-- OPC_ALGO_MASK_ADD       -   mask_add
+-- OPC_ALGO_MERGE          -   merge
+-- OPC_ALGO_SHIFT_ADD      -   shift_add
+-- OPC_ALGO_SHIFT_SUB      -   shift_sub
+-- OPC_ALGO_SUB            -   sub
+
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
@@ -168,6 +184,7 @@ begin
        end if;
     end process;
 
+    -- Process calculating 2a_n^2
     A_SQUARED: process(a_prev_abs, rstx) begin
         if (rstx = '0') then
             a_sq <= (others => '0');
@@ -194,6 +211,7 @@ begin
         end if;
     end process;
 
+    -- Process calculating 2a_n*a_k
     A_SQUARED_INIT: process(a_n, a_k, rstx) begin
         if (rstx = '0') then
             a_sq_int    <= (others => '0');
@@ -241,7 +259,7 @@ begin
     a_n             <= signed(t1data(DW_A-1 downto 0))      when (t1opcode = OPC_ALGO_F_INIT and rstx = '1')      else (others => '0');
                                                   
 
-    -- Module logic
+    -- Operation logic
     FUNC: process (clk, rstx) begin
         if (rstx = '0') then
             inc_term_frac   <= (others => '0');
