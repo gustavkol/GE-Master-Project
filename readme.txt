@@ -24,10 +24,10 @@ HDBS=asic_130nm_1.5V.hdb,hw-database.hdb
 generateprocessor --hdb-list=$HDBS -o processor-implementation -t assembly.adf
 
 - Compilation of assembly code (produces program assembly_code_new.tpef)
-tceasm assembly.adf assembly_code_new.tceasm
+tceasm assembly.adf assembly_code_4threads.tceasm
 
 - Compilation of C code for a targeted architecture definition file (produces program delay.tpef)
 oacc -O3 -a customized.adf -o delay.tpef main.c delay.c
 
 - Generates bit image of the application
-generatebits -d -w 4 -p assembly_code_new.tpef -x processor-implementation assembly.adf
+generatebits -d -w 4 -p assembly_code_4threads.tpef -x processor-implementation assembly.adf

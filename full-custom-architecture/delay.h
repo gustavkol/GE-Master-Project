@@ -1,3 +1,5 @@
+/* C implementation of delay application running on the processor architecture. Contains both extended and base operation set functionality. */
+
 #ifndef _delay_h
 #define _delay_h
 

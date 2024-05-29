@@ -1,3 +1,4 @@
+/*Main function of the C implementation of delay application running on the processor architecture. Contains both extended and base operation set implementations. */
 #include "delay.h"
 
 #ifdef _DEBUG

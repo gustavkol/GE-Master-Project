@@ -1,3 +1,18 @@
+-- RTL implementation of FU_ALGO_{min} presented in report
+--
+-- Mapping to operations presented in the thesis:
+-- --------------------------------------------------
+-- This file               -   Thesis
+-- --------------------------------------------------
+-- OPC_ALGO_ADD            -   add
+-- OPC_ALGO_FRAC           -   compare_and_iter_frac
+-- OPC_ALGO_F_INIT         -   compare_and_iter_term
+-- OPC_ALGO_MASK_ADD       -   mask_add
+-- OPC_ALGO_MERGE          -   merge
+-- OPC_ALGO_SHIFT_ADD      -   shift_add
+-- OPC_ALGO_SHIFT_SUB      -   shift_sub
+-- OPC_ALGO_SUB            -   sub
+
 library IEEE;
 use IEEE.std_logic_1164.all;
 
@@ -131,7 +146,8 @@ begin
     a_prev_frac     <= signed(t2data(DW_A-1 downto 0))      when (t1opcode = OPC_ALGO_FRAC and rstx = '1')      else (others => '0');
     n_prev_frac     <= signed(t2data(dataw-1 downto DW_A))  when (t1opcode = OPC_ALGO_FRAC and rstx = '1')      else (others => '0');
     a_prev_abs      <= a_prev_frac                          when a_prev_frac(DW_A-1) = '0'                      else -a_prev_frac;
-
+    
+    -- Comparator term
     term_025_frac   <= shift_right(n_prev_frac+int_4, 1) + shift_right(a_prev_frac, 1) + a_prev_frac + to_signed(int_1, term_025_frac'length)       when (t1opcode = OPC_ALGO_FRAC and rstx = '1') else (others => '0');
 
     -- Algorithm expression: fractional init
@@ -139,7 +155,7 @@ begin
     a_n             <= signed(t1data(DW_A-1 downto 0))      when (t1opcode = OPC_ALGO_F_INIT and rstx = '1')      else (others => '0');
 
 
-    -- Module logic
+    -- Operation logic
     FUNC: process (clk, rstx) begin
         if (rstx = '0') then
             r1data <= (others => '0');

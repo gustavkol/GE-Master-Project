@@ -1,3 +1,21 @@
+/* High-level implementations of the custom operations 
+
+Mapping to operations presented in the thesis:
+--------------------------------------------------
+This file               -   Thesis
+--------------------------------------------------
+CORDIC                  -   cordic
+COMPARE_AND_ITER_INT    -   compare_and_iter_init
+COMPARE_AND_ITER_F_INIT -   compare_and_iter_term
+COMPARE_AND_ITER_F      -   compare_and_iter_frac
+CONST_MULT_BN           -   const_mult_bn
+CONST_MULT_C0           -   const_mult_c0
+MASK_ADD                -   mask_add
+SHIFT_ADD               -   shift_add
+SHIFT_SUB               -   shift_sub
+MERGE                   -   merge
+*/
+
 #include "OSAL.hh"
 
 OPERATION(CORDIC)
