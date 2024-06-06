@@ -442,8 +442,7 @@ RF1.0       -> FU_ALGO.P1.merge                  , RF2.31 -> FU_ALGO.P2    , FU_
 RF1.8       -> FU_ALGO.P1.add                    , 32     -> FU_ALGO.P2    , FU_ALGO.P3 -> RF2.32 , ... , ... , FU_ALGO.P3 -> RF1_1.0 , ... , ... , ... , ... , ... , ... ; # n_cur & a_prev
 
 #---------------------------------------------------------- FU2 ----------------------------------------------------------#
-... , ... , FU_ALGO.P3 -> RF1.8  , ...                                                  , ...                         , ...                      , ... , ... , ... , ... , ... , ... ; # error_prev
-... , ... , ...                  , RF1_1.0       -> FU_ALGO_1.P1.compare_and_iter_f_init, RF2_1.4  -> FU_ALGO_1.P2    , ...                      , ... , ... , ... , ... , ... , ... ;
+... , ... , FU_ALGO.P3 -> RF1.8  , RF1_1.0       -> FU_ALGO_1.P1.compare_and_iter_f_init, RF2_1.4  -> FU_ALGO_1.P2    , ...                      , ... , ... , ... , ... , ... , ... ; # error_prev
 ... , ... , ...                  , FU_ALGO_1.P3  -> FU_ALGO_1.P1.shift_add              , RF2_1.0  -> FU_ALGO_1.P2    , FU_ALGO_1.P3 -> RF1_1.0  , ... , ... , ... , ... , ... , ... ; # out
 ... , ... , ...                  , RF1_1.0       -> FU_ALGO_1.P1.mask_add               , RF2_1.3  -> FU_ALGO_1.P2    , FU_ALGO_1.P3 -> RF2_1.2  , ... , ... , ... , ... , ... , ... ; # inc_prev
 ... , ... , ...                  , RF1_1.1       -> FU_ALGO_1.P1.add                    , 32       -> FU_ALGO_1.P2    , FU_ALGO_1.P3 -> RF2_1.3  , ... , ... , ... , ... , ... , ... ; # n_prev
@@ -501,8 +500,7 @@ RF1.8       -> FU_ALGO.P1.add                    , 32     -> FU_ALGO.P2    , FU_
 
 
 #---------------------------------------------------------- FU3 ----------------------------------------------------------#
-... , ... , ... , ... , ... , FU_ALGO_1.P3 -> RF1_1.8  , ...                                                  , ...                         , ...                      , ... , ... , ... ; # error_prev
-... , ... , ... , ... , ... , ...                      , RF1_2.0       -> FU_ALGO_2.P1.compare_and_iter_f_init, RF2_2.4  -> FU_ALGO_2.P2    , ...                      , ... , ... , ... ;
+... , ... , ... , ... , ... , FU_ALGO_1.P3 -> RF1_1.8  , RF1_2.0       -> FU_ALGO_2.P1.compare_and_iter_f_init, RF2_2.4  -> FU_ALGO_2.P2    , ...                      , ... , ... , ... ; # error_prev
 ... , ... , ... , ... , ... , ...                      , FU_ALGO_2.P3  -> FU_ALGO_2.P1.shift_add              , RF2_2.0  -> FU_ALGO_2.P2    , FU_ALGO_2.P3 -> RF1_2.0  , ... , ... , ... ; # out
 ... , ... , ... , ... , ... , ...                      , RF1_2.0       -> FU_ALGO_2.P1.mask_add               , RF2_2.3  -> FU_ALGO_2.P2    , FU_ALGO_2.P3 -> RF2_2.2  , ... , ... , ... ; # inc_prev
 ... , ... , ... , ... , ... , ...                      , RF1_2.1       -> FU_ALGO_2.P1.add                    , 32       -> FU_ALGO_2.P2    , FU_ALGO_2.P3 -> RF2_2.3  , ... , ... , ... ; # n_prev
@@ -559,8 +557,7 @@ RF1.8       -> FU_ALGO.P1.add                    , 32     -> FU_ALGO.P2    , FU_
 ... , ... , ... , ... , ... , ... , RF1_2.8       -> FU_ALGO_2.P1.add                     , 32       -> FU_ALGO_2.P2    , FU_ALGO_2.P3 -> RF2_2.32 , ... , ... , FU_ALGO_2.P3 -> RF1_3.0 ; # n_cur & a_prev
 
 #---------------------------------------------------------- FU3 ----------------------------------------------------------#
-... , ... , ... , ... , ... , ... , ... , ... , FU_ALGO_2.P3 -> RF1_2.8  , ...                                                  , ...                         , ...                     ; # error_prev
-... , ... , ... , ... , ... , ... , ... , ... , ...                      , RF1_3.0       -> FU_ALGO_3.P1.compare_and_iter_f_init, RF2_3.4  -> FU_ALGO_3.P2    , ...                     ;
+... , ... , ... , ... , ... , ... , ... , ... , FU_ALGO_2.P3 -> RF1_2.8  , RF1_3.0       -> FU_ALGO_3.P1.compare_and_iter_f_init, RF2_3.4  -> FU_ALGO_3.P2    , ...                     ; # error_prev
 ... , ... , ... , ... , ... , ... , ... , ... , ...                      , FU_ALGO_3.P3  -> FU_ALGO_3.P1.shift_add              , RF2_3.0  -> FU_ALGO_3.P2    , FU_ALGO_3.P3 -> RF1_3.0 ; # out
 ... , ... , ... , ... , ... , ... , ... , ... , ...                      , RF1_3.0       -> FU_ALGO_3.P1.mask_add               , RF2_3.3  -> FU_ALGO_3.P2    , FU_ALGO_3.P3 -> RF2_3.2 ; # inc_prev
 ... , ... , ... , ... , ... , ... , ... , ... , ...                      , RF1_3.1       -> FU_ALGO_3.P1.add                    , 32       -> FU_ALGO_3.P2    , FU_ALGO_3.P3 -> RF2_3.3 ; # n_prev

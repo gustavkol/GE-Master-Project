@@ -100,6 +100,78 @@ TRIGGER
     signed int compensated_term = 0;
     signed int fractional_inc_term = 0;
 
+    /****************************HIGH-LEVEL FUNCTIONALITY****************************/
+//    if (inc_term < 0) {
+//        if (((1 << 4) - 2*(a_n_prev-16)) < inc_term) {  // < 1
+//            delta_a = 0;
+//            compensated_term = 0;
+//        } else if (((4 << 4) - 4*(a_n_prev-32)) < inc_term) { // < 2
+//            delta_a = -(1 << 4);
+//            compensated_term = (1 << 4) - 2*(a_n_prev-16);
+//        } else if (((9 << 4) - 6*(a_n_prev-48)) < inc_term) { // < 3
+//            delta_a = -(2 << 4);
+//            compensated_term = (4 << 4) - 4*(a_n_prev-32);
+//        } else if (((16 << 4) - 8*(a_n_prev-64)) < inc_term) { // < 4
+//            delta_a = -(3 << 4);
+//            compensated_term = (9 << 4) - 6*(a_n_prev-48);
+//        } else {
+//            delta_a = -(4 << 4);
+//            compensated_term = (16 << 4) - 8*(a_n_prev-64);
+//        }
+//
+//        fractional_inc_term = inc_term - compensated_term;
+//
+//
+//        if ((1 - 0.5*(a_n_prev+delta_a-4) - delta_a) < fractional_inc_term) { // 0.25
+//            compensated_term = compensated_term + 0;
+//            delta_a = delta_a + 0;
+//        } else if (((1 << 2) - (a_n_prev+delta_a-8) - 2*delta_a) < fractional_inc_term) { // 0.5
+//            compensated_term = compensated_term + 1 - 0.5*(a_n_prev+delta_a-4) - delta_a;
+//            delta_a = delta_a - (1 << 2);
+//        } else if (((1 << 3) + 1 - 1.5*(a_n_prev+delta_a-12) - 3*delta_a) < fractional_inc_term) { // 0.75
+//            compensated_term = compensated_term + (1 << 2) - (a_n_prev+delta_a-8) - 2*delta_a;
+//            delta_a = delta_a - (1 << 3);
+//        } else {
+//            compensated_term = compensated_term + (1 << 3) + 1 - 1.5*(a_n_prev+delta_a-12) - 3*delta_a;
+//            delta_a = delta_a - (1 << 2) - (1 << 3);
+//        }
+//
+//    } else {
+//        if (((1 << 4) + 2*(a_n_prev+16)) > inc_term) {
+//            delta_a = 0;
+//            compensated_term = 0;
+//        } else if (((4 << 4) + 4*(a_n_prev+32)) > inc_term) {
+//            delta_a = (1 << 4);
+//            compensated_term = (1 << 4) + 2*(a_n_prev+16);
+//        } else if (((9 << 4) + 6*(a_n_prev+48)) > inc_term) {
+//            delta_a = (2 << 4);
+//            compensated_term = (4 << 4) + 4*(a_n_prev+32);
+//        } else if (((16 << 4) + 8*(a_n_prev+64)) > inc_term) {
+//            delta_a = (3 << 4);
+//            compensated_term = (9 << 4) + 6*(a_n_prev+48);
+//        } else {
+//            delta_a = (4 << 4);
+//            compensated_term = (16 << 4) + 8*(a_n_prev+64);
+//        }
+//
+//        fractional_inc_term = inc_term - compensated_term;
+//
+//        if ((1 + 0.5*(a_n_prev+delta_a+4) + delta_a) > fractional_inc_term) { // 0.25
+//            compensated_term = compensated_term + 0;
+//            delta_a = delta_a + 0;
+//        } else if (((1 << 2) + a_n_prev+delta_a+8 + 2*delta_a) > fractional_inc_term) { // 0.5
+//            compensated_term = compensated_term + 1 + 0.5*(a_n_prev+delta_a+4) + delta_a;
+//            delta_a = delta_a + (1 << 2);
+//        } else if (((1 << 3) + 1 + 1.5*(a_n_prev+delta_a+12) + 3*delta_a) > fractional_inc_term) { // 0.75
+//            compensated_term = compensated_term + (1 << 2) + a_n_prev+delta_a+8 + 2*delta_a;
+//            delta_a = delta_a + (1 << 3);
+//        } else {
+//            compensated_term = compensated_term + (1 << 3) + 1 + 1.5*(a_n_prev+delta_a+12) + 3*delta_a;
+//            delta_a = delta_a + (1 << 2) + (1 << 3);
+//        }
+//    }
+
+    /********************************HW FUNCTIONALITY********************************/
     if (inc_term < 0) {
         if (((1 << 4) - ((a_n_prev-16) << 1)) < inc_term) {  // < 1
             delta_a = 0;
@@ -182,12 +254,12 @@ TRIGGER
 	signed int a_n_prev_n = INT(1);   // N_{n-1,k} & a_{n-1}
 	signed int a_n_prev_k = INT(2);   // N_{n,k-1} & a_{k-1}
 
-    /********************* NEW SOLUTION *********************/
     signed int a_n = ((a_n_prev_n << 32-8) >> 32-8);
     signed int a_k = ((a_n_prev_k << 32-8) >> 32-8);
 
-    signed int compensated_term = (a_k << 3) * ((a_n >> 6) & 1) + (a_k << 2) * ((a_n >> 5) & 1) + (a_k << 1) * ((a_n >> 4) & 1) + a_k * ((a_n >> 3) & 1) + (a_k >> 1) * ((a_n >> 2) & 1);
-    /********************************************************/
+    /********************************HW FUNCTIONALITY********************************/
+    signed int compensated_term = (a_k << 3) * ((a_n >> 6) & 1) + (a_k << 2) * ((a_n >> 5) & 1) + (a_k << 1) * ((a_n >> 4) & 1) + a_k * ((a_n >> 3) & 1) + (a_k >> 1) * ((a_n >> 2) & 1); // 2*a_k*a_n;
+    /********************************************************************************/
 
 	signed int result = (compensated_term  << 8) | (a_n & 0x000000FF); // a_next & inc_term_next
     IO(3) = static_cast<signed> (result);
@@ -204,7 +276,6 @@ TRIGGER
     signed int a_next = 0;
     signed int compensated_term = 0;
 
-    /********************* NEW SOLUTION *********************/
     signed int a_prev = ((a_n_prev << 32-8) >> 32-8);
     signed int a_abs;
     signed int n_prev = a_n_prev >> 8;
@@ -216,6 +287,26 @@ TRIGGER
 
     signed int a_sq = (a_abs << 3) * ((a_abs >> 6) & 1) + (a_abs << 2) * ((a_abs >> 5) & 1) + (a_abs << 1) * ((a_abs >> 4) & 1) + a_abs * ((a_abs >> 3) & 1) + (a_abs >> 1) * ((a_abs >> 2) & 1); // 2*a_n^2
 
+
+    /****************************HIGH-LEVEL FUNCTIONALITY****************************/
+    //if (inc_term >= 0) {
+    //    if((0.5*(n_prev + 4) + 1.5*a_prev + a_sq + 1) > inc_term) {
+    //        compensated_term    = a_sq;
+    //        a_next              = a_prev;
+    //    } else {
+    //        compensated_term    = 0.5*(n_prev + 4) + 1.5*a_prev + a_sq + 1;
+    //        a_next              = a_prev + 4;
+    //    }
+    //} else {
+    //    if((-0.5*(n_prev - 4) - 1.5*a_prev + a_sq + 1) < inc_term) {
+    //        compensated_term    = a_sq;
+    //        a_next              = a_prev;
+    //    } else {
+    //        compensated_term    = -0.5*(n_prev - 4) - 1.5*a_prev + a_sq + 1;
+    //        a_next              = a_prev - 4;
+    //    }
+    //}
+    /********************************HW FUNCTIONALITY********************************/
     if (inc_term < 0) {
         if ((1 - (n_prev-4 >> 1) - (a_prev >> 1) - a_prev + a_sq) < inc_term) { // 0.25
             compensated_term    = a_sq; //0;
@@ -245,7 +336,7 @@ TRIGGER
             a_next              = a_prev + (1 << 2) + (1 << 3);
         }
     }
-    /********************************************************/
+    /**********************************************************************************/
 
 	signed int result = (compensated_term  << 8) | (a_next & 0x000000FF);
     IO(3) = static_cast<signed> (result);
